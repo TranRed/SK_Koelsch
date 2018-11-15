@@ -1,11 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import UI
+import view
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
-    ui = UI.Ui_MainWindow()
+    ui = view.Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
