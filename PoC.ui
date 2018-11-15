@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>SoKa</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QGroupBox" name="groupBox_materialmaster">
@@ -849,23 +849,6 @@
      <string>Kalkulieren</string>
     </property>
    </widget>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>835</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuSoKa">
-    <property name="title">
-     <string>SoKa</string>
-    </property>
-    <addaction name="separator"/>
-   </widget>
-   <addaction name="menuSoKa"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

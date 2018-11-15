@@ -220,24 +220,16 @@ class Ui_MainWindow(object):
         self.pushButton_calculation.setGeometry(QtCore.QRect(670, 530, 93, 28))
         self.pushButton_calculation.setObjectName("pushButton_calculation")
         MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 835, 26))
-        self.menubar.setObjectName("menubar")
-        self.menuSoKa = QtWidgets.QMenu(self.menubar)
-        self.menuSoKa.setObjectName("menuSoKa")
-        MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.menuSoKa.addSeparator()
-        self.menubar.addAction(self.menuSoKa.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "SoKa"))
         self.groupBox_materialmaster.setTitle(_translate("MainWindow", "Artikelstammdaten"))
         self.label_articleName.setText(_translate("MainWindow", "Bezeichnung"))
         self.label_referenceID.setText(_translate("MainWindow", "Referenznummer"))
@@ -293,5 +285,4 @@ class Ui_MainWindow(object):
         self.radioButton_bar.setText(_translate("MainWindow", "Stange"))
         self.radioButton_cutted.setText(_translate("MainWindow", "Zuschnitt"))
         self.pushButton_calculation.setText(_translate("MainWindow", "Kalkulieren"))
-        self.menuSoKa.setTitle(_translate("MainWindow", "SoKa"))
 
