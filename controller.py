@@ -26,7 +26,7 @@ def calc_semifinished(ui):
         b = int(ui.lineEdit_bodySideB.text()) + int(ui.lineEdit_allowanceSideB.text())
         c = int(ui.lineEdit_bodySideC.text()) + int(ui.lineEdit_allowanceSideC.text())
 
-        cursor = model.read_halbzeug(ui.comboBox_material.currentText())
+        cursor = model.read_halbzeug(ui.comboBox_material.currentText()[:6])
         sfgFound = False
 
         for dataset in cursor:
@@ -58,7 +58,7 @@ def connect_size_fields(ui):
 def fill_comboBox_material(ui):
     cursor = model.read_all_materials();
     for dataset in cursor:
-        ui.comboBox_material.addItem(str(dataset[0]))
+        ui.comboBox_material.addItem(str(dataset[0]) + " - " + str(dataset[1]) + " - " + str(dataset[2]))
 
 def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
