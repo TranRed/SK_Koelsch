@@ -13,6 +13,11 @@ def read_all_materials():
     cursor.execute(sql)
     return cursor
 
+def read_all_machines():
+    sql = "SELECT * FROM maschine"
+    cursor.execute(sql)
+    return cursor
+
 connection = sqlite3.connect("PoC.db")
 cursor = connection.cursor()
 

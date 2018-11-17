@@ -60,10 +60,16 @@ def fill_comboBox_material(ui):
     for dataset in cursor:
         ui.comboBox_material.addItem(str(dataset[0]) + " - " + str(dataset[1]) + " - " + str(dataset[2]))
 
+def fill_comboBox_maschine(ui):
+    cursor = model.read_all_machines();
+    for dataset in cursor:
+        ui.comboBox_machine.addItem(str(dataset[1]))
+
 def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
 
 def defaults(ui):
     fill_comboBox_material(ui)
+    fill_comboBox_maschine(ui)
     connect_size_fields(ui)
     connect_comboBoxes(ui)
