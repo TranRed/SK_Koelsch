@@ -376,7 +376,7 @@
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>10</y>
+       <y>20</y>
        <width>301</width>
        <height>22</height>
       </rect>
@@ -398,7 +398,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_bodySideA_2">
+    <widget class="QLineEdit" name="lineEdit_bodySideB">
      <property name="geometry">
       <rect>
        <x>250</x>
@@ -414,7 +414,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_bodySideA_3">
+    <widget class="QLineEdit" name="lineEdit_bodySideC">
      <property name="geometry">
       <rect>
        <x>350</x>
@@ -446,7 +446,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_allowanceSideA_2">
+    <widget class="QLineEdit" name="lineEdit_allowanceSideB">
      <property name="geometry">
       <rect>
        <x>250</x>
@@ -462,7 +462,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_allowanceSideA_3">
+    <widget class="QLineEdit" name="lineEdit_allowanceSideC">
      <property name="geometry">
       <rect>
        <x>350</x>
@@ -516,7 +516,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_semifinishedSideA_2">
+    <widget class="QLineEdit" name="lineEdit_semifinishedSideC">
      <property name="enabled">
       <bool>false</bool>
      </property>
