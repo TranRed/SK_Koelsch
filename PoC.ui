@@ -372,16 +372,6 @@
       <string>c</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_material">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>20</y>
-       <width>301</width>
-       <height>22</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QLineEdit" name="lineEdit_bodySideA">
      <property name="geometry">
       <rect>
@@ -392,7 +382,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>10</string>
+      <string>0</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -408,7 +398,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>15</string>
+      <string>0</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -424,7 +414,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>20</string>
+      <string>0</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -440,7 +430,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>5</string>
+      <string>0</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -472,7 +462,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>5</string>
+      <string>0</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -491,7 +481,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>20</string>
+      <string>0</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -510,7 +500,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>20</string>
+      <string>0</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -529,10 +519,36 @@
       </rect>
      </property>
      <property name="text">
-      <string>30</string>
+      <string>0</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_sizeNotFound">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>120</y>
+       <width>241</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="comboBox_material">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>20</y>
+       <width>301</width>
+       <height>22</height>
+      </rect>
      </property>
     </widget>
    </widget>
