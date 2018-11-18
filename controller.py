@@ -25,8 +25,6 @@ def find_alternative(a,b,c,sfgA,sfgB,sfgC,volume):
             result['found'] = True
             result['msg'] = build_alt_message("(AxCxB)", sfgA, sfgB, sfgC )
             return result
-        else:
-            pass
     elif b<=sfgA:
         if a<=sfgB and c<=sfgC:
             result['found'] = True
@@ -36,8 +34,6 @@ def find_alternative(a,b,c,sfgA,sfgB,sfgC,volume):
             result['found'] = True
             result['msg'] = build_alt_message("(BxCxA)", sfgA, sfgB, sfgC )
             return result
-        else:
-            pass
     elif c<=sfgA:
         if a<=sfgB and b<=sfgC:
             result['found'] = True
@@ -47,10 +43,6 @@ def find_alternative(a,b,c,sfgA,sfgB,sfgC,volume):
             result['found'] = True
             result['msg'] = build_alt_message("(CxBxA)", sfgA, sfgB, sfgC )
             return result
-        else:
-            pass
-    else:
-        pass
 
     result['found'] = False
     result['msg'] = ""
@@ -87,8 +79,6 @@ def calc_semifinished(ui):
                 sfgFound = True
                 sfgFoundVolume = volume
                 set_sizes(ui,str(sizeA),str(sizeB),str(sizeC),"")
-            else:
-                pass
 
             if altFound == False:
 
@@ -97,30 +87,16 @@ def calc_semifinished(ui):
                 if altFound == True and sfgIsCurrent == False:
                     msg = alternative['msg']
                     if sfgFound == True:
-                        if alternative['volume'] < sfgFoundVolume:
-                            pass
-                        else:
+                        if alternative['volume'] >= sfgFoundVolume:
                             #only show message if alternative is smaller
                             msg = ""
-                    else:
-                        pass
-
-
-
-                else:
-                    pass
-            else:
-                pass
 
         if sfgFound == False:
             set_no_size(ui)
-        else:
-            pass
 
         if altFound == True and msg != "":
             ui.label_sizeNotFound.setText(msg)
-        else:
-            pass
+
 
 def connect_size_fields(ui):
     ui.lineEdit_bodySideA.textChanged.connect(lambda: calc_semifinished(ui))
