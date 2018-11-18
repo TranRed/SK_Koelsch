@@ -4,7 +4,7 @@ from pkg_resources._vendor.pyparsing import empty
 
 
 def read_halbzeug(material):
-    sql = "SELECT * FROM halbzeug WHERE material = " + material
+    sql = "SELECT * FROM halbzeug WHERE material = " + material +" ORDER BY volumen"
     cursor.execute(sql)
     return cursor
 

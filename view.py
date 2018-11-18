@@ -141,7 +141,7 @@ class Ui_MainWindow(object):
         self.lineEdit_semifinishedSideC.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.lineEdit_semifinishedSideC.setObjectName("lineEdit_semifinishedSideC")
         self.label_sizeNotFound = QtWidgets.QLabel(self.groupBox_body)
-        self.label_sizeNotFound.setGeometry(QtCore.QRect(170, 120, 241, 16))
+        self.label_sizeNotFound.setGeometry(QtCore.QRect(170, 120, 311, 16))
         self.label_sizeNotFound.setStyleSheet("color: rgb(255, 0, 0);")
         self.label_sizeNotFound.setText("")
         self.label_sizeNotFound.setObjectName("label_sizeNotFound")
