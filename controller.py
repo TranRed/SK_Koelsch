@@ -62,16 +62,16 @@ def calc_semifinished(ui):
         b = int(ui.lineEdit_bodySideB.text()) + int(ui.lineEdit_allowanceSideB.text())
         c = int(ui.lineEdit_bodySideC.text()) + int(ui.lineEdit_allowanceSideC.text())
 
-        cursor = model.read_halbzeug(ui.comboBox_material.currentText()[:6])
+        resultSet = model.read_halbzeug(ui.comboBox_material.currentText()[:6])
         sfgFound = False
         altFound = False
         msg = ""
 
-        for dataset in cursor:
-            sizeA = int(dataset[2])
-            sizeB = int(dataset[3])
-            sizeC = int(dataset[4])
-            volume = int(dataset[6])
+        for dataset in resultSet:
+            sizeA = int(dataset['a'])
+            sizeB = int(dataset['b'])
+            sizeC = int(dataset['c'])
+            volume = int(dataset['volumen'])
             sfgIsCurrent = False
 
             if a <= sizeA and b <= sizeB and c <= sizeC and sfgFound == False:
@@ -107,14 +107,14 @@ def connect_size_fields(ui):
     ui.lineEdit_allowanceSideC.textChanged.connect(lambda: calc_semifinished(ui))
 
 def fill_comboBox_material(ui):
-    cursor = model.read_all_materials();
-    for dataset in cursor:
-        ui.comboBox_material.addItem(str(dataset[0]) + " - " + str(dataset[1]) + " - " + str(dataset[2]))
+    resultSet = model.read_all_materials();
+    for dataset in resultSet:
+        ui.comboBox_material.addItem(str(dataset['material']) + " - " + str(dataset['normbez']) + " - " + str(dataset['chembez']))
 
 def fill_comboBox_maschine(ui):
-    cursor = model.read_all_machines();
-    for dataset in cursor:
-        ui.comboBox_machine.addItem(str(dataset[1]))
+    resultSet = model.read_all_machines();
+    for dataset in resultSet:
+        ui.comboBox_machine.addItem(str(dataset['bez']))
 
 def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
