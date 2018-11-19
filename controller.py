@@ -7,7 +7,6 @@ def set_sizes(ui,a,b,c,msg):
     ui.lineEdit_semifinishedSideC.setText(c)
     ui.label_sizeNotFound.setText(msg)
 
-
 def set_no_size(ui):
     #size not available
     set_sizes(ui,"0","0","0","Kein passendes Halbzeug verfügbar")
@@ -97,7 +96,6 @@ def calc_semifinished(ui):
         if altFound == True and msg != "":
             ui.label_sizeNotFound.setText(msg)
 
-
 def connect_size_fields(ui):
     ui.lineEdit_bodySideA.textChanged.connect(lambda: calc_semifinished(ui))
     ui.lineEdit_bodySideB.textChanged.connect(lambda: calc_semifinished(ui))
@@ -107,9 +105,37 @@ def connect_size_fields(ui):
     ui.lineEdit_allowanceSideC.textChanged.connect(lambda: calc_semifinished(ui))
 
 def fill_comboBox_material(ui):
+    
+    #the widget accepts focus by both tabbing and clicking
+    ui.comboBox_material.setFocusPolicy(QtCore.Qt.StrongFocus)
+    ui.comboBox_material.setEditable(True)
+    
+    # add a filter model to filter matching items
+    ui.comboBox_material.pFilterModel = QtCore.QSortFilterProxyModel(ui.comboBox_material)
+    ui.comboBox_material.pFilterModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
+    ui.comboBox_material.pFilterModel.setSourceModel(ui.comboBox_material.model())
+
+    # add a completer, which uses the filter model
+    ui.comboBox_material.completer = QtWidgets.QCompleter(ui.comboBox_material.pFilterModel, ui.comboBox_material)
+    
+    # always show all (filtered) completions
+    ui.comboBox_material.completer.setCompletionMode(QtWidgets.QCompleter.UnfilteredPopupCompletion)
+    ui.comboBox_material.setCompleter(ui.comboBox_material.completer)
+
+    # connect signals
+    ui.comboBox_material.lineEdit().textEdited.connect(ui.comboBox_material.pFilterModel.setFilterFixedString)
+    ui.comboBox_material.completer.activated.connect(lambda:on_completer_activated(ui,ui.comboBox_material.currentText()))
+    
     resultSet = model.read_all_materials();
     for dataset in resultSet:
         ui.comboBox_material.addItem(str(dataset['material']) + " - " + str(dataset['normbez']) + " - " + str(dataset['chembez']))
+
+# on selection of an item from the completer, select the corresponding item from combobox 
+def on_completer_activated(ui, text):
+    if text:
+        index = ui.comboBox_material.findText(text)
+        ui.comboBox_material.setCurrentIndex(index)
+        ui.comboBox_material.activated[str].emit(ui.comboBox_material.itemText(index))
 
 def fill_comboBox_maschine(ui):
     resultSet = model.read_all_machines();
