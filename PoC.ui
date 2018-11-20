@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>835</width>
+    <width>566</width>
     <height>612</height>
    </rect>
   </property>
@@ -169,9 +169,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>170</y>
-      <width>481</width>
-      <height>141</height>
+      <y>180</y>
+      <width>561</width>
+      <height>161</height>
      </rect>
     </property>
     <property name="title">
@@ -181,7 +181,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>20</y>
+       <y>30</y>
        <width>171</width>
        <height>16</height>
       </rect>
@@ -193,34 +193,52 @@
     <widget class="QLabel" name="label_crosssection">
      <property name="geometry">
       <rect>
-       <x>150</x>
-       <y>40</y>
-       <width>171</width>
-       <height>16</height>
+       <x>170</x>
+       <y>60</y>
+       <width>151</width>
+       <height>20</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
      <property name="text">
       <string>Querschnitt</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_length">
      <property name="geometry">
       <rect>
-       <x>330</x>
-       <y>40</y>
-       <width>171</width>
-       <height>16</height>
+       <x>350</x>
+       <y>60</y>
+       <width>61</width>
+       <height>20</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
      <property name="text">
       <string>Länge</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
     <widget class="QLabel" name="label_body">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
+       <y>80</y>
        <width>171</width>
        <height>16</height>
       </rect>
@@ -233,7 +251,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>100</y>
        <width>171</width>
        <height>16</height>
       </rect>
@@ -246,7 +264,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>100</y>
+       <y>120</y>
        <width>171</width>
        <height>16</height>
       </rect>
@@ -259,7 +277,7 @@
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>60</y>
+       <y>80</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -271,8 +289,8 @@
     <widget class="QLabel" name="label_bodySideB">
      <property name="geometry">
       <rect>
-       <x>240</x>
-       <y>60</y>
+       <x>250</x>
+       <y>80</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -285,7 +303,7 @@
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>60</y>
+       <y>80</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -298,7 +316,7 @@
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>80</y>
+       <y>100</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -310,8 +328,8 @@
     <widget class="QLabel" name="label_allowanceSideB">
      <property name="geometry">
       <rect>
-       <x>240</x>
-       <y>80</y>
+       <x>250</x>
+       <y>100</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -324,7 +342,7 @@
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>80</y>
+       <y>100</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -336,8 +354,8 @@
     <widget class="QLabel" name="label_semifinishedSideB">
      <property name="geometry">
       <rect>
-       <x>240</x>
-       <y>100</y>
+       <x>250</x>
+       <y>120</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -350,7 +368,7 @@
      <property name="geometry">
       <rect>
        <x>160</x>
-       <y>100</y>
+       <y>120</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -363,7 +381,7 @@
      <property name="geometry">
       <rect>
        <x>340</x>
-       <y>100</y>
+       <y>120</y>
        <width>16</width>
        <height>16</height>
       </rect>
@@ -376,7 +394,7 @@
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>60</y>
+       <y>80</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -391,8 +409,8 @@
     <widget class="QLineEdit" name="lineEdit_bodySideB">
      <property name="geometry">
       <rect>
-       <x>250</x>
-       <y>60</y>
+       <x>260</x>
+       <y>80</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -408,7 +426,7 @@
      <property name="geometry">
       <rect>
        <x>350</x>
-       <y>60</y>
+       <y>80</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -424,7 +442,7 @@
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>80</y>
+       <y>100</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -439,8 +457,8 @@
     <widget class="QLineEdit" name="lineEdit_allowanceSideB">
      <property name="geometry">
       <rect>
-       <x>250</x>
-       <y>80</y>
+       <x>260</x>
+       <y>100</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -456,7 +474,7 @@
      <property name="geometry">
       <rect>
        <x>350</x>
-       <y>80</y>
+       <y>100</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -475,7 +493,7 @@
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>100</y>
+       <y>120</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -493,8 +511,8 @@
      </property>
      <property name="geometry">
       <rect>
-       <x>250</x>
-       <y>100</y>
+       <x>260</x>
+       <y>120</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -513,7 +531,7 @@
      <property name="geometry">
       <rect>
        <x>350</x>
-       <y>100</y>
+       <y>120</y>
        <width>61</width>
        <height>22</height>
       </rect>
@@ -529,7 +547,7 @@
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>120</y>
+       <y>144</y>
        <width>311</width>
        <height>16</height>
       </rect>
@@ -545,10 +563,39 @@
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>20</y>
+       <y>30</y>
        <width>301</width>
        <height>22</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_bar">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>100</y>
+       <width>95</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stange</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="radioButton_cutted">
+     <property name="geometry">
+      <rect>
+       <x>440</x>
+       <y>120</y>
+       <width>95</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Zuschnitt</string>
      </property>
     </widget>
    </widget>
@@ -556,7 +603,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>310</y>
+      <y>350</y>
       <width>481</width>
       <height>201</height>
      </rect>
@@ -813,44 +860,40 @@
       <string>Definieren</string>
      </property>
     </widget>
-   </widget>
-   <widget class="QRadioButton" name="radioButton_bar">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>260</y>
-      <width>95</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Stange</string>
-    </property>
-    <property name="checked">
-     <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioButton_cutted">
-    <property name="geometry">
-     <rect>
-      <x>500</x>
-      <y>280</y>
-      <width>95</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Zuschnitt</string>
-    </property>
+    <zorder>lineEdit_drilling</zorder>
+    <zorder>lineEdit_pockets</zorder>
+    <zorder>lineEdit_volumeScaling</zorder>
+    <zorder>pushButton_volumeScaling</zorder>
+    <zorder>pushButton_drilling</zorder>
+    <zorder>pushButton_pockets</zorder>
+    <zorder>label_machine</zorder>
+    <zorder>label_stretching</zorder>
+    <zorder>label_faceMilling</zorder>
+    <zorder>label_contourMilling</zorder>
+    <zorder>label_drilling</zorder>
+    <zorder>label_pockets</zorder>
+    <zorder>label_aging</zorder>
+    <zorder>label_volumeScaling</zorder>
+    <zorder>lineEdit_stretching</zorder>
+    <zorder>comboBox_machine</zorder>
+    <zorder>comboBox_aging</zorder>
    </widget>
    <widget class="QPushButton" name="pushButton_calculation">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>530</y>
-      <width>93</width>
-      <height>28</height>
+      <x>180</x>
+      <y>560</y>
+      <width>161</width>
+      <height>21</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <italic>false</italic>
+      <bold>true</bold>
+     </font>
     </property>
     <property name="text">
      <string>Kalkulieren</string>
