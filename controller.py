@@ -105,39 +105,39 @@ def connect_size_fields(ui):
     ui.lineEdit_allowanceSideC.textChanged.connect(lambda: calc_semifinished(ui))
 
 def fill_comboBox_material(ui):
-    
-    #the widget accepts focus by both tabbing and clicking
-    ui.comboBox_material.setFocusPolicy(QtCore.Qt.StrongFocus)
-    ui.comboBox_material.setEditable(True)
-    
-    # add a filter model to filter matching items
-    ui.comboBox_material.pFilterModel = QtCore.QSortFilterProxyModel(ui.comboBox_material)
-    ui.comboBox_material.pFilterModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
-    ui.comboBox_material.pFilterModel.setSourceModel(ui.comboBox_material.model())
-
-    # add a completer, which uses the filter model
-    ui.comboBox_material.completer = QtWidgets.QCompleter(ui.comboBox_material.pFilterModel, ui.comboBox_material)
-    
-    # always show all (filtered) completions
-    ui.comboBox_material.completer.setCompletionMode(QtWidgets.QCompleter.UnfilteredPopupCompletion)
-    ui.comboBox_material.setCompleter(ui.comboBox_material.completer)
-
-    # connect signals
-    ui.comboBox_material.lineEdit().textEdited.connect(ui.comboBox_material.pFilterModel.setFilterFixedString)
-    ui.comboBox_material.completer.activated.connect(lambda:on_completer_activated(ui,ui.comboBox_material.currentText()))
-    
     resultSet = model.read_all_materials();
     for dataset in resultSet:
         ui.comboBox_material.addItem(str(dataset['material']) + " - " + str(dataset['normbez']) + " - " + str(dataset['chembez']))
 
-# on selection of an item from the completer, select the corresponding item from combobox 
-def on_completer_activated(ui, text):
-    if text:
-        index = ui.comboBox_material.findText(text)
-        ui.comboBox_material.setCurrentIndex(index)
-        ui.comboBox_material.activated[str].emit(ui.comboBox_material.itemText(index))
+def add_filter_to_comboBox(comboBox):
+    #the widget accepts focus by both tabbing and clicking
+    comboBox.setFocusPolicy(QtCore.Qt.StrongFocus)
+    comboBox.setEditable(True)
+    
+    # add a filter model to filter matching items
+    comboBox.pFilterModel = QtCore.QSortFilterProxyModel(comboBox)
+    comboBox.pFilterModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
+    comboBox.pFilterModel.setSourceModel(comboBox.model())
 
-def fill_comboBox_maschine(ui):
+    # add a completer, which uses the filter model
+    comboBox.completer = QtWidgets.QCompleter(comboBox.pFilterModel, comboBox)
+    
+    # always show all (filtered) completions
+    comboBox.completer.setCompletionMode(QtWidgets.QCompleter.UnfilteredPopupCompletion)
+    comboBox.setCompleter(comboBox.completer)
+
+    # connect signals
+    comboBox.lineEdit().textEdited.connect(comboBox.pFilterModel.setFilterFixedString)
+    comboBox.completer.activated.connect(lambda:on_completer_activated(comboBox,comboBox.currentText()))
+
+# on selection of an item from the completer, select the corresponding item from combobox 
+def on_completer_activated(comboBox, text):
+    if text:
+        index = comboBox.findText(text)
+        comboBox.setCurrentIndex(index)
+        comboBox.activated[str].emit(comboBox.itemText(index))
+
+def fill_comboBox_machine(ui):
     resultSet = model.read_all_machines();
     for dataset in resultSet:
         ui.comboBox_machine.addItem(str(dataset['bez']))
@@ -146,7 +146,10 @@ def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
 
 def defaults(ui):
+    add_filter_to_comboBox(ui.comboBox_material)
+    add_filter_to_comboBox(ui.comboBox_machine)
+    add_filter_to_comboBox(ui.comboBox_aging)
     fill_comboBox_material(ui)
-    fill_comboBox_maschine(ui)
+    fill_comboBox_machine(ui)
     connect_size_fields(ui)
     connect_comboBoxes(ui)
