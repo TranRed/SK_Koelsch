@@ -747,6 +747,9 @@
        <height>22</height>
       </rect>
      </property>
+     <property name="cursor">
+      <cursorShape>IBeamCursor</cursorShape>
+     </property>
     </widget>
     <widget class="QComboBox" name="comboBox_aging">
      <property name="geometry">
@@ -756,6 +759,9 @@
        <width>301</width>
        <height>22</height>
       </rect>
+     </property>
+     <property name="cursor">
+      <cursorShape>IBeamCursor</cursorShape>
      </property>
      <item>
       <property name="text">
@@ -853,6 +859,36 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_articleID</tabstop>
+  <tabstop>lineEdit_articleName</tabstop>
+  <tabstop>lineEdit_sketchID</tabstop>
+  <tabstop>lineEdit_referenceCustomerID</tabstop>
+  <tabstop>lineEdit_referenceCustomer</tabstop>
+  <tabstop>lineEdit_referenceID</tabstop>
+  <tabstop>comboBox_material</tabstop>
+  <tabstop>lineEdit_bodySideA</tabstop>
+  <tabstop>lineEdit_bodySideB</tabstop>
+  <tabstop>lineEdit_bodySideC</tabstop>
+  <tabstop>lineEdit_allowanceSideA</tabstop>
+  <tabstop>lineEdit_allowanceSideB</tabstop>
+  <tabstop>lineEdit_allowanceSideC</tabstop>
+  <tabstop>lineEdit_semifinishedSideA</tabstop>
+  <tabstop>lineEdit_semifinishedSideB</tabstop>
+  <tabstop>lineEdit_semifinishedSideC</tabstop>
+  <tabstop>radioButton_bar</tabstop>
+  <tabstop>radioButton_cutted</tabstop>
+  <tabstop>comboBox_machine</tabstop>
+  <tabstop>lineEdit_stretching</tabstop>
+  <tabstop>lineEdit_drilling</tabstop>
+  <tabstop>pushButton_drilling</tabstop>
+  <tabstop>lineEdit_pockets</tabstop>
+  <tabstop>pushButton_pockets</tabstop>
+  <tabstop>comboBox_aging</tabstop>
+  <tabstop>lineEdit_volumeScaling</tabstop>
+  <tabstop>pushButton_volumeScaling</tabstop>
+  <tabstop>pushButton_calculation</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

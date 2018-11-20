@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'PoC.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -196,9 +196,11 @@ class Ui_MainWindow(object):
         self.lineEdit_volumeScaling.setObjectName("lineEdit_volumeScaling")
         self.comboBox_machine = QtWidgets.QComboBox(self.groupBox_modification)
         self.comboBox_machine.setGeometry(QtCore.QRect(170, 30, 301, 22))
+        self.comboBox_machine.setCursor(QtGui.QCursor(QtCore.Qt.IBeamCursor))
         self.comboBox_machine.setObjectName("comboBox_machine")
         self.comboBox_aging = QtWidgets.QComboBox(self.groupBox_modification)
         self.comboBox_aging.setGeometry(QtCore.QRect(170, 150, 301, 22))
+        self.comboBox_aging.setCursor(QtGui.QCursor(QtCore.Qt.IBeamCursor))
         self.comboBox_aging.setObjectName("comboBox_aging")
         self.comboBox_aging.addItem("")
         self.comboBox_aging.addItem("")
@@ -228,6 +230,33 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        MainWindow.setTabOrder(self.lineEdit_articleID, self.lineEdit_articleName)
+        MainWindow.setTabOrder(self.lineEdit_articleName, self.lineEdit_sketchID)
+        MainWindow.setTabOrder(self.lineEdit_sketchID, self.lineEdit_referenceCustomerID)
+        MainWindow.setTabOrder(self.lineEdit_referenceCustomerID, self.lineEdit_referenceCustomer)
+        MainWindow.setTabOrder(self.lineEdit_referenceCustomer, self.lineEdit_referenceID)
+        MainWindow.setTabOrder(self.lineEdit_referenceID, self.comboBox_material)
+        MainWindow.setTabOrder(self.comboBox_material, self.lineEdit_bodySideA)
+        MainWindow.setTabOrder(self.lineEdit_bodySideA, self.lineEdit_bodySideB)
+        MainWindow.setTabOrder(self.lineEdit_bodySideB, self.lineEdit_bodySideC)
+        MainWindow.setTabOrder(self.lineEdit_bodySideC, self.lineEdit_allowanceSideA)
+        MainWindow.setTabOrder(self.lineEdit_allowanceSideA, self.lineEdit_allowanceSideB)
+        MainWindow.setTabOrder(self.lineEdit_allowanceSideB, self.lineEdit_allowanceSideC)
+        MainWindow.setTabOrder(self.lineEdit_allowanceSideC, self.lineEdit_semifinishedSideA)
+        MainWindow.setTabOrder(self.lineEdit_semifinishedSideA, self.lineEdit_semifinishedSideB)
+        MainWindow.setTabOrder(self.lineEdit_semifinishedSideB, self.lineEdit_semifinishedSideC)
+        MainWindow.setTabOrder(self.lineEdit_semifinishedSideC, self.radioButton_bar)
+        MainWindow.setTabOrder(self.radioButton_bar, self.radioButton_cutted)
+        MainWindow.setTabOrder(self.radioButton_cutted, self.comboBox_machine)
+        MainWindow.setTabOrder(self.comboBox_machine, self.lineEdit_stretching)
+        MainWindow.setTabOrder(self.lineEdit_stretching, self.lineEdit_drilling)
+        MainWindow.setTabOrder(self.lineEdit_drilling, self.pushButton_drilling)
+        MainWindow.setTabOrder(self.pushButton_drilling, self.lineEdit_pockets)
+        MainWindow.setTabOrder(self.lineEdit_pockets, self.pushButton_pockets)
+        MainWindow.setTabOrder(self.pushButton_pockets, self.comboBox_aging)
+        MainWindow.setTabOrder(self.comboBox_aging, self.lineEdit_volumeScaling)
+        MainWindow.setTabOrder(self.lineEdit_volumeScaling, self.pushButton_volumeScaling)
+        MainWindow.setTabOrder(self.pushButton_volumeScaling, self.pushButton_calculation)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
