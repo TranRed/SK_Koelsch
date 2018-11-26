@@ -1,5 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import model
+import pockets
+
 
 def set_sizes(ui,a,b,c,msg):
     ui.lineEdit_semifinishedSideA.setText(a)
@@ -113,7 +115,7 @@ def add_filter_to_comboBox(comboBox):
     #the widget accepts focus by both tabbing and clicking
     comboBox.setFocusPolicy(QtCore.Qt.StrongFocus)
     comboBox.setEditable(True)
-    
+
     # add a filter model to filter matching items
     comboBox.pFilterModel = QtCore.QSortFilterProxyModel(comboBox)
     comboBox.pFilterModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
@@ -121,7 +123,7 @@ def add_filter_to_comboBox(comboBox):
 
     # add a completer, which uses the filter model
     comboBox.completer = QtWidgets.QCompleter(comboBox.pFilterModel, comboBox)
-    
+
     # always show all (filtered) completions
     comboBox.completer.setCompletionMode(QtWidgets.QCompleter.UnfilteredPopupCompletion)
     comboBox.setCompleter(comboBox.completer)
@@ -130,12 +132,42 @@ def add_filter_to_comboBox(comboBox):
     comboBox.lineEdit().textEdited.connect(comboBox.pFilterModel.setFilterFixedString)
     comboBox.completer.activated.connect(lambda:on_completer_activated(comboBox,comboBox.currentText()))
 
-# on selection of an item from the completer, select the corresponding item from combobox 
+# on selection of an item from the completer, select the corresponding item from combobox
 def on_completer_activated(comboBox, text):
     if text:
         index = comboBox.findText(text)
         comboBox.setCurrentIndex(index)
         comboBox.activated[str].emit(comboBox.itemText(index))
+
+def add_pocket(ui):
+    rowCount = ui.tableWidget.rowCount()
+    ui.tableWidget.insertRow(rowCount)
+    checkBoxItem = QtWidgets.QTableWidgetItem()
+    checkBoxItem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+    checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
+    ui.tableWidget.setItem(rowCount,2,checkBoxItem)
+
+
+def update_pocket_number(dialogUi, mainUi):
+    mainUi.lineEdit_pockets.setText(str(dialogUi.tableWidget.rowCount()))
+
+def connect_pocket_buttons(dialogUi, mainUi):
+    dialogUi.toolButton_add.clicked.connect(lambda: add_pocket(dialogUi))
+    dialogUi.buttonBox.accepted.connect(lambda: update_pocket_number(dialogUi, mainUi))
+
+def define_pockets(mainUi):
+    dialog =  QtWidgets.QDialog()
+    dialog.ui = pockets.Ui_Dialog()
+    dialog.ui.setupUi(dialog)
+    dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+    header = dialog.ui.tableWidget.horizontalHeader()
+    for i in range(0,4):
+        if i == 3:
+            header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
+        else:
+            header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+    connect_pocket_buttons(dialog.ui, mainUi)
+    dialog.exec_()
 
 def fill_comboBox_machine(ui):
     resultSet = model.read_all_machines();
@@ -145,6 +177,9 @@ def fill_comboBox_machine(ui):
 def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
 
+def connect_buttons(ui):
+    ui.pushButton_pockets.clicked.connect(lambda: define_pockets(ui))
+
 def defaults(ui):
     add_filter_to_comboBox(ui.comboBox_material)
     add_filter_to_comboBox(ui.comboBox_machine)
@@ -153,3 +188,4 @@ def defaults(ui):
     fill_comboBox_machine(ui)
     connect_size_fields(ui)
     connect_comboBoxes(ui)
+    connect_buttons(ui)
