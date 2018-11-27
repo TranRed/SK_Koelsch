@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import model
 import pockets
+import utils
 
 
 def set_sizes(ui,a,b,c,msg):
@@ -148,12 +149,13 @@ def add_pocket(ui):
     ui.tableWidget.setItem(rowCount,2,checkBoxItem)
 
 
-def update_pocket_number(dialogUi, mainUi):
+def update_pocket_data(dialogUi, mainUi):
+    model.setPockets(utils.build_list_from_table(dialogUi.tableWidget))
     mainUi.lineEdit_pockets.setText(str(dialogUi.tableWidget.rowCount()))
 
 def connect_pocket_buttons(dialogUi, mainUi):
     dialogUi.toolButton_add.clicked.connect(lambda: add_pocket(dialogUi))
-    dialogUi.buttonBox.accepted.connect(lambda: update_pocket_number(dialogUi, mainUi))
+    dialogUi.buttonBox.accepted.connect(lambda: update_pocket_data(dialogUi, mainUi))
 
 def define_pockets(mainUi):
     dialog =  QtWidgets.QDialog()
@@ -166,6 +168,7 @@ def define_pockets(mainUi):
             header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
         else:
             header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+    utils.fill_table_from_list(dialog.ui.tableWidget, model.getPockets())
     connect_pocket_buttons(dialog.ui, mainUi)
     dialog.exec_()
 
@@ -189,3 +192,4 @@ def defaults(ui):
     connect_size_fields(ui)
     connect_comboBoxes(ui)
     connect_buttons(ui)
+    model.initPockets()
