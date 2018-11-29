@@ -1,0 +1,5 @@
+__pycache__
+.dbeaver-data-sources.xml
+.project
+.pydevproject
+.settings/org.eclipse.core.resources.prefs
