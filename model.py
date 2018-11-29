@@ -2,7 +2,6 @@ import sqlite3
 from pkg_resources._vendor.pyparsing import empty
 #import os.path
 
-
 def read_halbzeug(material):
     sql = "SELECT * FROM halbzeug WHERE material = " + material +" ORDER BY volumen"
     cursor.execute(sql)
@@ -64,6 +63,19 @@ def update_material(material):
                   preis = ?
               WHERE material = ?'''
     cursor.execute(sql, material)
+
+def setPockets(data):
+    global pockets
+    pockets = data
+
+
+def getPockets():
+    global pockets
+    return pockets
+
+def initPockets():
+    global pockets
+    pockets = []
 
 connection = sqlite3.connect("PoC.db")
 cursor = connection.cursor()
