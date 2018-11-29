@@ -183,15 +183,31 @@ def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
 
 def connect_pushButtons(ui):
-    ui.pushButton_newMaterial.clicked.connect(lambda: on_click_new_material())
+    ui.pushButton_newMaterial.clicked.connect(lambda: on_click_new_material(ui))
     ui.pushButton_editMaterial.clicked.connect(lambda: on_click_edit_material(ui))  
 
-def on_click_new_material():
+def on_click_new_material(ui):
     ui_mm = main.MaterialDialog()
+    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui,'N'))
     ui_mm.exec()
 
-def on_click_save(ui_mm,ui):
-    model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text(),ui_mm.lineEdit_material.text()))
+def on_click_material_save(ui_mm,ui,mode):
+    if mode == 'E':
+        model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text(),ui_mm.lineEdit_material.text()))
+    elif mode == 'N':
+        if ( ui_mm.lineEdit_material.text() == '' or
+             ui_mm.lineEdit_standard.text() == '' or
+             ui_mm.lineEdit_chemical.text() == '' or
+             ui_mm.lineEdit_density.text() == '' or
+             ui_mm.lineEdit_price.text() == '' ):
+             msg = QtWidgets.QMessageBox()
+             msg.setIcon(QtWidgets.QMessageBox.Warning)
+             msg.setText("Bitte alle Felder füllen")
+             msg.setWindowTitle("Fehler")
+             msg.exec_()
+             return
+        else:
+             model.insert_material((ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text()))
     fill_comboBox_material(ui)
     ui_mm.accept()
 
@@ -206,7 +222,7 @@ def on_click_edit_material(ui):
     ui_mm.lineEdit_chemical.setText(str(record['chembez']))   
     ui_mm.lineEdit_density.setText(str(record['dichte']))   
     ui_mm.lineEdit_price.setText(str(record['preis']))       
-    ui_mm.pushButton_save.clicked.connect(lambda: on_click_save(ui_mm,ui))
+    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui,'E'))
     ui_mm.exec()
 
 def connect_buttons(ui):
