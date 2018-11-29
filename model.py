@@ -55,68 +55,15 @@ def read_all_machines():
         resultSet.append(resultDict)
 
     return resultSet
+    
+def update_material(material):
+    sql = ''' UPDATE material
+              SET normbez = ? ,
+                  chembez = ? ,
+                  dichte = ?,
+                  preis = ?
+              WHERE material = ?'''
+    cursor.execute(sql, material)
 
 connection = sqlite3.connect("PoC.db")
 cursor = connection.cursor()
-
-"""
-sql = "SELECT * FROM material"
-
-cursor.execute(sql)
-
-for dsatz in cursor:
-    i = 0
-    result = ""
-    while i < len(dsatz):
-        if result == "":
-            result = str(dsatz[i])
-        else:
-            result = result + ";" + str(dsatz[i])
-        i += 1
-    print(result)
-
-sql = "SELECT * FROM halbzeug"
-
-cursor.execute(sql)
-
-for dsatz in cursor:
-    i = 0
-    result = ""
-    while i < len(dsatz):
-        if result == "":
-            result = str(dsatz[i])
-        else:
-            result = result + ";" + str(dsatz[i])
-        i += 1
-    print(result)
-
-sql = "SELECT * FROM maschine"
-
-cursor.execute(sql)
-
-for dsatz in cursor:
-    i = 0
-    result = ""
-    while i < len(dsatz):
-        if result == "":
-            result = str(dsatz[i])
-        else:
-            result = result + ";" + str(dsatz[i])
-        i += 1
-    print(result)
-
-sql = "SELECT * FROM werkzeug"
-
-cursor.execute(sql)
-
-for dsatz in cursor:
-    i = 0
-    result = ""
-    while i < len(dsatz):
-        if result == "":
-            result = str(dsatz[i])
-        else:
-            result = result + ";" + str(dsatz[i])
-        i += 1
-    print(result)
-"""

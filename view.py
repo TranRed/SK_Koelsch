@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(566, 612)
+        MainWindow.resize(657, 612)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox_materialmaster = QtWidgets.QGroupBox(self.centralwidget)
@@ -165,6 +165,9 @@ class Ui_MainWindow(object):
         self.radioButton_cutted = QtWidgets.QRadioButton(self.groupBox_body)
         self.radioButton_cutted.setGeometry(QtCore.QRect(440, 120, 95, 20))
         self.radioButton_cutted.setObjectName("radioButton_cutted")
+        self.pushButton_newMaterial = QtWidgets.QPushButton(self.groupBox_body)
+        self.pushButton_newMaterial.setGeometry(QtCore.QRect(480, 30, 71, 21))
+        self.pushButton_newMaterial.setObjectName("pushButton_newMaterial")
         self.groupBox_modification = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBox_modification.setGeometry(QtCore.QRect(10, 350, 481, 201))
         self.groupBox_modification.setObjectName("groupBox_modification")
@@ -256,6 +259,9 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_calculation.setFont(font)
         self.pushButton_calculation.setObjectName("pushButton_calculation")
+        self.pushButton_editMaterial = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_editMaterial.setGeometry(QtCore.QRect(570, 210, 71, 21))
+        self.pushButton_editMaterial.setObjectName("pushButton_editMaterial")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -328,6 +334,7 @@ class Ui_MainWindow(object):
         self.lineEdit_semifinishedSideC.setText(_translate("MainWindow", "0"))
         self.radioButton_bar.setText(_translate("MainWindow", "Stange"))
         self.radioButton_cutted.setText(_translate("MainWindow", "Zuschnitt"))
+        self.pushButton_newMaterial.setText(_translate("MainWindow", "Anlegen"))
         self.groupBox_modification.setTitle(_translate("MainWindow", "Bearbeitung"))
         self.label_machine.setText(_translate("MainWindow", "Maschine"))
         self.label_stretching.setText(_translate("MainWindow", "Aufspannungen"))
@@ -346,4 +353,5 @@ class Ui_MainWindow(object):
         self.pushButton_pockets.setText(_translate("MainWindow", "Definieren"))
         self.pushButton_volumeScaling.setText(_translate("MainWindow", "Definieren"))
         self.pushButton_calculation.setText(_translate("MainWindow", "Kalkulieren"))
+        self.pushButton_editMaterial.setText(_translate("MainWindow", "Bearbeiten"))
 

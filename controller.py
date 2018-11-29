@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import model
+import main, model
 
 def set_sizes(ui,a,b,c,msg):
     ui.lineEdit_semifinishedSideA.setText(a)
@@ -48,53 +48,54 @@ def find_alternative(a,b,c,sfgA,sfgB,sfgC,volume):
     return result
 
 def calc_semifinished(ui):
-    if (
-        (not ui.lineEdit_bodySideA.text().isdigit()) or
-        (not ui.lineEdit_bodySideB.text().isdigit()) or
-        (not ui.lineEdit_bodySideC.text().isdigit()) or
-        (not ui.lineEdit_allowanceSideA.text().isdigit()) or
-        (not ui.lineEdit_allowanceSideB.text().isdigit()) or
-        (not ui.lineEdit_allowanceSideC.text().isdigit())):
-        set_sizes(ui,"0","0","0","Bitte nur Zahlen eingeben")
-    else:
-        a = int(ui.lineEdit_bodySideA.text()) + int(ui.lineEdit_allowanceSideA.text())
-        b = int(ui.lineEdit_bodySideB.text()) + int(ui.lineEdit_allowanceSideB.text())
-        c = int(ui.lineEdit_bodySideC.text()) + int(ui.lineEdit_allowanceSideC.text())
-
-        resultSet = model.read_halbzeug(ui.comboBox_material.currentText()[:6])
-        sfgFound = False
-        altFound = False
-        msg = ""
-
-        for dataset in resultSet:
-            sizeA = int(dataset['a'])
-            sizeB = int(dataset['b'])
-            sizeC = int(dataset['c'])
-            volume = int(dataset['volumen'])
-            sfgIsCurrent = False
-
-            if a <= sizeA and b <= sizeB and c <= sizeC and sfgFound == False:
-                sfgIsCurrent = True
-                sfgFound = True
-                sfgFoundVolume = volume
-                set_sizes(ui,str(sizeA),str(sizeB),str(sizeC),"")
-
-            if altFound == False:
-
-                alternative = find_alternative(a,b,c,sizeA,sizeB,sizeC,volume)
-                altFound = alternative['found']
-                if altFound == True and sfgIsCurrent == False:
-                    msg = alternative['msg']
-                    if sfgFound == True:
-                        if alternative['volume'] >= sfgFoundVolume:
-                            #only show message if alternative is smaller
-                            msg = ""
-
-        if sfgFound == False:
-            set_no_size(ui)
-
-        if altFound == True and msg != "":
-            ui.label_sizeNotFound.setText(msg)
+    if ui.comboBox_material.currentText() != '':
+        if (
+            (not ui.lineEdit_bodySideA.text().isdigit()) or
+            (not ui.lineEdit_bodySideB.text().isdigit()) or
+            (not ui.lineEdit_bodySideC.text().isdigit()) or
+            (not ui.lineEdit_allowanceSideA.text().isdigit()) or
+            (not ui.lineEdit_allowanceSideB.text().isdigit()) or
+            (not ui.lineEdit_allowanceSideC.text().isdigit())):
+            set_sizes(ui,"0","0","0","Bitte nur Zahlen eingeben")
+        else:
+            a = int(ui.lineEdit_bodySideA.text()) + int(ui.lineEdit_allowanceSideA.text())
+            b = int(ui.lineEdit_bodySideB.text()) + int(ui.lineEdit_allowanceSideB.text())
+            c = int(ui.lineEdit_bodySideC.text()) + int(ui.lineEdit_allowanceSideC.text())
+    
+            resultSet = model.read_halbzeug(ui.comboBox_material.currentText()[:6])
+            sfgFound = False
+            altFound = False
+            msg = ""
+    
+            for dataset in resultSet:
+                sizeA = int(dataset['a'])
+                sizeB = int(dataset['b'])
+                sizeC = int(dataset['c'])
+                volume = int(dataset['volumen'])
+                sfgIsCurrent = False
+    
+                if a <= sizeA and b <= sizeB and c <= sizeC and sfgFound == False:
+                    sfgIsCurrent = True
+                    sfgFound = True
+                    sfgFoundVolume = volume
+                    set_sizes(ui,str(sizeA),str(sizeB),str(sizeC),"")
+    
+                if altFound == False:
+    
+                    alternative = find_alternative(a,b,c,sizeA,sizeB,sizeC,volume)
+                    altFound = alternative['found']
+                    if altFound == True and sfgIsCurrent == False:
+                        msg = alternative['msg']
+                        if sfgFound == True:
+                            if alternative['volume'] >= sfgFoundVolume:
+                                #only show message if alternative is smaller
+                                msg = ""
+    
+            if sfgFound == False:
+                set_no_size(ui)
+    
+            if altFound == True and msg != "":
+                ui.label_sizeNotFound.setText(msg)
 
 def connect_size_fields(ui):
     ui.lineEdit_bodySideA.textChanged.connect(lambda: calc_semifinished(ui))
@@ -105,6 +106,7 @@ def connect_size_fields(ui):
     ui.lineEdit_allowanceSideC.textChanged.connect(lambda: calc_semifinished(ui))
 
 def fill_comboBox_material(ui):
+    ui.comboBox_material.clear()
     resultSet = model.read_all_materials();
     for dataset in resultSet:
         ui.comboBox_material.addItem(str(dataset['material']) + " - " + str(dataset['normbez']) + " - " + str(dataset['chembez']))
@@ -145,6 +147,33 @@ def fill_comboBox_machine(ui):
 def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
 
+def connect_pushButtons(ui):
+    ui.pushButton_newMaterial.clicked.connect(lambda: on_click_new_material())
+    ui.pushButton_editMaterial.clicked.connect(lambda: on_click_edit_material(ui))  
+
+def on_click_new_material():
+    ui_mm = main.MaterialDialog()
+    ui_mm.exec()
+
+def on_click_save(ui_mm,ui):
+    model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text(),ui_mm.lineEdit_material.text()))
+    fill_comboBox_material(ui)
+    ui_mm.accept()
+
+def on_click_edit_material(ui):
+    ui_mm = main.MaterialDialog()
+    index = ui.comboBox_material.currentIndex()
+    resultSet = model.read_all_materials()
+    record = resultSet[index]
+    ui_mm.lineEdit_material.setText(str(record['material']))
+    ui_mm.lineEdit_material.setReadOnly(True)
+    ui_mm.lineEdit_standard.setText(str(record['normbez']))   
+    ui_mm.lineEdit_chemical.setText(str(record['chembez']))   
+    ui_mm.lineEdit_density.setText(str(record['dichte']))   
+    ui_mm.lineEdit_price.setText(str(record['preis']))       
+    ui_mm.pushButton_save.clicked.connect(lambda: on_click_save(ui_mm,ui))
+    ui_mm.exec()
+
 def defaults(ui):
     add_filter_to_comboBox(ui.comboBox_material)
     add_filter_to_comboBox(ui.comboBox_machine)
@@ -153,3 +182,4 @@ def defaults(ui):
     fill_comboBox_machine(ui)
     connect_size_fields(ui)
     connect_comboBoxes(ui)
+    connect_pushButtons(ui)

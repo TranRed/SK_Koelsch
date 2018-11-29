@@ -1,15 +1,23 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import view
+import view, view_mm
 import controller
 import model
 
+class MainWindow(QtWidgets.QMainWindow, view.Ui_MainWindow):
+    def __init__(self, parent=None):
+        super(MainWindow, self).__init__(parent)
+        self.setupUi(self)
+
+class MaterialDialog(QtWidgets.QDialog, view_mm.Ui_Material):
+    def __init__(self, parent=None):
+        super(MaterialDialog, self).__init__(parent)
+        self.setupUi(self)
 
 if __name__ == "__main__":
     import sys
+    #create application object
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = view.Ui_MainWindow()
-    ui.setupUi(MainWindow)
+    ui = MainWindow()
     controller.defaults(ui)
-    MainWindow.show()
+    ui.show()
     sys.exit(app.exec_())

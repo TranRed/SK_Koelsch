@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>566</width>
+    <width>657</width>
     <height>612</height>
    </rect>
   </property>
@@ -598,6 +598,19 @@
       <string>Zuschnitt</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pushButton_newMaterial">
+     <property name="geometry">
+      <rect>
+       <x>480</x>
+       <y>30</y>
+       <width>71</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Anlegen</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_modification">
     <property name="geometry">
@@ -897,6 +910,19 @@
     </property>
     <property name="text">
      <string>Kalkulieren</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_editMaterial">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>210</y>
+      <width>71</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Bearbeiten</string>
     </property>
    </widget>
   </widget>
