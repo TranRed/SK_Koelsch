@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<data-sources>
-	<data-source id="sqlite_jdbc-1673824c24a-5631e401fd013231" provider="generic" driver="sqlite_jdbc" name="SQLite - PoC.db" save-password="true" show-system-objects="true" show-util-objects="true" read-only="false">
-		<connection server="" database="/home/mhabljak/git/SK_Koelsch/PoC.db" url="jdbc:sqlite:/home/mhabljak/git/SK_Koelsch/PoC.db" type="dev"/>
-	</data-source>
-	<filters/>
-</data-sources>
