@@ -598,7 +598,7 @@
       <string>Zuschnitt</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_newMaterial">
+    <widget class="QPushButton" name="pushButton_editMaterial">
      <property name="geometry">
       <rect>
        <x>480</x>
@@ -608,7 +608,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>Anlegen</string>
+      <string>Bearbeiten</string>
      </property>
     </widget>
    </widget>
@@ -912,7 +912,7 @@
      <string>Kalkulieren</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_editMaterial">
+   <widget class="QPushButton" name="pushButton_newMaterial">
     <property name="geometry">
      <rect>
       <x>570</x>
@@ -922,7 +922,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Bearbeiten</string>
+     <string>Anlegen</string>
     </property>
    </widget>
   </widget>
@@ -957,6 +957,8 @@
   <tabstop>lineEdit_volumeScaling</tabstop>
   <tabstop>pushButton_volumeScaling</tabstop>
   <tabstop>pushButton_calculation</tabstop>
+  <tabstop>pushButton_editMaterial</tabstop>
+  <tabstop>pushButton_newMaterial</tabstop>
  </tabstops>
  <resources/>
  <connections/>

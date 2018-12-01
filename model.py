@@ -65,6 +65,14 @@ def update_material(material):
     cursor.execute(sql, material)
     connection.commit()
 
+def delete_material(material):
+    sql = ''' DELETE
+              FROM material
+                 WHERE
+                 material = ?'''
+    cursor.execute(sql, material)
+    connection.commit()
+
 def insert_material(material):
     sql = "INSERT INTO material (material, normbez, chembez, dichte, preis) VALUES (?,?,?,?,?)"
     cursor.execute(sql, material)

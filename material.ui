@@ -144,7 +144,7 @@
   <widget class="QPushButton" name="pushButton_save">
    <property name="geometry">
     <rect>
-     <x>160</x>
+     <x>100</x>
      <y>190</y>
      <width>87</width>
      <height>29</height>
@@ -152,6 +152,19 @@
    </property>
    <property name="text">
     <string>Speichern</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_delete">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>190</y>
+     <width>87</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Löschen</string>
    </property>
   </widget>
  </widget>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'PoC_mm.ui'
+# Form implementation generated from reading ui file 'material.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -47,8 +47,11 @@ class Ui_Material(object):
         self.lineEdit_price.setGeometry(QtCore.QRect(190, 120, 113, 21))
         self.lineEdit_price.setObjectName("lineEdit_price")
         self.pushButton_save = QtWidgets.QPushButton(Material)
-        self.pushButton_save.setGeometry(QtCore.QRect(160, 190, 87, 29))
+        self.pushButton_save.setGeometry(QtCore.QRect(100, 190, 87, 29))
         self.pushButton_save.setObjectName("pushButton_save")
+        self.pushButton_delete = QtWidgets.QPushButton(Material)
+        self.pushButton_delete.setGeometry(QtCore.QRect(200, 190, 87, 29))
+        self.pushButton_delete.setObjectName("pushButton_delete")
 
         self.retranslateUi(Material)
         QtCore.QMetaObject.connectSlotsByName(Material)
@@ -67,4 +70,5 @@ class Ui_Material(object):
         self.label_density.setText(_translate("Material", "Dichte [kg/dm³]"))
         self.label_price.setText(_translate("Material", "Preis [€/kg]"))
         self.pushButton_save.setText(_translate("Material", "Speichern"))
+        self.pushButton_delete.setText(_translate("Material", "Löschen"))
 

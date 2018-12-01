@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import view, view_mm
+import view, material
 import controller
 import model
 
@@ -8,10 +8,13 @@ class MainWindow(QtWidgets.QMainWindow, view.Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
 
-class MaterialDialog(QtWidgets.QDialog, view_mm.Ui_Material):
-    def __init__(self, parent=None):
+class MaterialDialog(QtWidgets.QDialog, material.Ui_Material):
+    def __init__(self, mode, parent=None):
+        self.mode = mode
         super(MaterialDialog, self).__init__(parent)
         self.setupUi(self)
+        if self.mode == 'N':
+            self.pushButton_delete.setHidden(True)
 
 if __name__ == "__main__":
     import sys

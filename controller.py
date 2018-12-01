@@ -187,14 +187,14 @@ def connect_pushButtons(ui):
     ui.pushButton_editMaterial.clicked.connect(lambda: on_click_edit_material(ui))  
 
 def on_click_new_material(ui):
-    ui_mm = main.MaterialDialog()
-    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui,'N'))
+    ui_mm = main.MaterialDialog('N')
+    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
     ui_mm.exec()
 
-def on_click_material_save(ui_mm,ui,mode):
-    if mode == 'E':
+def on_click_material_save(ui_mm,ui):
+    if ui_mm.mode == 'E':
         model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text(),ui_mm.lineEdit_material.text()))
-    elif mode == 'N':
+    elif ui_mm.mode == 'N':
         if ( ui_mm.lineEdit_material.text() == '' or
              ui_mm.lineEdit_standard.text() == '' or
              ui_mm.lineEdit_chemical.text() == '' or
@@ -211,8 +211,13 @@ def on_click_material_save(ui_mm,ui,mode):
     fill_comboBox_material(ui)
     ui_mm.accept()
 
+def on_click_material_delete(ui_mm,ui):
+    model.delete_material((ui_mm.lineEdit_material.text(),))
+    fill_comboBox_material(ui)
+    ui_mm.accept()
+                           
 def on_click_edit_material(ui):
-    ui_mm = main.MaterialDialog()
+    ui_mm = main.MaterialDialog('E')
     index = ui.comboBox_material.currentIndex()
     resultSet = model.read_all_materials()
     record = resultSet[index]
@@ -222,7 +227,8 @@ def on_click_edit_material(ui):
     ui_mm.lineEdit_chemical.setText(str(record['chembez']))   
     ui_mm.lineEdit_density.setText(str(record['dichte']))   
     ui_mm.lineEdit_price.setText(str(record['preis']))       
-    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui,'E'))
+    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
+    ui_mm.pushButton_delete.clicked.connect(lambda: on_click_material_delete(ui_mm,ui))
     ui_mm.exec()
 
 def connect_buttons(ui):
