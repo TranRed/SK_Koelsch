@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Taschen definieren</string>
+   <string>Mengenstaffelung definieren</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">

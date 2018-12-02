@@ -38,7 +38,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Taschen definieren"))
+        Dialog.setWindowTitle(_translate("Dialog", "Mengenstaffelung definieren"))
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("Dialog", "Mengenstaffel (Stück)"))
         self.toolButton_add.setText(_translate("Dialog", "..."))
