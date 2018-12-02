@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Material(object):
     def setupUi(self, Material):
         Material.setObjectName("Material")
-        Material.resize(400, 233)
+        Material.resize(400, 264)
         self.groupBox = QtWidgets.QGroupBox(Material)
         self.groupBox.setGeometry(QtCore.QRect(30, 30, 321, 151))
         self.groupBox.setTitle("")
@@ -47,11 +47,14 @@ class Ui_Material(object):
         self.lineEdit_price.setGeometry(QtCore.QRect(190, 120, 113, 21))
         self.lineEdit_price.setObjectName("lineEdit_price")
         self.pushButton_save = QtWidgets.QPushButton(Material)
-        self.pushButton_save.setGeometry(QtCore.QRect(100, 190, 87, 29))
+        self.pushButton_save.setGeometry(QtCore.QRect(300, 220, 87, 29))
         self.pushButton_save.setObjectName("pushButton_save")
         self.pushButton_delete = QtWidgets.QPushButton(Material)
-        self.pushButton_delete.setGeometry(QtCore.QRect(200, 190, 87, 29))
+        self.pushButton_delete.setGeometry(QtCore.QRect(210, 220, 87, 29))
         self.pushButton_delete.setObjectName("pushButton_delete")
+        self.pushButton_sfg = QtWidgets.QPushButton(Material)
+        self.pushButton_sfg.setGeometry(QtCore.QRect(50, 180, 281, 29))
+        self.pushButton_sfg.setObjectName("pushButton_sfg")
 
         self.retranslateUi(Material)
         QtCore.QMetaObject.connectSlotsByName(Material)
@@ -59,7 +62,9 @@ class Ui_Material(object):
         Material.setTabOrder(self.lineEdit_standard, self.lineEdit_chemical)
         Material.setTabOrder(self.lineEdit_chemical, self.lineEdit_density)
         Material.setTabOrder(self.lineEdit_density, self.lineEdit_price)
-        Material.setTabOrder(self.lineEdit_price, self.pushButton_save)
+        Material.setTabOrder(self.lineEdit_price, self.pushButton_sfg)
+        Material.setTabOrder(self.pushButton_sfg, self.pushButton_delete)
+        Material.setTabOrder(self.pushButton_delete, self.pushButton_save)
 
     def retranslateUi(self, Material):
         _translate = QtCore.QCoreApplication.translate
@@ -71,4 +76,5 @@ class Ui_Material(object):
         self.label_price.setText(_translate("Material", "Preis [€/kg]"))
         self.pushButton_save.setText(_translate("Material", "Speichern"))
         self.pushButton_delete.setText(_translate("Material", "Löschen"))
+        self.pushButton_sfg.setText(_translate("Material", "Halbzeuge pflegen"))
 

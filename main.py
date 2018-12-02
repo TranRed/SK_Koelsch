@@ -14,6 +14,7 @@ class MaterialDialog(QtWidgets.QDialog, material.Ui_Material):
         super(MaterialDialog, self).__init__(parent)
         self.setupUi(self)
         if self.mode == 'N':
+            self.pushButton_sfg.setHidden(True)
             self.pushButton_delete.setHidden(True)
 
 if __name__ == "__main__":

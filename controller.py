@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import main, model, utils
-import pockets, volumeScaling
+import pockets, volumeScaling, sfg
 
 def set_sizes(ui,a,b,c,msg):
     ui.lineEdit_semifinishedSideA.setText(a)
@@ -307,10 +307,23 @@ def on_click_edit_material(ui):
     ui_mm.lineEdit_chemical.setText(str(record['chembez']))
     ui_mm.lineEdit_density.setText(str(record['dichte']))
     ui_mm.lineEdit_price.setText(str(record['preis']))
+    ui_mm.pushButton_sfg.clicked.connect(lambda: on_click_edit_sfg(ui_mm.lineEdit_material.text()))
     ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
     ui_mm.pushButton_delete.clicked.connect(lambda: on_click_material_delete(ui_mm,ui))
     ui_mm.exec()
 
+def on_click_edit_sfg(material):
+    dialog = QtWidgets.QDialog()
+    dialog.ui = sfg.Ui_Dialog()
+    dialog.ui.setupUi(dialog)
+    dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+    dialog.ui.tableWidget.verticalHeader().setVisible(False)
+    header = dialog.ui.tableWidget.horizontalHeader()    
+    for i in range(0,5):
+        header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)    
+    utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))    
+    dialog.exec_()
+    
 def connect_buttons(ui):
     ui.pushButton_pockets.clicked.connect(lambda: define_pockets(ui))
     ui.pushButton_volumeScaling.clicked.connect(lambda: define_volumeScaling(ui))

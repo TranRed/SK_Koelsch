@@ -40,6 +40,19 @@ def fill_table_from_pocket_list(tableWidget, data):
 
         rowIndex += 1
 
+def fill_table_from_sfg_list(tableWidget, data): 
+    rowIndex = 0
+    for dataset in data:
+        keys = dataset.keys()
+        tableWidget.insertRow(rowIndex)
+        columnIndex = 0
+
+        for key in keys:
+            tableWidget.setItem(rowIndex,columnIndex,QtWidgets.QTableWidgetItem(str(dataset[key])))
+            columnIndex += 1
+
+        rowIndex += 1
+
 def build_list_from_table(tableWidget):
     rowCount = tableWidget.rowCount()
     columnCount = tableWidget.columnCount()

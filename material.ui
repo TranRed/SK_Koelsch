@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>233</height>
+    <height>264</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -144,8 +144,8 @@
   <widget class="QPushButton" name="pushButton_save">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>190</y>
+     <x>300</x>
+     <y>220</y>
      <width>87</width>
      <height>29</height>
     </rect>
@@ -157,14 +157,27 @@
   <widget class="QPushButton" name="pushButton_delete">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>190</y>
+     <x>210</x>
+     <y>220</y>
      <width>87</width>
      <height>29</height>
     </rect>
    </property>
    <property name="text">
     <string>Löschen</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_sfg">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>180</y>
+     <width>281</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Halbzeuge pflegen</string>
    </property>
   </widget>
  </widget>
@@ -174,6 +187,8 @@
   <tabstop>lineEdit_chemical</tabstop>
   <tabstop>lineEdit_density</tabstop>
   <tabstop>lineEdit_price</tabstop>
+  <tabstop>pushButton_sfg</tabstop>
+  <tabstop>pushButton_delete</tabstop>
   <tabstop>pushButton_save</tabstop>
  </tabstops>
  <resources/>
