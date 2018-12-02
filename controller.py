@@ -64,27 +64,27 @@ def calc_semifinished(ui):
             a = int(ui.lineEdit_bodySideA.text()) + int(ui.lineEdit_allowanceSideA.text())
             b = int(ui.lineEdit_bodySideB.text()) + int(ui.lineEdit_allowanceSideB.text())
             c = int(ui.lineEdit_bodySideC.text()) + int(ui.lineEdit_allowanceSideC.text())
-    
+
             resultSet = model.read_halbzeug(ui.comboBox_material.currentText()[:6])
             sfgFound = False
             altFound = False
             msg = ""
-    
+
             for dataset in resultSet:
                 sizeA = int(dataset['a'])
                 sizeB = int(dataset['b'])
                 sizeC = int(dataset['c'])
                 volume = int(dataset['volumen'])
                 sfgIsCurrent = False
-    
+
                 if a <= sizeA and b <= sizeB and c <= sizeC and sfgFound == False:
                     sfgIsCurrent = True
                     sfgFound = True
                     sfgFoundVolume = volume
                     set_sizes(ui,str(sizeA),str(sizeB),str(sizeC),"")
-    
+
                 if altFound == False:
-    
+
                     alternative = find_alternative(a,b,c,sizeA,sizeB,sizeC,volume)
                     altFound = alternative['found']
                     if altFound == True and sfgIsCurrent == False:
@@ -93,10 +93,10 @@ def calc_semifinished(ui):
                             if alternative['volume'] >= sfgFoundVolume:
                                 #only show message if alternative is smaller
                                 msg = ""
-    
+
             if sfgFound == False:
                 set_no_size(ui)
-    
+
             if altFound == True and msg != "":
                 ui.label_sizeNotFound.setText(msg)
 
@@ -145,6 +145,14 @@ def on_completer_activated(comboBox, text):
 def add_pocket(ui):
     rowCount = ui.tableWidget.rowCount()
     ui.tableWidget.insertRow(rowCount)
+
+    comboBox = QtWidgets.QComboBox()
+    sides = ["Unten (AxB)","Oben (AxB)","Vorne (BxC)","Hinten (BxC)", "Links (AxC)", "Rechts (AxC)"]
+    for entry in sides:
+        comboBox.addItem(entry)
+
+    ui.tableWidget.setCellWidget(rowCount,0,comboBox)
+
     checkBoxItem = QtWidgets.QTableWidgetItem()
     checkBoxItem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
     checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
@@ -152,7 +160,7 @@ def add_pocket(ui):
 
 
 def update_pocket_data(dialogUi, mainUi):
-    model.setPockets(utils.build_list_from_table(dialogUi.tableWidget))
+    model.setPockets(utils.build_list_from_pocket_table(dialogUi.tableWidget))
     mainUi.lineEdit_pockets.setText(str(dialogUi.tableWidget.rowCount()))
 
 def connect_pocket_buttons(dialogUi, mainUi):
@@ -170,7 +178,7 @@ def define_pockets(mainUi):
             header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
         else:
             header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
-    utils.fill_table_from_list(dialog.ui.tableWidget, model.getPockets())
+    utils.fill_table_from_pocket_list(dialog.ui.tableWidget, model.getPockets())
     connect_pocket_buttons(dialog.ui, mainUi)
     dialog.exec_()
 
@@ -184,7 +192,7 @@ def connect_comboBoxes(ui):
 
 def connect_pushButtons(ui):
     ui.pushButton_newMaterial.clicked.connect(lambda: on_click_new_material(ui))
-    ui.pushButton_editMaterial.clicked.connect(lambda: on_click_edit_material(ui))  
+    ui.pushButton_editMaterial.clicked.connect(lambda: on_click_edit_material(ui))
 
 def on_click_new_material(ui):
     ui_mm = main.MaterialDialog('N')
@@ -215,7 +223,7 @@ def on_click_material_delete(ui_mm,ui):
     model.delete_material((ui_mm.lineEdit_material.text(),))
     fill_comboBox_material(ui)
     ui_mm.accept()
-                           
+
 def on_click_edit_material(ui):
     ui_mm = main.MaterialDialog('E')
     index = ui.comboBox_material.currentIndex()
@@ -223,10 +231,10 @@ def on_click_edit_material(ui):
     record = resultSet[index]
     ui_mm.lineEdit_material.setText(str(record['material']))
     ui_mm.lineEdit_material.setReadOnly(True)
-    ui_mm.lineEdit_standard.setText(str(record['normbez']))   
-    ui_mm.lineEdit_chemical.setText(str(record['chembez']))   
-    ui_mm.lineEdit_density.setText(str(record['dichte']))   
-    ui_mm.lineEdit_price.setText(str(record['preis']))       
+    ui_mm.lineEdit_standard.setText(str(record['normbez']))
+    ui_mm.lineEdit_chemical.setText(str(record['chembez']))
+    ui_mm.lineEdit_density.setText(str(record['dichte']))
+    ui_mm.lineEdit_price.setText(str(record['preis']))
     ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
     ui_mm.pushButton_delete.clicked.connect(lambda: on_click_material_delete(ui_mm,ui))
     ui_mm.exec()
