@@ -1,8 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import main, model
-import model
-import pockets
-import utils
+import main, model, utils
+import pockets, volumeScaling
 
 def set_sizes(ui,a,b,c,msg):
     ui.lineEdit_semifinishedSideA.setText(a)
@@ -142,6 +140,10 @@ def on_completer_activated(comboBox, text):
         comboBox.setCurrentIndex(index)
         comboBox.activated[str].emit(comboBox.itemText(index))
 
+def add_volumeScaling(ui):
+    rowCount = ui.tableWidget.rowCount()
+    ui.tableWidget.insertRow(rowCount)
+
 def add_pocket(ui):
     rowCount = ui.tableWidget.rowCount()
     ui.tableWidget.insertRow(rowCount)
@@ -158,17 +160,85 @@ def add_pocket(ui):
     checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
     ui.tableWidget.setItem(rowCount,2,checkBoxItem)
 
+def update_volumeScaling_data(dialogUi, mainUi):
+    model.setVolumeScaling(utils.build_list_from_table(dialogUi.tableWidget))
+    mainUi.lineEdit_volumeScaling.setText(str(dialogUi.tableWidget.rowCount()))
 
 def update_pocket_data(dialogUi, mainUi):
     model.setPockets(utils.build_list_from_pocket_table(dialogUi.tableWidget))
     mainUi.lineEdit_pockets.setText(str(dialogUi.tableWidget.rowCount()))
 
-def connect_pocket_buttons(dialogUi, mainUi):
+def revert_pocket_data(oldState):
+    model.setPockets(oldState)
+
+def revert_volumeScaling_data(oldState):
+    model.setVolumeScaling(oldState)
+
+def create_volumeScaling_copy():
+    previousData = model.getVolumeScaling()
+    restoredData = []
+
+    for dataset in previousData:
+        line = []
+        restoredData.append(line)
+        for item in dataset:
+            copy = QtWidgets.QTableWidgetItem(item)
+            line.append(copy)
+
+    return restoredData
+
+
+def create_pockets_copy():
+    previousData = model.getPockets()
+    restoredData = []
+
+
+    for dataset in previousData:
+        first = True
+        line = []
+        restoredData.append(line)
+        for item in dataset:
+            if first == True:
+                copy = QtWidgets.QComboBox()
+                for i in range (0,item.count()):
+                    copy.addItem(item.itemText(i))
+                copy.setCurrentIndex(item.currentIndex())
+
+                first = False
+            else:
+                copy = QtWidgets.QTableWidgetItem(item)
+
+            line.append(copy)
+
+    return restoredData
+
+
+
+def connect_pocket_buttons(dialogUi, mainUi, previousData):
     dialogUi.toolButton_add.clicked.connect(lambda: add_pocket(dialogUi))
     dialogUi.buttonBox.accepted.connect(lambda: update_pocket_data(dialogUi, mainUi))
+    dialogUi.buttonBox.rejected.connect(lambda: revert_pocket_data(previousData))
+
+
+def connect_volumeScaling_buttons(dialogUi, mainUi, previousData):
+    dialogUi.toolButton_add.clicked.connect(lambda: add_volumeScaling(dialogUi))
+    dialogUi.buttonBox.accepted.connect(lambda: update_volumeScaling_data(dialogUi, mainUi))
+    dialogUi.buttonBox.rejected.connect(lambda: revert_volumeScaling_data(previousData))
+
+def define_volumeScaling(mainUi):
+    dialog = QtWidgets.QDialog()
+    dialog.ui = volumeScaling.Ui_Dialog()
+    dialog.ui.setupUi(dialog)
+    dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+    header = dialog.ui.tableWidget.horizontalHeader()
+    header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+    previousData = create_volumeScaling_copy()
+    utils.fill_table_from_list(dialog.ui.tableWidget, model.getVolumeScaling())
+    connect_volumeScaling_buttons(dialog.ui, mainUi, previousData)
+    dialog.exec_()
 
 def define_pockets(mainUi):
-    dialog =  QtWidgets.QDialog()
+    dialog = QtWidgets.QDialog()
     dialog.ui = pockets.Ui_Dialog()
     dialog.ui.setupUi(dialog)
     dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
@@ -178,8 +248,10 @@ def define_pockets(mainUi):
             header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
         else:
             header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
+
+    previousData = create_pockets_copy()
     utils.fill_table_from_pocket_list(dialog.ui.tableWidget, model.getPockets())
-    connect_pocket_buttons(dialog.ui, mainUi)
+    connect_pocket_buttons(dialog.ui, mainUi, previousData)
     dialog.exec_()
 
 def fill_comboBox_machine(ui):
@@ -241,6 +313,7 @@ def on_click_edit_material(ui):
 
 def connect_buttons(ui):
     ui.pushButton_pockets.clicked.connect(lambda: define_pockets(ui))
+    ui.pushButton_volumeScaling.clicked.connect(lambda: define_volumeScaling(ui))
 
 def defaults(ui):
     add_filter_to_comboBox(ui.comboBox_material)
@@ -253,3 +326,4 @@ def defaults(ui):
     connect_pushButtons(ui)
     connect_buttons(ui)
     model.initPockets()
+    model.initVolumeScaling()

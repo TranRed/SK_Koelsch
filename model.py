@@ -54,7 +54,7 @@ def read_all_machines():
         resultSet.append(resultDict)
 
     return resultSet
-    
+
 def update_material(material):
     sql = ''' UPDATE material
               SET normbez = ? ,
@@ -90,6 +90,18 @@ def getPockets():
 def initPockets():
     global pockets
     pockets = []
+
+def initVolumeScaling():
+    global volumeScaling
+    volumeScaling = []
+
+def setVolumeScaling(data):
+    global volumeScaling
+    volumeScaling = data
+
+def getVolumeScaling():
+    global volumeScaling
+    return volumeScaling    
 
 connection = sqlite3.connect("PoC.db")
 cursor = connection.cursor()
