@@ -78,10 +78,21 @@ def insert_material(material):
     cursor.execute(sql, material)
     connection.commit()
 
+def setSfg(data):
+    global sfg
+    sfg = data
+
+def getSfg():
+    global sfg
+    return sfg
+
+def initSfg():
+    global sfg
+    sfg = []
+
 def setPockets(data):
     global pockets
     pockets = data
-
 
 def getPockets():
     global pockets

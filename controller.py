@@ -140,6 +140,11 @@ def on_completer_activated(comboBox, text):
         comboBox.setCurrentIndex(index)
         comboBox.activated[str].emit(comboBox.itemText(index))
 
+def add_sfg(ui, material):
+    rowCount = ui.tableWidget.rowCount()
+    ui.tableWidget.insertRow(rowCount)
+    ui.tableWidget.setItem(rowCount, 0, QtWidgets.QTableWidgetItem(str(rowCount+1)))
+    ui.tableWidget.setItem(rowCount, 1, QtWidgets.QTableWidgetItem(material))
 def add_volumeScaling(ui):
     rowCount = ui.tableWidget.rowCount()
     ui.tableWidget.insertRow(rowCount)
@@ -160,6 +165,9 @@ def add_pocket(ui):
     checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
     ui.tableWidget.setItem(rowCount,2,checkBoxItem)
 
+def update_sfg_data(dialogUi, mainUi):
+    model.setSfg(utils.build_list_from_table(dialogUi.tableWidget))
+
 def update_volumeScaling_data(dialogUi, mainUi):
     model.setVolumeScaling(utils.build_list_from_table(dialogUi.tableWidget))
     mainUi.lineEdit_volumeScaling.setText(str(dialogUi.tableWidget.rowCount()))
@@ -168,11 +176,27 @@ def update_pocket_data(dialogUi, mainUi):
     model.setPockets(utils.build_list_from_pocket_table(dialogUi.tableWidget))
     mainUi.lineEdit_pockets.setText(str(dialogUi.tableWidget.rowCount()))
 
+def revert_sfg_data(oldState):
+    model.setSfg(oldState)
+
 def revert_pocket_data(oldState):
     model.setPockets(oldState)
 
 def revert_volumeScaling_data(oldState):
     model.setVolumeScaling(oldState)
+
+def create_sfg_copy():
+    previousData = model.getSfg()
+    restoredData = []
+
+    for dataset in previousData:
+        line = []
+        restoredData.append(line)
+        for item in dataset:
+            copy = QtWidgets.QTableWidgetItem(item)
+            line.append(copy)
+
+    return restoredData
 
 def create_volumeScaling_copy():
     previousData = model.getVolumeScaling()
@@ -191,7 +215,6 @@ def create_volumeScaling_copy():
 def create_pockets_copy():
     previousData = model.getPockets()
     restoredData = []
-
 
     for dataset in previousData:
         first = True
@@ -212,13 +235,15 @@ def create_pockets_copy():
 
     return restoredData
 
-
+def connect_sfg_buttons(dialogUi, mainUi, previousData,material):
+    dialogUi.toolButton_add.clicked.connect(lambda: add_sfg(dialogUi,material))
+    dialogUi.buttonBox.accepted.connect(lambda: update_sfg_data(dialogUi, mainUi))
+    dialogUi.buttonBox.rejected.connect(lambda: revert_sfg_data(previousData))
 
 def connect_pocket_buttons(dialogUi, mainUi, previousData):
     dialogUi.toolButton_add.clicked.connect(lambda: add_pocket(dialogUi))
     dialogUi.buttonBox.accepted.connect(lambda: update_pocket_data(dialogUi, mainUi))
     dialogUi.buttonBox.rejected.connect(lambda: revert_pocket_data(previousData))
-
 
 def connect_volumeScaling_buttons(dialogUi, mainUi, previousData):
     dialogUi.toolButton_add.clicked.connect(lambda: add_volumeScaling(dialogUi))
@@ -307,12 +332,12 @@ def on_click_edit_material(ui):
     ui_mm.lineEdit_chemical.setText(str(record['chembez']))
     ui_mm.lineEdit_density.setText(str(record['dichte']))
     ui_mm.lineEdit_price.setText(str(record['preis']))
-    ui_mm.pushButton_sfg.clicked.connect(lambda: on_click_edit_sfg(ui_mm.lineEdit_material.text()))
+    ui_mm.pushButton_sfg.clicked.connect(lambda: on_click_edit_sfg(ui_mm.lineEdit_material.text(),ui))
     ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
     ui_mm.pushButton_delete.clicked.connect(lambda: on_click_material_delete(ui_mm,ui))
     ui_mm.exec()
 
-def on_click_edit_sfg(material):
+def on_click_edit_sfg(material,mainUi):
     dialog = QtWidgets.QDialog()
     dialog.ui = sfg.Ui_Dialog()
     dialog.ui.setupUi(dialog)
@@ -320,8 +345,10 @@ def on_click_edit_sfg(material):
     dialog.ui.tableWidget.verticalHeader().setVisible(False)
     header = dialog.ui.tableWidget.horizontalHeader()    
     for i in range(0,5):
-        header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)    
-    utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))    
+        header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
+    previousData = create_sfg_copy()
+    utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))  
+    connect_sfg_buttons(dialog.ui, mainUi, previousData, material)        
     dialog.exec_()
     
 def connect_buttons(ui):
@@ -338,5 +365,6 @@ def defaults(ui):
     connect_comboBoxes(ui)
     connect_pushButtons(ui)
     connect_buttons(ui)
+    model.initSfg()
     model.initPockets()
     model.initVolumeScaling()
