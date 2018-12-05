@@ -21,9 +21,7 @@ def build_list_from_pocket_table(tableWidget):
 
             data[row].append(item)
 
-
     return data
-
 
 def fill_table_from_pocket_list(tableWidget, data):
     rowIndex = 0
@@ -80,3 +78,13 @@ def fill_table_from_list(tableWidget, data):
             columnIndex += 1
             
         rowIndex += 1
+
+def create_tuple_from_list(in_data):
+    data = []
+    for dataset in in_data:
+        t = []
+        for item in dataset:
+            t.append(item.text()) 
+        data.append(tuple(t)) 
+    test = tuple(data)    
+    return test

@@ -21,6 +21,19 @@ def read_halbzeug(material):
 
     return resultSet
 
+def update_halbzeug(material,halbzeug):
+    sql = ''' DELETE
+              FROM halbzeug
+                 WHERE
+                 material = ?'''
+    cursor.execute(sql, material)
+    
+    sql = "INSERT INTO halbzeug (id, material, a, b, c, stange, volumen) VALUES (?,?,?,?,?,?,?)"
+    for item in halbzeug:
+        cursor.execute(sql, item)    
+    
+    connection.commit()
+
 def read_all_materials():
     sql = "SELECT * FROM material"
     cursor.execute(sql)

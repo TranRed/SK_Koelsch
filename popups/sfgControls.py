@@ -2,37 +2,29 @@ from PyQt5 import QtCore, QtWidgets
 import model, utils
 from popups import sfg
 
-def create_copy():
-    previousData = model.getSfg()
-    restoredData = []
+def set_first_call(bool):
+    global first_call
+    first_call = bool
 
-    for dataset in previousData:
-        line = []
-        restoredData.append(line)
-        for item in dataset:
-            copy = QtWidgets.QTableWidgetItem(item)
-            line.append(copy)
+def add_sfg(dialog, material):
+    rowCount = dialog.ui.tableWidget.rowCount()
+    dialog.ui.tableWidget.insertRow(rowCount)
+    dialog.ui.tableWidget.setItem(rowCount, 0, QtWidgets.QTableWidgetItem(str(rowCount+1)))
+    dialog.ui.tableWidget.setItem(rowCount, 1, QtWidgets.QTableWidgetItem(material))
 
-    return restoredData
+def update(dialog, mainUi):
+    model.setSfg(utils.build_list_from_table(dialog.ui.tableWidget))
 
-def add_sfg(ui, material):
-    rowCount = ui.tableWidget.rowCount()
-    ui.tableWidget.insertRow(rowCount)
-    ui.tableWidget.setItem(rowCount, 0, QtWidgets.QTableWidgetItem(str(rowCount+1)))
-    ui.tableWidget.setItem(rowCount, 1, QtWidgets.QTableWidgetItem(material))
+def exit(dialog):
+    dialog.close()
 
-def update(dialogUi, mainUi):
-    model.setSfg(utils.build_list_from_table(dialogUi.tableWidget))
-
-def revert_data(oldState):
-    model.setSfg(oldState)
-
-def connect_buttons(dialogUi, mainUi, previousData,material):
-    dialogUi.toolButton_add.clicked.connect(lambda: add_sfg(dialogUi,material))
-    dialogUi.buttonBox.accepted.connect(lambda: update(dialogUi, mainUi))
-    dialogUi.buttonBox.rejected.connect(lambda: revert_data(previousData))
+def connect_buttons(dialog, mainUi, material):
+    dialog.ui.toolButton_add.clicked.connect(lambda: add_sfg(dialog,material))
+    dialog.ui.buttonBox.accepted.connect(lambda: update(dialog, mainUi))
+    dialog.ui.buttonBox.rejected.connect(lambda: exit(dialog))
 
 def show(material, mainUi):
+    global first_call
     dialog = QtWidgets.QDialog()
     dialog.ui = sfg.Ui_Dialog()
     dialog.ui.setupUi(dialog)
@@ -41,7 +33,11 @@ def show(material, mainUi):
     header = dialog.ui.tableWidget.horizontalHeader()
     for i in range(0,5):
         header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
-    previousData = create_copy()
-    utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))
-    connect_buttons(dialog.ui, mainUi, previousData, material)
+    if first_call == True:
+        utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))
+        model.setSfg(utils.build_list_from_table(dialog.ui.tableWidget))
+        set_first_call(False)
+    else:
+        utils.fill_table_from_list(dialog.ui.tableWidget, model.getSfg())
+    connect_buttons(dialog, mainUi, material)
     dialog.exec_()
