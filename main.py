@@ -1,7 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-import view, material
+import view
 import controller
 import model
+
+from popups import material
 
 class MainWindow(QtWidgets.QMainWindow, view.Ui_MainWindow):
     def __init__(self, parent=None):

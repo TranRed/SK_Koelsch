@@ -112,7 +112,12 @@ def setVolumeScaling(data):
 
 def getVolumeScaling():
     global volumeScaling
-    return volumeScaling    
+    return volumeScaling
+
+def initRuntimeVariables():
+    initSfg()
+    initPockets()
+    initVolumeScaling()
 
 connection = sqlite3.connect("PoC.db")
 cursor = connection.cursor()

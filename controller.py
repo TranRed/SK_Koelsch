@@ -1,6 +1,7 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
-import main, model, utils
-import pockets, volumeScaling, sfg
+from PyQt5 import QtCore, QtWidgets
+import model
+
+from popups import pocketsControls, volumeScalingControls, sfgControls, materialControls
 
 def set_sizes(ui,a,b,c,msg):
     ui.lineEdit_semifinishedSideA.setText(a)
@@ -140,144 +141,11 @@ def on_completer_activated(comboBox, text):
         comboBox.setCurrentIndex(index)
         comboBox.activated[str].emit(comboBox.itemText(index))
 
-def add_sfg(ui, material):
-    rowCount = ui.tableWidget.rowCount()
-    ui.tableWidget.insertRow(rowCount)
-    ui.tableWidget.setItem(rowCount, 0, QtWidgets.QTableWidgetItem(str(rowCount+1)))
-    ui.tableWidget.setItem(rowCount, 1, QtWidgets.QTableWidgetItem(material))
-def add_volumeScaling(ui):
-    rowCount = ui.tableWidget.rowCount()
-    ui.tableWidget.insertRow(rowCount)
-
-def add_pocket(ui):
-    rowCount = ui.tableWidget.rowCount()
-    ui.tableWidget.insertRow(rowCount)
-
-    comboBox = QtWidgets.QComboBox()
-    sides = ["Unten (AxB)","Oben (AxB)","Vorne (BxC)","Hinten (BxC)", "Links (AxC)", "Rechts (AxC)"]
-    for entry in sides:
-        comboBox.addItem(entry)
-
-    ui.tableWidget.setCellWidget(rowCount,0,comboBox)
-
-    checkBoxItem = QtWidgets.QTableWidgetItem()
-    checkBoxItem.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
-    checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
-    ui.tableWidget.setItem(rowCount,2,checkBoxItem)
-
-def update_sfg_data(dialogUi, mainUi):
-    model.setSfg(utils.build_list_from_table(dialogUi.tableWidget))
-
-def update_volumeScaling_data(dialogUi, mainUi):
-    model.setVolumeScaling(utils.build_list_from_table(dialogUi.tableWidget))
-    mainUi.lineEdit_volumeScaling.setText(str(dialogUi.tableWidget.rowCount()))
-
-def update_pocket_data(dialogUi, mainUi):
-    model.setPockets(utils.build_list_from_pocket_table(dialogUi.tableWidget))
-    mainUi.lineEdit_pockets.setText(str(dialogUi.tableWidget.rowCount()))
-
-def revert_sfg_data(oldState):
-    model.setSfg(oldState)
-
-def revert_pocket_data(oldState):
-    model.setPockets(oldState)
-
-def revert_volumeScaling_data(oldState):
-    model.setVolumeScaling(oldState)
-
-def create_sfg_copy():
-    previousData = model.getSfg()
-    restoredData = []
-
-    for dataset in previousData:
-        line = []
-        restoredData.append(line)
-        for item in dataset:
-            copy = QtWidgets.QTableWidgetItem(item)
-            line.append(copy)
-
-    return restoredData
-
-def create_volumeScaling_copy():
-    previousData = model.getVolumeScaling()
-    restoredData = []
-
-    for dataset in previousData:
-        line = []
-        restoredData.append(line)
-        for item in dataset:
-            copy = QtWidgets.QTableWidgetItem(item)
-            line.append(copy)
-
-    return restoredData
-
-
-def create_pockets_copy():
-    previousData = model.getPockets()
-    restoredData = []
-
-    for dataset in previousData:
-        first = True
-        line = []
-        restoredData.append(line)
-        for item in dataset:
-            if first == True:
-                copy = QtWidgets.QComboBox()
-                for i in range (0,item.count()):
-                    copy.addItem(item.itemText(i))
-                copy.setCurrentIndex(item.currentIndex())
-
-                first = False
-            else:
-                copy = QtWidgets.QTableWidgetItem(item)
-
-            line.append(copy)
-
-    return restoredData
-
-def connect_sfg_buttons(dialogUi, mainUi, previousData,material):
-    dialogUi.toolButton_add.clicked.connect(lambda: add_sfg(dialogUi,material))
-    dialogUi.buttonBox.accepted.connect(lambda: update_sfg_data(dialogUi, mainUi))
-    dialogUi.buttonBox.rejected.connect(lambda: revert_sfg_data(previousData))
-
-def connect_pocket_buttons(dialogUi, mainUi, previousData):
-    dialogUi.toolButton_add.clicked.connect(lambda: add_pocket(dialogUi))
-    dialogUi.buttonBox.accepted.connect(lambda: update_pocket_data(dialogUi, mainUi))
-    dialogUi.buttonBox.rejected.connect(lambda: revert_pocket_data(previousData))
-
-def connect_volumeScaling_buttons(dialogUi, mainUi, previousData):
-    dialogUi.toolButton_add.clicked.connect(lambda: add_volumeScaling(dialogUi))
-    dialogUi.buttonBox.accepted.connect(lambda: update_volumeScaling_data(dialogUi, mainUi))
-    dialogUi.buttonBox.rejected.connect(lambda: revert_volumeScaling_data(previousData))
-
 def define_volumeScaling(mainUi):
-    dialog = QtWidgets.QDialog()
-    dialog.ui = volumeScaling.Ui_Dialog()
-    dialog.ui.setupUi(dialog)
-    dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-    header = dialog.ui.tableWidget.horizontalHeader()
-    header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-    previousData = create_volumeScaling_copy()
-    utils.fill_table_from_list(dialog.ui.tableWidget, model.getVolumeScaling())
-    connect_volumeScaling_buttons(dialog.ui, mainUi, previousData)
-    dialog.exec_()
+    volumeScalingControls.show(mainUi)
 
 def define_pockets(mainUi):
-    dialog = QtWidgets.QDialog()
-    dialog.ui = pockets.Ui_Dialog()
-    dialog.ui.setupUi(dialog)
-    dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-    header = dialog.ui.tableWidget.horizontalHeader()
-    for i in range(0,4):
-        if i == 3:
-            header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
-        else:
-            header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
-
-    previousData = create_pockets_copy()
-    utils.fill_table_from_pocket_list(dialog.ui.tableWidget, model.getPockets())
-    connect_pocket_buttons(dialog.ui, mainUi, previousData)
-    dialog.exec_()
+    pocketsControls.show(mainUi)
 
 def fill_comboBox_machine(ui):
     resultSet = model.read_all_machines();
@@ -288,69 +156,9 @@ def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
 
 def connect_pushButtons(ui):
-    ui.pushButton_newMaterial.clicked.connect(lambda: on_click_new_material(ui))
-    ui.pushButton_editMaterial.clicked.connect(lambda: on_click_edit_material(ui))
+    ui.pushButton_newMaterial.clicked.connect(lambda: materialControls.on_click_new_material(ui))
+    ui.pushButton_editMaterial.clicked.connect(lambda: materialControls.on_click_edit_material(ui))
 
-def on_click_new_material(ui):
-    ui_mm = main.MaterialDialog('N')
-    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
-    ui_mm.exec()
-
-def on_click_material_save(ui_mm,ui):
-    if ui_mm.mode == 'E':
-        model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text(),ui_mm.lineEdit_material.text()))
-    elif ui_mm.mode == 'N':
-        if ( ui_mm.lineEdit_material.text() == '' or
-             ui_mm.lineEdit_standard.text() == '' or
-             ui_mm.lineEdit_chemical.text() == '' or
-             ui_mm.lineEdit_density.text() == '' or
-             ui_mm.lineEdit_price.text() == '' ):
-             msg = QtWidgets.QMessageBox()
-             msg.setIcon(QtWidgets.QMessageBox.Warning)
-             msg.setText("Bitte alle Felder füllen")
-             msg.setWindowTitle("Fehler")
-             msg.exec_()
-             return
-        else:
-             model.insert_material((ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text()))
-    fill_comboBox_material(ui)
-    ui_mm.accept()
-
-def on_click_material_delete(ui_mm,ui):
-    model.delete_material((ui_mm.lineEdit_material.text(),))
-    fill_comboBox_material(ui)
-    ui_mm.accept()
-
-def on_click_edit_material(ui):
-    ui_mm = main.MaterialDialog('E')
-    index = ui.comboBox_material.currentIndex()
-    resultSet = model.read_all_materials()
-    record = resultSet[index]
-    ui_mm.lineEdit_material.setText(str(record['material']))
-    ui_mm.lineEdit_material.setReadOnly(True)
-    ui_mm.lineEdit_standard.setText(str(record['normbez']))
-    ui_mm.lineEdit_chemical.setText(str(record['chembez']))
-    ui_mm.lineEdit_density.setText(str(record['dichte']))
-    ui_mm.lineEdit_price.setText(str(record['preis']))
-    ui_mm.pushButton_sfg.clicked.connect(lambda: on_click_edit_sfg(ui_mm.lineEdit_material.text(),ui))
-    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
-    ui_mm.pushButton_delete.clicked.connect(lambda: on_click_material_delete(ui_mm,ui))
-    ui_mm.exec()
-
-def on_click_edit_sfg(material,mainUi):
-    dialog = QtWidgets.QDialog()
-    dialog.ui = sfg.Ui_Dialog()
-    dialog.ui.setupUi(dialog)
-    dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-    dialog.ui.tableWidget.verticalHeader().setVisible(False)
-    header = dialog.ui.tableWidget.horizontalHeader()    
-    for i in range(0,5):
-        header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
-    previousData = create_sfg_copy()
-    utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))  
-    connect_sfg_buttons(dialog.ui, mainUi, previousData, material)        
-    dialog.exec_()
-    
 def connect_buttons(ui):
     ui.pushButton_pockets.clicked.connect(lambda: define_pockets(ui))
     ui.pushButton_volumeScaling.clicked.connect(lambda: define_volumeScaling(ui))
@@ -365,6 +173,4 @@ def defaults(ui):
     connect_comboBoxes(ui)
     connect_pushButtons(ui)
     connect_buttons(ui)
-    model.initSfg()
-    model.initPockets()
-    model.initVolumeScaling()
+    model.initRuntimeVariables()
