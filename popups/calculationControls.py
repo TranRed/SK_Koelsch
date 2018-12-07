@@ -53,19 +53,23 @@ def calculate_changables(mainUi, ui):
     cogs = cogs.quantize(cent, ROUND_HALF_UP)
     changeLineEdit(ui.lineEdit_cogs, cogs)
 
-    rebates = cogs * Decimal(str(ui.spinBox_rebates.value())) / Decimal("100")
-    rebates = rebates.quantize(cent, ROUND_HALF_UP)
-    changeLineEdit(ui.lineEdit_rebates, rebates)
-
-    skonto = (cogs + rebates) * Decimal(str(ui.spinBox_skonto.value())) / Decimal("100")
-    skonto = skonto.quantize(cent, ROUND_HALF_UP)
-    changeLineEdit(ui.lineEdit_skonto, skonto)
-
-    profit = (cogs + skonto + rebates) * Decimal(str(ui.spinBox_profit.value())) / Decimal("100")
+    profit = cogs * Decimal(str(ui.spinBox_profit.value())) / Decimal("100")
     profit = profit.quantize(cent, ROUND_HALF_UP)
     changeLineEdit(ui.lineEdit_profit, profit)
 
-    price = cogs + rebates + skonto + profit
+    valueAfterProfit = cogs + profit
+    skontoDivisor = (Decimal("100") - Decimal(str(ui.spinBox_skonto.value()))) / Decimal("100")
+    skonto = valueAfterProfit / skontoDivisor - valueAfterProfit
+    skonto = skonto.quantize(cent, ROUND_HALF_UP)
+    changeLineEdit(ui.lineEdit_skonto, skonto)
+
+    valueAfterSkonto = valueAfterProfit + skonto
+    rebateDivisor = (Decimal("100") - Decimal(str(ui.spinBox_rebates.value()))) / Decimal("100")
+    rebates = valueAfterSkonto / rebateDivisor - valueAfterSkonto
+    rebates = rebates.quantize(cent, ROUND_HALF_UP)
+    changeLineEdit(ui.lineEdit_rebates, rebates)
+
+    price = valueAfterSkonto + rebates
     price = price.quantize(cent, ROUND_HALF_UP)
     changeLineEdit(ui.lineEdit_price, price)
 
