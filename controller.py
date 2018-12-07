@@ -1,7 +1,12 @@
 from PyQt5 import QtCore, QtWidgets
 import model
 
-from popups import pocketsControls, volumeScalingControls, sfgControls, materialControls
+from popups import pocketsControls, volumeScalingControls, sfgControls, materialControls, calculationControls
+
+
+def perform_calculation(ui):
+    calculationControls.show(ui)
+
 
 def set_sizes(ui,a,b,c,msg):
     ui.lineEdit_semifinishedSideA.setText(a)
@@ -150,7 +155,7 @@ def define_pockets(mainUi):
 def fill_comboBox_machine(ui):
     resultSet = model.read_all_machines();
     for dataset in resultSet:
-        ui.comboBox_machine.addItem(str(dataset['bez']))
+        ui.comboBox_machine.addItem(str(dataset['id']) + " - " + str(dataset['bez']))
 
 def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
@@ -158,10 +163,9 @@ def connect_comboBoxes(ui):
 def connect_pushButtons(ui):
     ui.pushButton_newMaterial.clicked.connect(lambda: materialControls.on_click_new_material(ui))
     ui.pushButton_editMaterial.clicked.connect(lambda: materialControls.on_click_edit_material(ui))
-
-def connect_buttons(ui):
     ui.pushButton_pockets.clicked.connect(lambda: define_pockets(ui))
     ui.pushButton_volumeScaling.clicked.connect(lambda: define_volumeScaling(ui))
+    ui.pushButton_calculation.clicked.connect(lambda: perform_calculation(ui))
 
 def defaults(ui):
     add_filter_to_comboBox(ui.comboBox_material)
@@ -172,5 +176,4 @@ def defaults(ui):
     connect_size_fields(ui)
     connect_comboBoxes(ui)
     connect_pushButtons(ui)
-    connect_buttons(ui)
     model.initRuntimeVariables()

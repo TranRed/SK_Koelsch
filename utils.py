@@ -38,7 +38,7 @@ def fill_table_from_pocket_list(tableWidget, data):
 
         rowIndex += 1
 
-def fill_table_from_sfg_list(tableWidget, data): 
+def fill_table_from_sfg_list(tableWidget, data):
     rowIndex = 0
     for dataset in data:
         keys = dataset.keys()
@@ -76,15 +76,33 @@ def fill_table_from_list(tableWidget, data):
         for item in dataset:
             tableWidget.setItem(rowIndex,columnIndex,item)
             columnIndex += 1
-            
+
         rowIndex += 1
+
+def build_material_dict(dataset):
+    materialData = dict()
+    materialData['material'] = dataset[0]
+    materialData['normbez'] = dataset[1]
+    materialData['chembez'] = dataset[2]
+    materialData['dichte'] = dataset[3]
+    materialData['preis'] = dataset[4]
+    return materialData
+
+def build_machine_dict(dataset):
+    machineData = dict()
+    machineData['id'] = dataset[0]
+    machineData['bez'] = dataset[1]
+    machineData['achsen'] = dataset[2]
+    machineData['mss'] = dataset[3]
+    machineData['ruest'] = dataset[4]
+    return machineData
 
 def create_tuple_from_list(in_data):
     data = []
     for dataset in in_data:
         t = []
         for item in dataset:
-            t.append(item.text()) 
-        data.append(tuple(t)) 
-    test = tuple(data)    
+            t.append(item.text())
+        data.append(tuple(t))
+    test = tuple(data)
     return test

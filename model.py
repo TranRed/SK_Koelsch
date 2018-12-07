@@ -1,6 +1,7 @@
 import sqlite3
 from pkg_resources._vendor.pyparsing import empty
 #import os.path
+import utils
 
 def read_halbzeug(material):
     sql = "SELECT * FROM halbzeug WHERE material = " + material +" ORDER BY volumen"
@@ -27,11 +28,11 @@ def update_halbzeug(material,halbzeug):
                  WHERE
                  material = ?'''
     cursor.execute(sql, material)
-    
+
     sql = "INSERT INTO halbzeug (id, material, a, b, c, stange, volumen) VALUES (?,?,?,?,?,?,?)"
     for item in halbzeug:
-        cursor.execute(sql, item)    
-    
+        cursor.execute(sql, item)
+
     connection.commit()
 
 def read_all_materials():
@@ -41,12 +42,7 @@ def read_all_materials():
     resultSet = []
 
     for dataset in cursor:
-        resultDict = dict()
-        resultDict['material'] = dataset[0]
-        resultDict['normbez'] = dataset[1]
-        resultDict['chembez'] = dataset[2]
-        resultDict['dichte'] = dataset[3]
-        resultDict['preis'] = dataset[4]
+        resultDict = utils.build_material_dict(dataset)
         resultSet.append(resultDict)
 
     return resultSet
@@ -58,15 +54,21 @@ def read_all_machines():
     resultSet = []
 
     for dataset in cursor:
-        resultDict = dict()
-        resultDict['id'] = dataset[0]
-        resultDict['bez'] = dataset[1]
-        resultDict['achsen'] = dataset[2]
-        resultDict['mss'] = dataset[3]
-        resultDict['ruest'] = dataset[4]
+        resultDict = utils.build_machine_dict(dataset)
         resultSet.append(resultDict)
 
     return resultSet
+
+def read_machine(id):
+    sql = "SELECT * FROM maschine WHERE id = " + id
+    cursor.execute(sql)
+
+    resultSet = []
+
+    for dataset in cursor:
+        machineData = utils.build_machine_dict(dataset)
+
+    return machineData
 
 def update_material(material):
     sql = ''' UPDATE material
@@ -90,6 +92,15 @@ def insert_material(material):
     sql = "INSERT INTO material (material, normbez, chembez, dichte, preis) VALUES (?,?,?,?,?)"
     cursor.execute(sql, material)
     connection.commit()
+
+def read_material(material):
+    sql = "SELECT * FROM material WHERE material = " + material
+    cursor.execute(sql)
+
+    for dataset in cursor:
+        materialData = utils.build_material_dict(dataset)
+
+    return materialData
 
 def setSfg(data):
     global sfg

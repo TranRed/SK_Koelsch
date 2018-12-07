@@ -31,7 +31,7 @@ def add_pocket(ui):
     ui.tableWidget.insertRow(rowCount)
 
     comboBox = QtWidgets.QComboBox()
-    sides = ["Unten (AxB)","Oben (AxB)","Vorne (BxC)","Hinten (BxC)", "Links (AxC)", "Rechts (AxC)"]
+    sides = ["A (oben)","A' (unten)","B (vorne)","B' (hinten)", "C (rechts)", "C' (links)"]
     for entry in sides:
         comboBox.addItem(entry)
 
