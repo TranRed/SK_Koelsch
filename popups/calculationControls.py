@@ -7,6 +7,38 @@ import locale
 def changeLineEdit(lineEdit, decimal):
     lineEdit.setText(str('{0:n}'.format(decimal)))
 
+def fill_fgk_details(ui, machine, fgk):
+    ui.label_machine_text.setText(machine['bez'])
+
+    time = Decimal(str(machine['ruest']))
+    changeLineEdit(ui.lineEdit_ruestzeit, time)
+
+    global cent
+    hourlyRate = Decimal(str(machine['mss']))
+    hourlyRate = hourlyRate.quantize(cent, ROUND_HALF_UP)
+    changeLineEdit(ui.lineEdit_mss, hourlyRate)
+
+    changeLineEdit(ui.lineEdit_fgk_detail, fgk)
+
+def fill_mek_details(mainUi, ui, material, volume, mek):
+    ui.label_material_text.setText(mainUi.comboBox_material.currentText())
+    ui.lineEdit_sfgA.setText(mainUi.lineEdit_semifinishedSideA.text())
+    ui.lineEdit_sfgB.setText(mainUi.lineEdit_semifinishedSideB.text())
+    ui.lineEdit_sfgC.setText(mainUi.lineEdit_semifinishedSideC.text())
+    ui.lineEdit_volume.setText(str(volume))
+    density = Decimal(str(material['dichte']))
+    changeLineEdit(ui.lineEdit_density, density)
+
+    weight = volume * density
+    changeLineEdit(ui.lineEdit_weight, weight)
+    changeLineEdit(ui.lineEdit_mek_detail, mek)
+
+
+    global cent
+    matPrice = Decimal(str(material['preis']))
+    matPrice = matPrice.quantize(cent, ROUND_HALF_UP)
+    changeLineEdit(ui.lineEdit_materialPrice, matPrice)
+
 def fill_screen(mainUi, ui):
     volume = int(mainUi.lineEdit_semifinishedSideA.text()) * int(mainUi.lineEdit_semifinishedSideB.text()) * int(mainUi.lineEdit_semifinishedSideC.text())
     material = model.read_material(mainUi.comboBox_material.currentText()[:6])
@@ -15,7 +47,9 @@ def fill_screen(mainUi, ui):
         to the computer’s hardware representation (in base 2) and some precision is lost in the process.
         To avoid the Python language conversion, string literals are used."
         source: http://buildingskills.itmaybeahack.com/book/programming-2.6/html/p13_modules/p13_c03_decimal.html"""
-    materialCosts = Decimal(str(volume)) / Decimal("1000") * Decimal(str(material['dichte'])) * Decimal(str(material['preis']))
+    volume = Decimal(str(volume)) / Decimal("1000")
+    materialCosts = volume * Decimal(str(material['dichte'])) * Decimal(str(material['preis']))
+    fill_mek_details(mainUi, ui, material, volume, materialCosts)
 
     global cent
     materialCosts = materialCosts.quantize(cent, ROUND_HALF_UP)
@@ -33,6 +67,7 @@ def fill_screen(mainUi, ui):
     manufacturingOverheads = Decimal(str(machine['mss'])) * Decimal(str(machine['ruest']))
     manufacturingOverheads = manufacturingOverheads.quantize(cent, ROUND_HALF_UP)
     changeLineEdit(ui.lineEdit_fgk, manufacturingOverheads)
+    fill_fgk_details(ui, machine, manufacturingOverheads)
 
     global cogm
     cogm = materialCosts + materialOverheads + manufacturingCosts + manufacturingOverheads
