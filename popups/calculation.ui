@@ -344,7 +344,7 @@
       </rect>
      </property>
      <property name="maximum">
-      <number>100</number>
+      <number>99</number>
      </property>
      <property name="value">
       <number>3</number>
@@ -484,7 +484,7 @@
       </rect>
      </property>
      <property name="maximum">
-      <number>100</number>
+      <number>99</number>
      </property>
      <property name="value">
       <number>5</number>

@@ -161,11 +161,13 @@ def connect_comboBoxes(ui):
     ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
 
 def connect_pushButtons(ui):
-    ui.pushButton_newMaterial.clicked.connect(lambda: materialControls.on_click_new_material(ui))
-    ui.pushButton_editMaterial.clicked.connect(lambda: materialControls.on_click_edit_material(ui))
     ui.pushButton_pockets.clicked.connect(lambda: define_pockets(ui))
     ui.pushButton_volumeScaling.clicked.connect(lambda: define_volumeScaling(ui))
     ui.pushButton_calculation.clicked.connect(lambda: perform_calculation(ui))
+
+def connect_actions(ui):
+    ui.action_newMaterial.triggered.connect(lambda: materialControls.on_click_new_material(ui))
+    ui.action_editMaterial.triggered.connect(lambda: materialControls.on_click_edit_material(ui))
 
 def defaults(ui):
     add_filter_to_comboBox(ui.comboBox_material)
@@ -173,6 +175,7 @@ def defaults(ui):
     add_filter_to_comboBox(ui.comboBox_aging)
     fill_comboBox_material(ui)
     fill_comboBox_machine(ui)
+    connect_actions(ui)
     connect_size_fields(ui)
     connect_comboBoxes(ui)
     connect_pushButtons(ui)
