@@ -12,11 +12,6 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(642, 556)
-        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
-        self.buttonBox.setGeometry(QtCore.QRect(300, 510, 341, 32))
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
         self.tableWidget = QtWidgets.QTableWidget(Dialog)
         self.tableWidget.setGeometry(QtCore.QRect(0, 0, 641, 501))
         self.tableWidget.setObjectName("tableWidget")
@@ -42,10 +37,14 @@ class Ui_Dialog(object):
         icon.addPixmap(QtGui.QPixmap("Icons/greenPlus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_add.setIcon(icon)
         self.toolButton_add.setObjectName("toolButton_add")
+        self.toolButton_cancel = QtWidgets.QToolButton(Dialog)
+        self.toolButton_cancel.setGeometry(QtCore.QRect(440, 510, 81, 31))
+        self.toolButton_cancel.setObjectName("toolButton_cancel")
+        self.toolButton_confirm = QtWidgets.QToolButton(Dialog)
+        self.toolButton_confirm.setGeometry(QtCore.QRect(540, 510, 81, 31))
+        self.toolButton_confirm.setObjectName("toolButton_confirm")
 
         self.retranslateUi(Dialog)
-        self.buttonBox.accepted.connect(Dialog.accept)
-        self.buttonBox.rejected.connect(Dialog.reject)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -66,4 +65,6 @@ class Ui_Dialog(object):
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("Dialog", "Volumen"))
         self.toolButton_add.setText(_translate("Dialog", "..."))
+        self.toolButton_cancel.setText(_translate("Dialog", "Abbrechen"))
+        self.toolButton_confirm.setText(_translate("Dialog", "Bestätigen"))
 

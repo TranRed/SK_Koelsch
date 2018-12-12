@@ -13,15 +13,26 @@ def add_sfg(dialog, material):
     dialog.ui.tableWidget.setItem(rowCount, 1, QtWidgets.QTableWidgetItem(material))
 
 def update(dialog, mainUi):
-    model.setSfg(utils.build_list_from_table(dialog.ui.tableWidget))
+    data = utils.build_list_from_table(dialog.ui.tableWidget)
+    for dataset in data:
+        for item in dataset:    
+            if item.text() == '':
+                msg = QtWidgets.QMessageBox()
+                msg.setIcon(QtWidgets.QMessageBox.Warning)
+                msg.setText("Bitte alle Felder füllen")
+                msg.setWindowTitle("Fehler")
+                msg.exec_()
+                return
+    model.setSfg(data)
+    dialog.close()
 
 def exit(dialog):
     dialog.close()
 
 def connect_buttons(dialog, mainUi, material):
     dialog.ui.toolButton_add.clicked.connect(lambda: add_sfg(dialog,material))
-    dialog.ui.buttonBox.accepted.connect(lambda: update(dialog, mainUi))
-    dialog.ui.buttonBox.rejected.connect(lambda: exit(dialog))
+    dialog.ui.toolButton_confirm.clicked.connect(lambda: update(dialog, mainUi))
+    dialog.ui.toolButton_cancel.clicked.connect(lambda: exit(dialog))
 
 def show(material, mainUi):
     global first_call

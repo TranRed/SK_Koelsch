@@ -1,10 +1,19 @@
-import main, model
+import model
 from PyQt5 import QtWidgets
-from popups import sfgControls
+from popups import sfgControls, material
 import controller, utils
 
+class MaterialDialog(QtWidgets.QDialog, material.Ui_Material):
+    def __init__(self, mode, parent=None):
+        self.mode = mode
+        super(MaterialDialog, self).__init__(parent)
+        self.setupUi(self)
+        if self.mode == 'N':
+            self.pushButton_sfg.setHidden(True)
+            self.pushButton_delete.setHidden(True)
+
 def on_click_new_material(ui):
-    ui_mm = main.MaterialDialog('N')
+    ui_mm = MaterialDialog('N')
     ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
     ui_mm.exec()
 
@@ -35,7 +44,11 @@ def on_click_material_delete(ui_mm,ui):
     msg.setIcon(QtWidgets.QMessageBox.Warning)
     msg.setText("Material wirklich löschen?")
     msg.setWindowTitle("Bestätigung")
-    msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+    msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
+    buttonY = msg.button(QtWidgets.QMessageBox.Yes)
+    buttonY.setText('Ja')
+    buttonN = msg.button(QtWidgets.QMessageBox.No)
+    buttonN.setText('Nein')
     msg.buttonClicked.connect(lambda msgbtn: confirmation(msgbtn, ui_mm, ui)) 
     msg.exec_()    
 
@@ -49,7 +62,7 @@ def on_click_edit_sfg(material,mainUi):
     sfgControls.show(material,mainUi)
 
 def on_click_edit_material(ui):
-    ui_mm = main.MaterialDialog('E')
+    ui_mm = MaterialDialog('E')
     index = ui.comboBox_material.currentIndex()
     resultSet = model.read_all_materials()
     record = resultSet[index]

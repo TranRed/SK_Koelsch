@@ -97,12 +97,12 @@ def build_machine_dict(dataset):
     machineData['ruest'] = dataset[4]
     return machineData
 
-def create_tuple_from_list(in_data):
-    data = []
-    for dataset in in_data:
-        t = []
+def create_tuple_from_list(inputData):
+    dataAsArray = []
+    for dataset in inputData:
+        datasetAsArray = []
         for item in dataset:
-            t.append(item.text())
-        data.append(tuple(t))
-    test = tuple(data)
-    return test
+            datasetAsArray.append(item.text())
+        dataAsArray.append(tuple(datasetAsArray))
+    dataAsTupel = tuple(dataAsArray)
+    return dataAsTupel
