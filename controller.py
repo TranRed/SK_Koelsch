@@ -1,5 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
-import model
+import model, figure
 
 from popups import pocketsControls, volumeScalingControls, sfgControls, materialControls, calculationControls
 
@@ -180,3 +180,4 @@ def defaults(ui):
     connect_comboBoxes(ui)
     connect_pushButtons(ui)
     model.initRuntimeVariables()
+    figure.Window(ui.figure)

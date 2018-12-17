@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'calculation.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -30,7 +30,7 @@ class Ui_Dialog(object):
         self.label_skonto.setGeometry(QtCore.QRect(20, 230, 211, 16))
         self.label_skonto.setObjectName("label_skonto")
         self.label_skonto_percent = QtWidgets.QLabel(self.tab_calc)
-        self.label_skonto_percent.setGeometry(QtCore.QRect(290, 230, 21, 16))
+        self.label_skonto_percent.setGeometry(QtCore.QRect(300, 230, 21, 16))
         self.label_skonto_percent.setObjectName("label_skonto_percent")
         self.lineEdit_vgk = QtWidgets.QLineEdit(self.tab_calc)
         self.lineEdit_vgk.setEnabled(False)
@@ -41,7 +41,7 @@ class Ui_Dialog(object):
         self.label_profit.setGeometry(QtCore.QRect(20, 200, 211, 16))
         self.label_profit.setObjectName("label_profit")
         self.label_profit_percent = QtWidgets.QLabel(self.tab_calc)
-        self.label_profit_percent.setGeometry(QtCore.QRect(290, 200, 21, 16))
+        self.label_profit_percent.setGeometry(QtCore.QRect(300, 200, 21, 16))
         self.label_profit_percent.setObjectName("label_profit_percent")
         self.label_cogm = QtWidgets.QLabel(self.tab_calc)
         self.label_cogm.setGeometry(QtCore.QRect(20, 90, 211, 16))
@@ -77,10 +77,10 @@ class Ui_Dialog(object):
         self.lineEdit_cogm.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.lineEdit_cogm.setObjectName("lineEdit_cogm")
         self.label_vgk_percent = QtWidgets.QLabel(self.tab_calc)
-        self.label_vgk_percent.setGeometry(QtCore.QRect(290, 130, 21, 16))
+        self.label_vgk_percent.setGeometry(QtCore.QRect(300, 130, 21, 16))
         self.label_vgk_percent.setObjectName("label_vgk_percent")
         self.label_rebates_percent = QtWidgets.QLabel(self.tab_calc)
-        self.label_rebates_percent.setGeometry(QtCore.QRect(290, 260, 21, 16))
+        self.label_rebates_percent.setGeometry(QtCore.QRect(300, 260, 21, 16))
         self.label_rebates_percent.setObjectName("label_rebates_percent")
         self.lineEdit_price = QtWidgets.QLineEdit(self.tab_calc)
         self.lineEdit_price.setEnabled(False)
@@ -93,7 +93,7 @@ class Ui_Dialog(object):
         self.lineEdit_price.setObjectName("lineEdit_price")
         self.spinBox_vgk = QtWidgets.QSpinBox(self.tab_calc)
         self.spinBox_vgk.setEnabled(True)
-        self.spinBox_vgk.setGeometry(QtCore.QRect(240, 130, 42, 22))
+        self.spinBox_vgk.setGeometry(QtCore.QRect(240, 130, 51, 22))
         self.spinBox_vgk.setMaximum(100)
         self.spinBox_vgk.setProperty("value", 15)
         self.spinBox_vgk.setObjectName("spinBox_vgk")
@@ -113,7 +113,7 @@ class Ui_Dialog(object):
         self.lineEdit_rebates.setObjectName("lineEdit_rebates")
         self.spinBox_skonto = QtWidgets.QSpinBox(self.tab_calc)
         self.spinBox_skonto.setEnabled(True)
-        self.spinBox_skonto.setGeometry(QtCore.QRect(240, 230, 42, 22))
+        self.spinBox_skonto.setGeometry(QtCore.QRect(240, 230, 51, 22))
         self.spinBox_skonto.setMaximum(99)
         self.spinBox_skonto.setProperty("value", 3)
         self.spinBox_skonto.setObjectName("spinBox_skonto")
@@ -127,7 +127,7 @@ class Ui_Dialog(object):
         self.label_mgk.setObjectName("label_mgk")
         self.spinBox_profit = QtWidgets.QSpinBox(self.tab_calc)
         self.spinBox_profit.setEnabled(True)
-        self.spinBox_profit.setGeometry(QtCore.QRect(240, 200, 42, 22))
+        self.spinBox_profit.setGeometry(QtCore.QRect(240, 200, 51, 22))
         self.spinBox_profit.setMaximum(100)
         self.spinBox_profit.setProperty("value", 20)
         self.spinBox_profit.setObjectName("spinBox_profit")
@@ -151,7 +151,7 @@ class Ui_Dialog(object):
         self.lineEdit_skonto.setObjectName("lineEdit_skonto")
         self.spinBox_rebates = QtWidgets.QSpinBox(self.tab_calc)
         self.spinBox_rebates.setEnabled(True)
-        self.spinBox_rebates.setGeometry(QtCore.QRect(240, 260, 42, 22))
+        self.spinBox_rebates.setGeometry(QtCore.QRect(240, 260, 51, 22))
         self.spinBox_rebates.setMaximum(99)
         self.spinBox_rebates.setProperty("value", 5)
         self.spinBox_rebates.setObjectName("spinBox_rebates")

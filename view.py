@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'PoC.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(550, 668)
+        MainWindow.resize(1284, 668)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.groupBox_materialmaster = QtWidgets.QGroupBox(self.centralwidget)
@@ -283,12 +283,15 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.pushButton_calculation.setFont(font)
         self.pushButton_calculation.setObjectName("pushButton_calculation")
+        self.figure = QtWidgets.QWidget(self.centralwidget)
+        self.figure.setGeometry(QtCore.QRect(550, 40, 681, 571))
+        self.figure.setObjectName("figure")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.menuBar = QtWidgets.QMenuBar(MainWindow)
-        self.menuBar.setGeometry(QtCore.QRect(0, 0, 550, 26))
+        self.menuBar.setGeometry(QtCore.QRect(0, 0, 1284, 23))
         self.menuBar.setObjectName("menuBar")
         self.menu_masterData = QtWidgets.QMenu(self.menuBar)
         self.menu_masterData.setObjectName("menu_masterData")
