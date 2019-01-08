@@ -14,6 +14,14 @@ def set_sizes(ui,a,b,c,msg):
     ui.lineEdit_semifinishedSideC.setText(c)
     ui.label_sizeNotFound.setText(msg)
 
+    global cuboid
+
+    if ( int(a) == 0 or int(b) == 0 or int(c) == 0 ):
+        #show default cuboid
+        cuboid.change_plot(0, 1, 1)
+    else:
+        cuboid.change_plot(int(a), int(b), int(c))
+
 def set_no_size(ui):
     #size not available
     set_sizes(ui,"0","0","0","Kein passendes Halbzeug verfügbar")
@@ -180,4 +188,7 @@ def defaults(ui):
     connect_comboBoxes(ui)
     connect_pushButtons(ui)
     model.initRuntimeVariables()
-    figure.Window(ui.figure)
+    figure.set_sides(0,1,1)
+    global cuboid
+    cuboid = figure.Window(ui.figure)
+    calc_semifinished(ui)
