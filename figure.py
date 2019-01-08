@@ -90,11 +90,11 @@ class Window(QtWidgets.QWidget):
         ax.add_collection3d(Poly3DCollection(verts,
          facecolors=color, linewidths=1, edgecolors='black', alpha=.25))
 
-        ax.set_xlabel('X')
+        ax.set_xlabel('b')
         ax.set_xbound(0,upper)
-        ax.set_ylabel('Y')
+        ax.set_ylabel('c')
         ax.set_ybound(0,upper)
-        ax.set_zlabel('Z')
+        ax.set_zlabel('a')
         ax.set_zbound(0,upper)
         plt.ioff()
 
