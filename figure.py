@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 from itertools import product, combinations
+import re
+from decimal import *
+import model
 
 
 def set_sides(inA, inB, inC):
@@ -38,10 +41,12 @@ class Window(QtWidgets.QWidget):
         layout.addWidget(self.canvas)
         self.setLayout(layout)
 
-        self.change_plot(a,b,c)
 
 
-    def change_plot(self,a,b,c):
+
+
+    def change_plot(self,a,b,c, materialData):
+        self.figure.clear(True)
         ax = self.figure.add_subplot(111, projection='3d')
 
         plt.ion()
@@ -80,9 +85,10 @@ class Window(QtWidgets.QWidget):
          [Z[4],Z[7],Z[3],Z[0]],
          [Z[2],Z[3],Z[7],Z[6]]]
 
+        color = self.calculateColor(materialData)
         # plot sides
         ax.add_collection3d(Poly3DCollection(verts,
-         facecolors='cyan', linewidths=1, edgecolors='r', alpha=.25))
+         facecolors=color, linewidths=1, edgecolors='black', alpha=.25))
 
         ax.set_xlabel('X')
         ax.set_xbound(0,upper)
@@ -91,3 +97,35 @@ class Window(QtWidgets.QWidget):
         ax.set_zlabel('Z')
         ax.set_zbound(0,upper)
         plt.ioff()
+
+    def calculateColor(self, materialData):
+        mat_split = re.findall('[A-Z][^A-Z]*', materialData['chembez'])
+        split = []
+        sum_nums = 0
+        red = 0
+        green = 0
+        blue = 0
+
+        for element in mat_split:
+            part = []
+            ele_pure = re.sub(r'[,0-9]+', '', element)
+            part.append(ele_pure)
+            ele_num = re.sub(r'[a-zA-Z]+', '', element)
+            ele_num = re.sub(r'[,]+', '.', ele_num)
+            if ele_num != '':
+                part.append(Decimal(ele_num))
+                sum_nums += Decimal(ele_num)
+            else:
+                part.append(Decimal("1.0"))
+                sum_nums += Decimal("1.0")
+            split.append(part)
+
+        for entry in split:
+            factor = entry[1] / sum_nums
+            entryColor = model.read_color(entry[0])
+            red += entryColor['r'] * factor
+            green += entryColor['g'] * factor
+            blue += entryColor['b'] * factor
+
+        color = '#%02x%02x%02x' % (int(red),int(green),int(blue))
+        return color

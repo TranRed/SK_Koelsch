@@ -4,8 +4,8 @@ from pkg_resources._vendor.pyparsing import empty
 import utils
 
 def read_halbzeug(material):
-    sql = "SELECT * FROM halbzeug WHERE material = " + material +" ORDER BY volumen"
-    cursor.execute(sql)
+    sql = "SELECT * FROM halbzeug WHERE material = ?" + " ORDER BY volumen"
+    cursor.execute(sql, (material,))
 
     resultSet = []
 
@@ -60,8 +60,8 @@ def read_all_machines():
     return resultSet
 
 def read_machine(id):
-    sql = "SELECT * FROM maschine WHERE id = " + id
-    cursor.execute(sql)
+    sql = "SELECT * FROM maschine WHERE id = ?"
+    cursor.execute(sql, id)
 
     resultSet = []
 
@@ -94,13 +94,22 @@ def insert_material(material):
     connection.commit()
 
 def read_material(material):
-    sql = "SELECT * FROM material WHERE material = " + material
-    cursor.execute(sql)
+    sql = "SELECT * FROM material WHERE material = ?"
+    cursor.execute(sql, (material,))
 
     for dataset in cursor:
         materialData = utils.build_material_dict(dataset)
 
     return materialData
+
+def read_color(element):
+    sql = "SELECT * FROM colors WHERE Element = ?"
+    cursor.execute(sql, (   element,))
+
+    for dataset in cursor:
+        color = utils.build_color_dict(dataset)
+
+    return color
 
 def setSfg(data):
     global sfg

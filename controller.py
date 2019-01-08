@@ -15,12 +15,13 @@ def set_sizes(ui,a,b,c,msg):
     ui.label_sizeNotFound.setText(msg)
 
     global cuboid
+    materialData = model.read_material(ui.comboBox_material.currentText()[:6])
 
     if ( int(a) == 0 or int(b) == 0 or int(c) == 0 ):
         #show default cuboid
-        cuboid.change_plot(0, 1, 1)
+        cuboid.change_plot(0, 1, 1, materialData)
     else:
-        cuboid.change_plot(int(a), int(b), int(c))
+        cuboid.change_plot(int(a), int(b), int(c), materialData)
 
 def set_no_size(ui):
     #size not available
@@ -188,7 +189,6 @@ def defaults(ui):
     connect_comboBoxes(ui)
     connect_pushButtons(ui)
     model.initRuntimeVariables()
-    figure.set_sides(0,1,1)
     global cuboid
     cuboid = figure.Window(ui.figure)
     calc_semifinished(ui)

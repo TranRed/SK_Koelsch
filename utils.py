@@ -79,6 +79,13 @@ def fill_table_from_list(tableWidget, data):
 
         rowIndex += 1
 
+def build_color_dict(dataset):
+    color = dict()
+    color['r'] = dataset[1]
+    color['g'] = dataset[2]
+    color['b'] = dataset[3]
+    return color
+
 def build_material_dict(dataset):
     materialData = dict()
     materialData['material'] = dataset[0]
