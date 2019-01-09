@@ -2,7 +2,6 @@ import model
 from PyQt5 import QtWidgets, QtGui
 from popups import sfgControls, material
 import controller, utils
-import cv2
 import numpy as np
 import skimage.io as io
 
