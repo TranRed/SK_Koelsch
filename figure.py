@@ -112,12 +112,15 @@ class Window(QtWidgets.QWidget):
             part.append(ele_pure)
             ele_num = re.sub(r'[a-zA-Z]+', '', element)
             ele_num = re.sub(r'[,]+', '.', ele_num)
-            if ele_num != '':
-                part.append(Decimal(ele_num))
-                sum_nums += Decimal(ele_num)
-            else:
-                part.append(Decimal("1.0"))
-                sum_nums += Decimal("1.0")
+            if ele_num == '':
+                ele_num = "1.0"
+
+            ele_dec = Decimal(ele_num)
+            if element == mat_split[0]:
+                ele_dec = ele_dec + Decimal("2.0")
+
+            part.append(ele_dec)
+            sum_nums += ele_dec
             split.append(part)
 
         for entry in split:
