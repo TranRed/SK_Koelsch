@@ -107,3 +107,14 @@ def create_tuple_from_list(inputData):
         dataAsArray.append(tuple(datasetAsArray))
     dataAsTupel = tuple(dataAsArray)
     return dataAsTupel
+
+def convert_rgb_to_hex(red,green,blue):
+    colorHex = '#%02x%02x%02x' % (int(red),int(green),int(blue))
+    return colorHex
+
+def convert_hex_to_rgb(colorHex):
+    rgbValues = dict()
+    rgbValues['red'] = int(colorHex[1:3], 16)
+    rgbValues['green'] = int(colorHex[3:5], 16)
+    rgbValues['blue'] = int(colorHex[5:7], 16)
+    return rgbValues
