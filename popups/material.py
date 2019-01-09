@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'material.ui'
 #
-# Created by: PyQt5 UI code generator 5.10.1
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,9 +11,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_Material(object):
     def setupUi(self, Material):
         Material.setObjectName("Material")
-        Material.resize(400, 264)
+        Material.resize(400, 304)
         self.groupBox = QtWidgets.QGroupBox(Material)
-        self.groupBox.setGeometry(QtCore.QRect(30, 30, 321, 151))
+        self.groupBox.setGeometry(QtCore.QRect(30, 30, 321, 181))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
         self.lineEdit_material = QtWidgets.QLineEdit(self.groupBox)
@@ -46,14 +46,21 @@ class Ui_Material(object):
         self.lineEdit_price = QtWidgets.QLineEdit(self.groupBox)
         self.lineEdit_price.setGeometry(QtCore.QRect(190, 120, 113, 21))
         self.lineEdit_price.setObjectName("lineEdit_price")
+        self.label_price_2 = QtWidgets.QLabel(self.groupBox)
+        self.label_price_2.setGeometry(QtCore.QRect(20, 150, 151, 17))
+        self.label_price_2.setObjectName("label_price_2")
+        self.pushButton_colorPicker = QtWidgets.QPushButton(self.groupBox)
+        self.pushButton_colorPicker.setGeometry(QtCore.QRect(190, 150, 41, 21))
+        self.pushButton_colorPicker.setText("")
+        self.pushButton_colorPicker.setObjectName("pushButton_colorPicker")
         self.pushButton_save = QtWidgets.QPushButton(Material)
-        self.pushButton_save.setGeometry(QtCore.QRect(300, 220, 87, 29))
+        self.pushButton_save.setGeometry(QtCore.QRect(300, 260, 87, 29))
         self.pushButton_save.setObjectName("pushButton_save")
         self.pushButton_delete = QtWidgets.QPushButton(Material)
-        self.pushButton_delete.setGeometry(QtCore.QRect(210, 220, 87, 29))
+        self.pushButton_delete.setGeometry(QtCore.QRect(210, 260, 87, 29))
         self.pushButton_delete.setObjectName("pushButton_delete")
         self.pushButton_sfg = QtWidgets.QPushButton(Material)
-        self.pushButton_sfg.setGeometry(QtCore.QRect(50, 180, 281, 29))
+        self.pushButton_sfg.setGeometry(QtCore.QRect(50, 220, 281, 29))
         self.pushButton_sfg.setObjectName("pushButton_sfg")
 
         self.retranslateUi(Material)
@@ -74,6 +81,7 @@ class Ui_Material(object):
         self.label_chemical.setText(_translate("Material", "Chemische Bezeichnung"))
         self.label_density.setText(_translate("Material", "Dichte [kg/dm³]"))
         self.label_price.setText(_translate("Material", "Preis [€/kg]"))
+        self.label_price_2.setText(_translate("Material", "Farbe"))
         self.pushButton_save.setText(_translate("Material", "Speichern"))
         self.pushButton_delete.setText(_translate("Material", "Löschen"))
         self.pushButton_sfg.setText(_translate("Material", "Halbzeuge pflegen"))
