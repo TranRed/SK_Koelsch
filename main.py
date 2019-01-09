@@ -1,7 +1,6 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 import view
 import controller
-import model
 
 class MainWindow(QtWidgets.QMainWindow, view.Ui_MainWindow):
     def __init__(self, parent=None):

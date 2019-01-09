@@ -1,4 +1,4 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 
 def build_list_from_pocket_table(tableWidget):
     rowCount = tableWidget.rowCount()

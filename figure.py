@@ -1,32 +1,15 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 import numpy as np
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
-from itertools import product, combinations
-import re
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from decimal import *
-import model
-
-
-def set_sides(inA, inB, inC):
-    global a
-    a = inA
-    global b
-    b = inB
-    global c
-    c = inC
 
 class Window(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
-
-        global a
-        global b
-        global c
-
+        
         # a figure instance to plot on
         self.figure = plt.figure()
 
@@ -42,17 +25,14 @@ class Window(QtWidgets.QWidget):
         self.setLayout(layout)
 
 
-
-
-
     def change_plot(self,a,b,c, materialData):
         self.figure.clear(True)
         ax = self.figure.add_subplot(111, projection='3d')
 
         plt.ion()
-        list = [a, b, c]
+        sideLengths = [a, b, c]
 
-        upper = max(list)
+        upper = max(sideLengths)
 
         points = np.array([[0, 0, 0],
                           [0, 0, a],

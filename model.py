@@ -1,6 +1,4 @@
 import sqlite3
-from pkg_resources._vendor.pyparsing import empty
-#import os.path
 import utils
 
 def read_halbzeug(material):
