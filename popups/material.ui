@@ -18,7 +18,7 @@
     <rect>
      <x>30</x>
      <y>30</y>
-     <width>321</width>
+     <width>351</width>
      <height>181</height>
     </rect>
    </property>
@@ -164,6 +164,19 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_colorFromImage">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>150</y>
+      <width>101</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>aus Bild lesen</string>
     </property>
    </widget>
   </widget>

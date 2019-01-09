@@ -2,6 +2,9 @@ import model
 from PyQt5 import QtWidgets, QtGui
 from popups import sfgControls, material
 import controller, utils
+import cv2
+import numpy as np
+from skimage import io
 
 class MaterialDialog(QtWidgets.QDialog, material.Ui_Material):
     def __init__(self, mode, parent=None):
@@ -16,21 +19,45 @@ def change_button_color(ui_mm, color):
     style = "background-color:" + color + ";"
     ui_mm.pushButton_colorPicker.setStyleSheet(style);
 
+def get_color_from_image(ui_mm):
+    fileDialog = QtWidgets.QFileDialog()
+    path = fileDialog.getOpenFileName(None, "Bild wählen ...", "", "Images (*.png *.xpm .jpg .jpeg)")
+
+    if path[0] != '':
+        img = io.imread(path[0])[:, :, :-1]
+        pixels = np.float32(img.reshape(-1, 3))
+        n_colors = 1
+        criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 200, .1)
+        flags = cv2.KMEANS_RANDOM_CENTERS
+
+        _, labels, palette = cv2.kmeans(pixels, n_colors, None, criteria, 10, flags)
+
+        global globalColorField
+        globalColorField = utils.convert_rgb_to_hex(int(palette[0][0]),int(palette[0][1]),int(palette[0][2]))
+        change_button_color(ui_mm, globalColorField)
+
 def color_picker(ui_mm, recordColor):
     recordRGB = utils.convert_hex_to_rgb(recordColor)
     color = QtWidgets.QColorDialog.getColor(QtGui.QColor(recordRGB['red'],recordRGB['green'],recordRGB['blue']))
-    global  globalColorField
-    globalColorField = utils.convert_rgb_to_hex(color.red(),color.green(),color.blue())
-    change_button_color(ui_mm, globalColorField)
+    if color.isValid():
+        global  globalColorField
+        globalColorField = utils.convert_rgb_to_hex(color.red(),color.green(),color.blue())
+        change_button_color(ui_mm, globalColorField)
+
+def connect_common_buttons(ui_mm, ui):
+    global globalColorField
+    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
+    ui_mm.pushButton_colorPicker.clicked.connect(lambda: color_picker(ui_mm, globalColorField))
+    ui_mm.pushButton_colorFromImage.clicked.connect(lambda: get_color_from_image(ui_mm))
 
 
 def on_click_new_material(ui):
     ui_mm = MaterialDialog('N')
     global globalColorField
-    globalColorField = '#ff0000'
+    globalColorField = '#ffffff'
+    connect_common_buttons(ui_mm, ui)
     change_button_color(ui_mm, globalColorField)
-    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
-    ui_mm.pushButton_colorPicker.clicked.connect(lambda: color_picker(ui_mm, globalColorField))
+
     ui_mm.exec()
 
 def on_click_material_save(ui_mm,ui):
@@ -94,7 +121,6 @@ def on_click_edit_material(ui):
     change_button_color(ui_mm, globalColorField)
     sfgControls.set_first_call(True)
     ui_mm.pushButton_sfg.clicked.connect(lambda: on_click_edit_sfg(ui_mm.lineEdit_material.text(),ui))
-    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
     ui_mm.pushButton_delete.clicked.connect(lambda: on_click_material_delete(ui_mm,ui))
-    ui_mm.pushButton_colorPicker.clicked.connect(lambda: color_picker(ui_mm, globalColorField))
+    connect_common_buttons(ui_mm, ui)
     ui_mm.exec()
