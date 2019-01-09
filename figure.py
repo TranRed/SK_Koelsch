@@ -85,10 +85,10 @@ class Window(QtWidgets.QWidget):
          [Z[4],Z[7],Z[3],Z[0]],
          [Z[2],Z[3],Z[7],Z[6]]]
 
-        color = self.calculateColor(materialData)
+        
         # plot sides
         ax.add_collection3d(Poly3DCollection(verts,
-         facecolors=color, linewidths=1, edgecolors='black', alpha=.25))
+         facecolors=materialData['farbe'], linewidths=1, edgecolors='black', alpha=.25))
 
         ax.set_xlabel('b')
         ax.set_xbound(0,upper)
@@ -98,37 +98,3 @@ class Window(QtWidgets.QWidget):
         ax.set_zbound(0,upper)
         plt.ioff()
 
-    def calculateColor(self, materialData):
-        mat_split = re.findall('[A-Z][^A-Z]*', materialData['chembez'])
-        split = []
-        sum_nums = 0
-        red = 0
-        green = 0
-        blue = 0
-
-        for element in mat_split:
-            part = []
-            ele_pure = re.sub(r'[,0-9]+', '', element)
-            part.append(ele_pure)
-            ele_num = re.sub(r'[a-zA-Z]+', '', element)
-            ele_num = re.sub(r'[,]+', '.', ele_num)
-            if ele_num == '':
-                ele_num = "1.0"
-
-            ele_dec = Decimal(ele_num)
-            if element == mat_split[0]:
-                ele_dec = ele_dec + Decimal("2.0")
-
-            part.append(ele_dec)
-            sum_nums += ele_dec
-            split.append(part)
-
-        for entry in split:
-            factor = entry[1] / sum_nums
-            entryColor = model.read_color(entry[0])
-            red += entryColor['r'] * factor
-            green += entryColor['g'] * factor
-            blue += entryColor['b'] * factor
-
-        color = '#%02x%02x%02x' % (int(red),int(green),int(blue))
-        return color

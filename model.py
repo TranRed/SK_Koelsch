@@ -102,15 +102,6 @@ def read_material(material):
 
     return materialData
 
-def read_color(element):
-    sql = "SELECT * FROM colors WHERE Element = ?"
-    cursor.execute(sql, (   element,))
-
-    for dataset in cursor:
-        color = utils.build_color_dict(dataset)
-
-    return color
-
 def setSfg(data):
     global sfg
     sfg = data
