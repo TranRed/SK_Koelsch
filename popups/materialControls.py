@@ -4,7 +4,7 @@ from popups import sfgControls, material
 import controller, utils
 import cv2
 import numpy as np
-from skimage import io
+import skimage.io as io
 
 class MaterialDialog(QtWidgets.QDialog, material.Ui_Material):
     def __init__(self, mode, parent=None):
@@ -25,15 +25,13 @@ def get_color_from_image(ui_mm):
 
     if path[0] != '':
         img = io.imread(path[0])[:, :, :-1]
-        pixels = np.float32(img.reshape(-1, 3))
-        n_colors = 1
-        criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 200, .1)
-        flags = cv2.KMEANS_RANDOM_CENTERS
 
-        _, labels, palette = cv2.kmeans(pixels, n_colors, None, criteria, 10, flags)
+        avg_color_per_row = np.average(img, axis=0)
+        avg_color = np.average(avg_color_per_row, axis=0)
 
         global globalColorField
-        globalColorField = utils.convert_rgb_to_hex(int(palette[0][0]),int(palette[0][1]),int(palette[0][2]))
+        print(avg_color)
+        globalColorField = utils.convert_rgb_to_hex(int(avg_color[0]),int(avg_color[1]),int(avg_color[2]))
         change_button_color(ui_mm, globalColorField)
 
 def color_picker(ui_mm, recordColor):
