@@ -20,7 +20,7 @@ def change_button_color(ui_mm, color):
 
 def get_color_from_image(ui_mm):
     fileDialog = QtWidgets.QFileDialog()
-    path = fileDialog.getOpenFileName(None, "Bild wählen ...", "", "Images (*.png *.xpm .jpg .jpeg)")
+    path = fileDialog.getOpenFileName(None, "Bild wählen ...", "", "Images (*.png *.bmp *.jpg *.jpeg *.tif *.gif)")
 
     if path[0] != '':
         img = io.imread(path[0])[:, :, :-1]
@@ -29,7 +29,6 @@ def get_color_from_image(ui_mm):
         avg_color = np.average(avg_color_per_row, axis=0)
 
         global globalColorField
-        print(avg_color)
         globalColorField = utils.convert_rgb_to_hex(int(avg_color[0]),int(avg_color[1]),int(avg_color[2]))
         change_button_color(ui_mm, globalColorField)
 
