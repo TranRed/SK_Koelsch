@@ -23,7 +23,24 @@ def get_color_from_image(ui_mm):
     path = fileDialog.getOpenFileName(None, "Bild wählen ...", "", "Images (*.png *.bmp *.jpg *.jpeg *.tif *.gif)")
 
     if path[0] != '':
-        img = io.imread(path[0])[:, :, :-1]
+        img = io.imread(path[0])[:, :, :, ]
+        if img.shape[2] == 2:
+             msg = QtWidgets.QMessageBox()
+             msg.setIcon(QtWidgets.QMessageBox.Warning)
+             msg.setText("Das ausgewählte bild ist graustufig. Bitte wählen Sie ein farbiges Bild.")
+             msg.setWindowTitle("Fehler")
+             msg.exec_()
+        elif img.shape[2] == 3:
+            pass #image already usable
+        elif img.shape[2] == 4:
+            img = io.imread(path[0])[:, :, :-1 ]
+        else:
+             msg = QtWidgets.QMessageBox()
+             msg.setIcon(QtWidgets.QMessageBox.Warning)
+             msg.setText("Fehler beim auslesen der Bilddatei. Bitte wählen sie ein anderes Bild.")
+             msg.setWindowTitle("Fehler")
+             msg.exec_()
+
 
         avg_color_per_row = np.average(img, axis=0)
         avg_color = np.average(avg_color_per_row, axis=0)
