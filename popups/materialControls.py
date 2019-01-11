@@ -93,7 +93,7 @@ def on_click_material_save(ui_mm,ui):
              return
         else:
              model.insert_material((ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text(),globalColorField))
-    controller.fill_comboBox_material(ui)
+    controller.refresh_comboBox_material(ui, ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text())
     ui_mm.accept()
 
 def on_click_material_delete(ui_mm,ui):

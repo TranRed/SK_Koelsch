@@ -121,6 +121,13 @@ def connect_size_fields(ui):
     ui.lineEdit_allowanceSideB.textChanged.connect(lambda: calc_semifinished(ui))
     ui.lineEdit_allowanceSideC.textChanged.connect(lambda: calc_semifinished(ui))
 
+def refresh_comboBox_material(ui, material, normbez, chembez):
+    fill_comboBox_material(ui)
+    index = ui.comboBox_material.findText((material + " - " + normbez + " - " + chembez),
+                                            QtCore.Qt.MatchFixedString)
+    if index >= 0:
+         ui.comboBox_material.setCurrentIndex(index)
+
 def fill_comboBox_material(ui):
     ui.comboBox_material.clear()
     resultSet = model.read_all_materials();
