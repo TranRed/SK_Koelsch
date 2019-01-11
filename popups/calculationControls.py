@@ -121,7 +121,7 @@ def connect_buttons(dialog):
     dialog.ui.buttonBox.clicked.connect(lambda: close(dialog))
 
 def create_globals():
-    locale.setlocale(locale.LC_ALL, 'de_DE.utf-8')
+    locale.setlocale(locale.LC_ALL, '')
 
     global cogm
     cogm = Decimal("0.00")
