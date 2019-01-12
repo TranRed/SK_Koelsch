@@ -18,6 +18,8 @@ def set_first_call(bool):
     first_call = bool
 
 def add_sfg(dialog, material):
+    global initializing
+    initializing = True
     rowCount = dialog.ui.tableWidget.rowCount()
     dialog.ui.tableWidget.insertRow(rowCount)
     dialog.ui.tableWidget.setItem(rowCount, 0, QtWidgets.QTableWidgetItem(str(rowCount+1)))
@@ -32,18 +34,14 @@ def add_sfg(dialog, material):
     make_item_not_editable(dialog.ui.tableWidget.item(rowCount,1))
     make_item_not_editable(dialog.ui.tableWidget.item(rowCount,6))
 
-    register_item_changed(dialog.ui.tableWidget,rowCount)
+    initializing = False
 
 def update(dialog, mainUi):
     data = utils.build_list_from_table(dialog.ui.tableWidget)
     for dataset in data:
         for item in dataset:
             if item.text() == '':
-                msg = QtWidgets.QMessageBox()
-                msg.setIcon(QtWidgets.QMessageBox.Warning)
-                msg.setText("Bitte alle Felder füllen")
-                msg.setWindowTitle("Fehler")
-                msg.exec_()
+                utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte alle Felder füllen","Fehler")
                 return
     model.setSfg(data)
     dialog.close()
@@ -61,21 +59,24 @@ def make_item_not_editable(item):
     item.setFlags(item.flags()  & ~QtCore.Qt.ItemIsEditable
                                 & ~QtCore.Qt.ItemIsEnabled)
 
-def handle_item_change(tableWidget, row):
+def handle_item_change(tableWidget):
     global initializing
     #only check after data was initialized
     if initializing == True:
         return
-    for column in range(2,5):
-        if not re.match("^\d+$",tableWidget.item(row,column).text()):
-            utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie eine ganze Zahlen ein.","Fehler")
-            return
 
-    newVolume = Decimal(tableWidget.item(row,2).text()) * Decimal(tableWidget.item(row,3).text()) * Decimal(tableWidget.item(row,4).text())
-    tableWidget.item(row,6).setText(str(newVolume))
+    for row in range(0,tableWidget.rowCount()):
+        for column in range(2,5):
+            if not re.match("^\d+$",tableWidget.item(row,column).text()):
+                utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie eine ganze Zahlen ein.","Fehler")
+                return
 
-def register_item_changed(tableWidget, row):
-        tableWidget.itemChanged.connect(lambda: handle_item_change(tableWidget,row))
+        newVolume = Decimal(tableWidget.item(row,2).text()) * Decimal(tableWidget.item(row,3).text()) * Decimal(tableWidget.item(row,4).text())
+        if tableWidget.item(row,6).text() != str(newVolume):
+            tableWidget.item(row,6).setText(str(newVolume))
+
+def register_item_changed(tableWidget):
+        tableWidget.itemChanged.connect(lambda: handle_item_change(tableWidget))
 
 
 
@@ -107,14 +108,14 @@ def show(material, mainUi):
         make_item_not_editable(dialog.ui.tableWidget.item(row,1))
         make_item_not_editable(dialog.ui.tableWidget.item(row,6))
 
-        register_item_changed(dialog.ui.tableWidget,row)
-
         format_number(dialog.ui.tableWidget.item(row,2))
         format_number(dialog.ui.tableWidget.item(row,3))
         format_number(dialog.ui.tableWidget.item(row,4))
         format_number(dialog.ui.tableWidget.item(row,5))
+        format_number(dialog.ui.tableWidget.item(row,6))
 
 
+    register_item_changed(dialog.ui.tableWidget)
     connect_buttons(dialog, mainUi, material)
     initializing = False
     dialog.exec_()
