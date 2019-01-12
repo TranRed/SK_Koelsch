@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'sfg.ui'
 #
-# Created by: PyQt5 UI code generator 5.10.1
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -37,6 +37,12 @@ class Ui_Dialog(object):
         icon.addPixmap(QtGui.QPixmap("Icons/greenPlus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_add.setIcon(icon)
         self.toolButton_add.setObjectName("toolButton_add")
+        self.toolButton_delete = QtWidgets.QToolButton(Dialog)
+        self.toolButton_delete.setGeometry(QtCore.QRect(60, 510, 31, 31))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("Icons/minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.toolButton_delete.setIcon(icon1)
+        self.toolButton_delete.setObjectName("toolButton_delete")
         self.toolButton_cancel = QtWidgets.QToolButton(Dialog)
         self.toolButton_cancel.setGeometry(QtCore.QRect(440, 510, 81, 31))
         self.toolButton_cancel.setObjectName("toolButton_cancel")
@@ -65,6 +71,7 @@ class Ui_Dialog(object):
         item = self.tableWidget.horizontalHeaderItem(6)
         item.setText(_translate("Dialog", "Volumen"))
         self.toolButton_add.setText(_translate("Dialog", "..."))
+        self.toolButton_delete.setText(_translate("Dialog", "..."))
         self.toolButton_cancel.setText(_translate("Dialog", "Abbrechen"))
         self.toolButton_confirm.setText(_translate("Dialog", "Bestätigen"))
 

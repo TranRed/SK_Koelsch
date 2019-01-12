@@ -30,6 +30,12 @@ class Ui_Dialog(object):
         icon.addPixmap(QtGui.QPixmap("Icons/greenPlus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.toolButton_add.setIcon(icon)
         self.toolButton_add.setObjectName("toolButton_add")
+        self.toolButton_delete = QtWidgets.QToolButton(Dialog)
+        self.toolButton_delete.setGeometry(QtCore.QRect(60, 510, 31, 31))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap("Icons/minus.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.toolButton_delete.setIcon(icon1)
+        self.toolButton_delete.setObjectName("toolButton_delete")
 
         self.retranslateUi(Dialog)
         self.buttonBox.accepted.connect(Dialog.accept)
@@ -42,4 +48,5 @@ class Ui_Dialog(object):
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("Dialog", "Mengenstaffel (Stück)"))
         self.toolButton_add.setText(_translate("Dialog", "..."))
+        self.toolButton_delete.setText(_translate("Dialog", "..."))
 
