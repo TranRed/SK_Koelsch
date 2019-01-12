@@ -102,7 +102,6 @@ def show(material, mainUi):
     dialog.ui = sfg.Ui_Dialog()
     dialog.ui.setupUi(dialog)
     dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-    #dialog.ui.tableWidget.verticalHeader().setVisible(False)
     header = dialog.ui.tableWidget.horizontalHeader()
     dialog.ui.tableWidget.setColumnHidden(0, True)
     header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
