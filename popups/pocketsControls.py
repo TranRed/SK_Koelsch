@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
 from popups import pockets
 import model, utils
+import re
 
 class customDialog(QtWidgets.QDialog):
     def __init__(self, previousData, parent=None):
@@ -56,6 +57,27 @@ def revert_data(oldState):
 def update(dialogUi, mainUi):
     model.setPockets(utils.build_list_from_pocket_table(dialogUi.tableWidget))
     mainUi.lineEdit_pockets.setText(str(dialogUi.tableWidget.rowCount()))
+
+    for row in range(0,dialogUi.tableWidget.rowCount()):
+        rowOut = int(row) + int(1)
+        if ( dialogUi.tableWidget.item(row,1) == None
+            or not re.match("^\d+$",dialogUi.tableWidget.item(row,1).text())):
+            utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie eine ganze Zahl als Tiefe in Zeile "+str(rowOut)+" ein.","Fehler")
+            #@TO-DO: closing and reopening the dialog seems a bit sketchy, better solution needed
+            show(mainUi)
+            return
+        if ( dialogUi.tableWidget.item(row,3) == None
+            or not re.match("^\d+$",dialogUi.tableWidget.item(row,3).text())):
+            utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie eine ganze Zahl als Hüllfläche: a in Zeile "+str(rowOut)+" ein.","Fehler")
+            #@TO-DO: closing and reopening the dialog seems a bit sketchy, better solution needed
+            show(mainUi)
+            return
+        if ( dialogUi.tableWidget.item(row,4) == None
+            or not re.match("^\d+$",dialogUi.tableWidget.item(row,4).text())):
+            utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie eine ganze Zahl als Hüllfläche: b in Zeile "+str(rowOut)+" ein.","Fehler")
+            #@TO-DO: closing and reopening the dialog seems a bit sketchy, better solution needed
+            show(mainUi)
+            return
 
 def connect_buttons(dialogUi, mainUi, previousData):
     dialogUi.toolButton_add.clicked.connect(lambda: add_pocket(dialogUi))
