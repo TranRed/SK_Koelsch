@@ -1,6 +1,16 @@
 from PyQt5 import QtCore, QtWidgets
 from popups import volumeScaling
 import model, utils
+import re
+
+class customDialog(QtWidgets.QDialog):
+    def __init__(self, previousData, parent=None):
+        super().__init__(  )
+        self.previousData = previousData
+
+    #self definde closeEvent needed to have the same handling as cancel button
+    def closeEvent(self,event):
+        revert_data(self.previousData)
 
 def create_copy():
     previousData = model.getVolumeScaling()
@@ -23,6 +33,14 @@ def update(dialogUi, mainUi):
     model.setVolumeScaling(utils.build_list_from_table(dialogUi.tableWidget))
     mainUi.lineEdit_volumeScaling.setText(str(dialogUi.tableWidget.rowCount()))
 
+    for row in range(0,dialogUi.tableWidget.rowCount()):
+        rowOut = int(row) + int(1)
+        if ( dialogUi.tableWidget.item(row,0) == None
+            or not re.match("^\d+$",dialogUi.tableWidget.item(row,0).text())):
+            utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie eine ganze Zahl in Zeile "+str(rowOut)+" ein.","Fehler")
+            #@TO-DO: closing and reopening the dialog seems a bit sketchy, better solution needed
+            show(mainUi)
+
 def revert_data(oldState):
     model.setVolumeScaling(oldState)
 
@@ -32,13 +50,13 @@ def connect_buttons(dialogUi, mainUi, previousData):
     dialogUi.buttonBox.rejected.connect(lambda: revert_data(previousData))
 
 def show(mainUi):
-    dialog = QtWidgets.QDialog()
+    previousData = create_copy()
+    dialog = customDialog(previousData)
     dialog.ui = volumeScaling.Ui_Dialog()
     dialog.ui.setupUi(dialog)
     dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
     header = dialog.ui.tableWidget.horizontalHeader()
     header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
-    previousData = create_copy()
     utils.fill_table_from_list(dialog.ui.tableWidget, model.getVolumeScaling())
     connect_buttons(dialog.ui, mainUi, previousData)
     dialog.exec_()

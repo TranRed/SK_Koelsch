@@ -2,6 +2,14 @@ from PyQt5 import QtCore, QtWidgets
 from popups import pockets
 import model, utils
 
+class customDialog(QtWidgets.QDialog):
+    def __init__(self, previousData, parent=None):
+        super().__init__(  )
+        self.previousData = previousData
+
+    #self definde closeEvent needed to have the same handling as cancel button
+    def closeEvent(self,event):
+        revert_data(self.previousData)
 
 def create_copy():
     previousData = model.getPockets()
@@ -55,7 +63,8 @@ def connect_buttons(dialogUi, mainUi, previousData):
     dialogUi.buttonBox.rejected.connect(lambda: revert_data(previousData))
 
 def show(mainUi):
-    dialog = QtWidgets.QDialog()
+    previousData = create_copy()
+    dialog = customDialog(previousData)
     dialog.ui = pockets.Ui_Dialog()
     dialog.ui.setupUi(dialog)
     dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
@@ -66,7 +75,7 @@ def show(mainUi):
         else:
             header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
 
-    previousData = create_copy()
+
     utils.fill_table_from_pocket_list(dialog.ui.tableWidget, model.getPockets())
     connect_buttons(dialog.ui, mainUi, previousData)
     dialog.exec_()
