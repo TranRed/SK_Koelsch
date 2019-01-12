@@ -44,8 +44,14 @@ def update(dialogUi, mainUi):
 def revert_data(oldState):
     model.setVolumeScaling(oldState)
 
+def delete_rows(ui):
+    selectedRows = ui.tableWidget.selectionModel().selectedRows()
+    for index in sorted(selectedRows):
+        ui.tableWidget.removeRow(index.row())
+
 def connect_buttons(dialogUi, mainUi, previousData):
     dialogUi.toolButton_add.clicked.connect(lambda: add_volumeScaling(dialogUi))
+    dialogUi.toolButton_delete.clicked.connect(lambda: delete_rows(dialogUi))
     dialogUi.buttonBox.accepted.connect(lambda: update(dialogUi, mainUi))
     dialogUi.buttonBox.rejected.connect(lambda: revert_data(previousData))
 

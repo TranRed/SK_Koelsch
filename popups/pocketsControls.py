@@ -51,6 +51,11 @@ def add_pocket(ui):
     checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
     ui.tableWidget.setItem(rowCount,2,checkBoxItem)
 
+def delete_rows(ui):
+    selectedRows = ui.tableWidget.selectionModel().selectedRows()
+    for index in sorted(selectedRows):
+        ui.tableWidget.removeRow(index.row())
+
 def revert_data(oldState):
     model.setPockets(oldState)
 
@@ -81,6 +86,7 @@ def update(dialogUi, mainUi):
 
 def connect_buttons(dialogUi, mainUi, previousData):
     dialogUi.toolButton_add.clicked.connect(lambda: add_pocket(dialogUi))
+    dialogUi.toolButton_delete.clicked.connect(lambda: delete_rows(dialogUi))
     dialogUi.buttonBox.accepted.connect(lambda: update(dialogUi, mainUi))
     dialogUi.buttonBox.rejected.connect(lambda: revert_data(previousData))
 

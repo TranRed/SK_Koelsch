@@ -50,8 +50,18 @@ def exit(dialog):
     set_first_call(True)
     dialog.close()
 
+def delete_rows(ui):
+    selectedRows = ui.tableWidget.selectionModel().selectedRows()
+    for index in sorted(selectedRows):
+        ui.tableWidget.removeRow(index.row())
+
+    for row in range(0,ui.tableWidget.rowCount()):
+        ui.tableWidget.item(row,0).setText(str(row + 1))
+
+
 def connect_buttons(dialog, mainUi, material):
     dialog.ui.toolButton_add.clicked.connect(lambda: add_sfg(dialog,material))
+    dialog.ui.toolButton_delete.clicked.connect(lambda: delete_rows(dialog.ui))
     dialog.ui.toolButton_confirm.clicked.connect(lambda: update(dialog, mainUi))
     dialog.ui.toolButton_cancel.clicked.connect(lambda: exit(dialog))
 
@@ -92,10 +102,12 @@ def show(material, mainUi):
     dialog.ui = sfg.Ui_Dialog()
     dialog.ui.setupUi(dialog)
     dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-    dialog.ui.tableWidget.verticalHeader().setVisible(False)
+    #dialog.ui.tableWidget.verticalHeader().setVisible(False)
     header = dialog.ui.tableWidget.horizontalHeader()
-    for i in range(0,5):
-        header.setSectionResizeMode(i, QtWidgets.QHeaderView.ResizeToContents)
+    dialog.ui.tableWidget.setColumnHidden(0, True)
+    header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+    for i in range(2,5):
+        header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
     if first_call == True:
         utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))
         model.setSfg(utils.build_list_from_table(dialog.ui.tableWidget))
