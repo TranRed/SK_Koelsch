@@ -1,5 +1,12 @@
 from PyQt5 import QtWidgets
 
+def show_message_box(icon,text,title):
+     msg = QtWidgets.QMessageBox()
+     msg.setIcon(icon)
+     msg.setText(text)
+     msg.setWindowTitle(title)
+     msg.exec_()
+
 def build_list_from_pocket_table(tableWidget):
     rowCount = tableWidget.rowCount()
     columnCount = tableWidget.columnCount()

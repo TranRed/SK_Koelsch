@@ -4,6 +4,9 @@ from popups import sfgControls, material
 import controller, utils
 import numpy as np
 import skimage.io as io
+import re
+import locale
+from decimal import *
 
 class MaterialDialog(QtWidgets.QDialog, material.Ui_Material):
     def __init__(self, mode, parent=None):
@@ -25,22 +28,15 @@ def get_color_from_image(ui_mm):
     if path[0] != '':
         img = io.imread(path[0])[:, :, :, ]
         if img.shape[2] == 2:
-             msg = QtWidgets.QMessageBox()
-             msg.setIcon(QtWidgets.QMessageBox.Warning)
-             msg.setText("Das ausgewählte bild ist graustufig. Bitte wählen Sie ein farbiges Bild.")
-             msg.setWindowTitle("Fehler")
-             msg.exec_()
+            utils.show_message_box(QtWidgets.QMessageBox.Warning,"Das ausgewählte bild ist graustufig. Bitte wählen Sie ein farbiges Bild.","Fehler")
+            return
         elif img.shape[2] == 3:
             pass #image already usable
         elif img.shape[2] == 4:
             img = io.imread(path[0])[:, :, :-1 ]
         else:
-             msg = QtWidgets.QMessageBox()
-             msg.setIcon(QtWidgets.QMessageBox.Warning)
-             msg.setText("Fehler beim auslesen der Bilddatei. Bitte wählen sie ein anderes Bild.")
-             msg.setWindowTitle("Fehler")
-             msg.exec_()
-
+             utils.show_message_box(QtWidgets.QMessageBox.Warning,"Fehler beim auslesen der Bilddatei. Bitte wählen sie ein anderes Bild.","Fehler")
+             return
 
         avg_color_per_row = np.average(img, axis=0)
         avg_color = np.average(avg_color_per_row, axis=0)
@@ -65,6 +61,7 @@ def connect_common_buttons(ui_mm, ui):
 
 
 def on_click_new_material(ui):
+    locale.setlocale(locale.LC_ALL, '')
     ui_mm = MaterialDialog('N')
     global globalColorField
     globalColorField = '#ffffff'
@@ -74,9 +71,34 @@ def on_click_new_material(ui):
     ui_mm.exec()
 
 def on_click_material_save(ui_mm,ui):
+    if not re.match("[0-9]{1}[.]{1}[0-9]{4}",ui_mm.lineEdit_material.text()):
+         utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie die Werkstoffnummer im Format 0.0000 ein","Fehler")
+         return
+
+    decimalPoint = locale.localeconv()['decimal_point']
+    seperator = locale.localeconv()['thousands_sep']
+    densityStr = str(ui_mm.lineEdit_density.text()).replace(seperator, '')
+
+    if not re.match("\d+(?:\,\d{0,3})?$",densityStr):
+        utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie die Dichte im Format 0"+decimalPoint+"000 ein","Fehler")
+        return
+
+    #settings for regular numbers and currency can be different
+    #they are mostlikely the same in 99.999% of the cases, but this is the clean way to code it
+    decimalPoint = locale.localeconv()['mon_decimal_point']
+    seperator = locale.localeconv()['mon_thousands_sep']
+    priceStr = str(ui_mm.lineEdit_price.text()).replace(seperator, '')
+
+    if not re.match("\d+(?:\,\d{0,2})?$",priceStr):
+        utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie den Preis im Format 0"+decimalPoint+"00 ein","Fehler")
+        return
+
+    density = locale.atof(densityStr)
+    price = locale.atof(priceStr)
+
     global globalColorField
     if ui_mm.mode == 'E':
-        model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text(),globalColorField,ui_mm.lineEdit_material.text()))
+        model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),density,price,globalColorField,ui_mm.lineEdit_material.text()))
         if model.getSfg() != []:
             model.update_halbzeug((ui_mm.lineEdit_material.text(),), utils.create_tuple_from_list(model.getSfg()))
     elif ui_mm.mode == 'N':
@@ -85,20 +107,16 @@ def on_click_material_save(ui_mm,ui):
              ui_mm.lineEdit_chemical.text() == '' or
              ui_mm.lineEdit_density.text() == '' or
              ui_mm.lineEdit_price.text() == '' ):
-             msg = QtWidgets.QMessageBox()
-             msg.setIcon(QtWidgets.QMessageBox.Warning)
-             msg.setText("Bitte alle Felder füllen")
-             msg.setWindowTitle("Fehler")
-             msg.exec_()
+             utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte alle Felder füllen","Fehler")
              return
         else:
-             model.insert_material((ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),ui_mm.lineEdit_density.text(),ui_mm.lineEdit_price.text(),globalColorField))
+            model.insert_material((ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),density,price,globalColorField))
     controller.refresh_comboBox_material(ui, ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text())
     ui_mm.accept()
 
 def on_click_material_delete(ui_mm,ui):
     msg = QtWidgets.QMessageBox()
-    msg.setIcon(QtWidgets.QMessageBox.Warning)
+    msg.setIcon(QtWidgets.QMessageBox.Question)
     msg.setText("Material wirklich löschen?")
     msg.setWindowTitle("Bestätigung")
     msg.setStandardButtons(QtWidgets.QMessageBox.Yes|QtWidgets.QMessageBox.No)
@@ -119,6 +137,7 @@ def on_click_edit_sfg(material,mainUi):
     sfgControls.show(material,mainUi)
 
 def on_click_edit_material(ui):
+    locale.setlocale(locale.LC_ALL, '')
     ui_mm = MaterialDialog('E')
     index = ui.comboBox_material.currentIndex()
     resultSet = model.read_all_materials()
@@ -127,8 +146,10 @@ def on_click_edit_material(ui):
     ui_mm.lineEdit_material.setReadOnly(True)
     ui_mm.lineEdit_standard.setText(str(record['normbez']))
     ui_mm.lineEdit_chemical.setText(str(record['chembez']))
-    ui_mm.lineEdit_density.setText(str(record['dichte']))
-    ui_mm.lineEdit_price.setText(str(record['preis']))
+    density = Decimal(record['dichte']).quantize(Decimal("0.000"), ROUND_HALF_UP)
+    ui_mm.lineEdit_density.setText(str('{0:n}'.format(density)))
+    price = Decimal(record['preis']).quantize(Decimal("0.00"), ROUND_HALF_UP)
+    ui_mm.lineEdit_price.setText(str('{0:n}'.format(price)))
     global globalColorField
     globalColorField = str(record['farbe'])
     change_button_color(ui_mm, globalColorField)
