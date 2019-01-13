@@ -9,7 +9,7 @@ class Window(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
-        
+
         # a figure instance to plot on
         self.figure = plt.figure()
 
@@ -35,13 +35,13 @@ class Window(QtWidgets.QWidget):
         upper = max(sideLengths)
 
         points = np.array([[0, 0, 0],
-                          [0, 0, a],
-                          [0, c, a],
+                          [0, 0, b],
+                          [0, c, b],
                           [0, c, 0],
-                          [b, 0, 0],
-                          [b, 0, a],
-                          [b, c, a],
-                          [b, c, 0]])
+                          [a, 0, 0],
+                          [a, 0, b],
+                          [a, c, b],
+                          [a, c, 0]])
 
         P = [[1 , 0 ,  0],
          [0 , 1 , 0],
@@ -65,16 +65,15 @@ class Window(QtWidgets.QWidget):
          [Z[4],Z[7],Z[3],Z[0]],
          [Z[2],Z[3],Z[7],Z[6]]]
 
-        
+
         # plot sides
         ax.add_collection3d(Poly3DCollection(verts,
          facecolors=materialData['farbe'], linewidths=1, edgecolors='black', alpha=.25))
 
-        ax.set_xlabel('b')
+        ax.set_xlabel('a')
         ax.set_xbound(0,upper)
         ax.set_ylabel('c')
         ax.set_ybound(0,upper)
-        ax.set_zlabel('a')
+        ax.set_zlabel('b')
         ax.set_zbound(0,upper)
         plt.ioff()
-
