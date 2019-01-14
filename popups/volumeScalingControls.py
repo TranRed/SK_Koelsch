@@ -40,6 +40,7 @@ def update(dialogUi, mainUi):
             utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie eine ganze Zahl in Zeile "+str(rowOut)+" ein.","Fehler")
             #@TO-DO: closing and reopening the dialog seems a bit sketchy, better solution needed
             show(mainUi)
+            return #only one message at a time
 
 def revert_data(oldState):
     model.setVolumeScaling(oldState)
