@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'PoC.ui'
 #
-# Created by: PyQt5 UI code generator 5.10.1
+# Created by: PyQt5 UI code generator 5.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -253,7 +253,8 @@ class Ui_MainWindow(object):
         self.comboBox_contourMilling.addItem("")
         self.spinBox_stretching = QtWidgets.QSpinBox(self.groupBox_modification)
         self.spinBox_stretching.setGeometry(QtCore.QRect(170, 60, 42, 22))
-        self.spinBox_stretching.setMaximum(4)
+        self.spinBox_stretching.setMinimum(1)
+        self.spinBox_stretching.setMaximum(6)
         self.spinBox_stretching.setObjectName("spinBox_stretching")
         self.lineEdit_drilling.raise_()
         self.lineEdit_pockets.raise_()
@@ -407,4 +408,3 @@ class Ui_MainWindow(object):
         self.menu_masterData.setTitle(_translate("MainWindow", "Stammdaten pflegen"))
         self.action_editMaterial.setText(_translate("MainWindow", "Material bearbeiten"))
         self.action_newMaterial.setText(_translate("MainWindow", "Material anlegen"))
-
