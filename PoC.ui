@@ -1217,6 +1217,18 @@
   <tabstop>radioButton_cutted</tabstop>
   <tabstop>comboBox_machine</tabstop>
   <tabstop>spinBox_stretching</tabstop>
+  <tabstop>checkBox_faceMilling_top</tabstop>
+  <tabstop>checkBox_faceMilling_bottom</tabstop>
+  <tabstop>checkBox_faceMilling_front</tabstop>
+  <tabstop>checkBox_faceMilling_back</tabstop>
+  <tabstop>checkBox_faceMilling_right</tabstop>
+  <tabstop>checkBox_faceMilling_left</tabstop>
+  <tabstop>checkBox_contourMilling_top</tabstop>
+  <tabstop>checkBox_contourMilling_bottom</tabstop>
+  <tabstop>checkBox_contourMilling_front</tabstop>
+  <tabstop>checkBox_contourMilling_back</tabstop>
+  <tabstop>checkBox_contourMilling_right</tabstop>
+  <tabstop>checkBox_contourMilling_left</tabstop>
   <tabstop>lineEdit_drilling</tabstop>
   <tabstop>pushButton_drilling</tabstop>
   <tabstop>lineEdit_pockets</tabstop>
