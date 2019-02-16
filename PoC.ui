@@ -850,102 +850,6 @@
       <string>Definieren</string>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_faceMilling">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>90</y>
-       <width>161</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>IBeamCursor</cursorShape>
-     </property>
-     <item>
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>A (oben)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>A' (unten)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>B (vorne)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>B' (hinten)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>C (rechts)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>C' (links)</string>
-      </property>
-     </item>
-    </widget>
-    <widget class="QComboBox" name="comboBox_contourMilling">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>110</y>
-       <width>161</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="cursor">
-      <cursorShape>IBeamCursor</cursorShape>
-     </property>
-     <item>
-      <property name="text">
-       <string/>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>A (oben)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>A' (unten)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>B (vorne)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>B' (hinten)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>C (rechts)</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>C' (links)</string>
-      </property>
-     </item>
-    </widget>
     <widget class="QSpinBox" name="spinBox_stretching">
      <property name="geometry">
       <rect>
@@ -960,6 +864,243 @@
      </property>
      <property name="maximum">
       <number>6</number>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_faceMilling_top">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>90</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>A (oben)</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>-1</number>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>A</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_faceMilling_bottom">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>90</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>A' (unten)</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>-1</number>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>A'</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_faceMilling_back">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>90</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>B' (hinten)</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>B'</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_faceMilling_front">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>90</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>B (vorne)</string>
+     </property>
+     <property name="toolTipDuration">
+      <number>-1</number>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>B</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_faceMilling_right">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>90</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>C (rechts)</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>C</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_faceMilling_left">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>90</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>C' (links)</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>C'</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_contourMilling_right">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>110</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>C (rechts)</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>C</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_contourMilling_bottom">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>110</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>A' (unten)</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>A'</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_contourMilling_left">
+     <property name="geometry">
+      <rect>
+       <x>370</x>
+       <y>110</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>C' (links)</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>C'</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_contourMilling_top">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>110</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>A (oben)</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>A</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_contourMilling_front">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>110</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>B (vorne)</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>B</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="checkBox_contourMilling_back">
+     <property name="geometry">
+      <rect>
+       <x>290</x>
+       <y>110</y>
+       <width>31</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="toolTip">
+      <string>B' (hinten)</string>
+     </property>
+     <property name="layoutDirection">
+      <enum>Qt::RightToLeft</enum>
+     </property>
+     <property name="text">
+      <string>B'</string>
      </property>
     </widget>
     <zorder>lineEdit_drilling</zorder>
@@ -978,9 +1119,19 @@
     <zorder>label_volumeScaling</zorder>
     <zorder>comboBox_machine</zorder>
     <zorder>comboBox_aging</zorder>
-    <zorder>comboBox_contourMilling</zorder>
     <zorder>spinBox_stretching</zorder>
-    <zorder>comboBox_faceMilling</zorder>
+    <zorder>checkBox_faceMilling_top</zorder>
+    <zorder>checkBox_faceMilling_bottom</zorder>
+    <zorder>checkBox_faceMilling_back</zorder>
+    <zorder>checkBox_faceMilling_front</zorder>
+    <zorder>checkBox_faceMilling_right</zorder>
+    <zorder>checkBox_faceMilling_left</zorder>
+    <zorder>checkBox_contourMilling_right</zorder>
+    <zorder>checkBox_contourMilling_bottom</zorder>
+    <zorder>checkBox_contourMilling_left</zorder>
+    <zorder>checkBox_contourMilling_top</zorder>
+    <zorder>checkBox_contourMilling_front</zorder>
+    <zorder>checkBox_contourMilling_back</zorder>
    </widget>
    <widget class="QPushButton" name="pushButton_calculation">
     <property name="geometry">
@@ -1021,7 +1172,7 @@
      <x>0</x>
      <y>0</y>
      <width>1284</width>
-     <height>23</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_masterData">
@@ -1066,8 +1217,6 @@
   <tabstop>radioButton_cutted</tabstop>
   <tabstop>comboBox_machine</tabstop>
   <tabstop>spinBox_stretching</tabstop>
-  <tabstop>comboBox_faceMilling</tabstop>
-  <tabstop>comboBox_contourMilling</tabstop>
   <tabstop>lineEdit_drilling</tabstop>
   <tabstop>pushButton_drilling</tabstop>
   <tabstop>lineEdit_pockets</tabstop>
