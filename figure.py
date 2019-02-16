@@ -67,8 +67,15 @@ class Window(QtWidgets.QWidget):
 
 
         # plot sides
-        ax.add_collection3d(Poly3DCollection(verts,
-         facecolors=materialData['farbe'], linewidths=1, edgecolors='black', alpha=.25))
+        # transparency (alpha value) needed to make side labels readable from all directions
+        collection = Poly3DCollection(verts, linewidths=1, edgecolors='black', alpha=.3)
+
+        #there is a bug with setting transparency (alpha argument) and facecolor in the same statement
+        #facecolor will overwrite the alpha setting => alpha will be set to 1
+        #therefore face color has to be set in a different statement
+        collection.set_facecolor(materialData['farbe'])
+        ax.add_collection3d(collection)
+
 
         ax.set_xlabel('a')
         ax.set_xbound(0,upper)
@@ -76,4 +83,13 @@ class Window(QtWidgets.QWidget):
         ax.set_ybound(0,upper)
         ax.set_zlabel('b')
         ax.set_zbound(0,upper)
+
+        #add lables for all sides as indication for the user
+        ax.text((a/2),(c/2),(b+2),"A", fontsize=12, color='red')
+        ax.text((a/2),(c/2),(-2),"A'", fontsize=12, color='red')
+        ax.text((a/2),(-2),(b/2),"B", fontsize=12, color='red')
+        ax.text((a/2),(c+2),(b/2),"B'", fontsize=12, color='red')
+        ax.text((a+2),(c/2),(b/2),"C", fontsize=12, color='red')
+        ax.text((-2),(c/2),(b/2),"C'", fontsize=12, color='red')
+
         plt.ioff()
