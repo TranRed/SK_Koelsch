@@ -2,7 +2,7 @@ import sqlite3
 import utils
 
 def read_halbzeug(material):
-    sql = "SELECT * FROM halbzeug WHERE material = ?" + " ORDER BY volumen"
+    sql = "SELECT * FROM halbzeug WHERE material = ?" + " ORDER BY id"
     cursor.execute(sql, (material,))
 
     resultSet = []
@@ -13,9 +13,7 @@ def read_halbzeug(material):
         resultDict['material'] = dataset[1]
         resultDict['a'] = dataset[2]
         resultDict['b'] = dataset[3]
-        resultDict['c'] = dataset[4]
-        resultDict['stange'] = dataset[5]
-        resultDict['volumen'] = dataset[6]
+        resultDict['stange'] = dataset[4]
         resultSet.append(resultDict)
 
     return resultSet
@@ -27,7 +25,7 @@ def update_halbzeug(material,halbzeug):
                  material = ?'''
     cursor.execute(sql, material)
 
-    sql = "INSERT INTO halbzeug (id, material, a, b, c, stange, volumen) VALUES (?,?,?,?,?,?,?)"
+    sql = "INSERT INTO halbzeug (id, material, a, b, stange) VALUES (?,?,?,?,?)"
     for item in halbzeug:
         cursor.execute(sql, item)
 

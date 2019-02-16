@@ -44,17 +44,7 @@
    </column>
    <column>
     <property name="text">
-     <string>c</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
      <string>Stange</string>
-    </property>
-   </column>
-   <column>
-    <property name="text">
-     <string>Volumen</string>
     </property>
    </column>
   </widget>

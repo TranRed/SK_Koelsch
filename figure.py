@@ -84,12 +84,13 @@ class Window(QtWidgets.QWidget):
         ax.set_zlabel('b')
         ax.set_zbound(0,upper)
 
-        #add lables for all sides as indication for the user
-        ax.text((a/2),(c/2),(b+2),"A", fontsize=12, color='red')
-        ax.text((a/2),(c/2),(-2),"A'", fontsize=12, color='red')
-        ax.text((a/2),(-2),(b/2),"B", fontsize=12, color='red')
-        ax.text((a/2),(c+2),(b/2),"B'", fontsize=12, color='red')
-        ax.text((a+2),(c/2),(b/2),"C", fontsize=12, color='red')
-        ax.text((-2),(c/2),(b/2),"C'", fontsize=12, color='red')
+        if a>0 and b>0 and c>0:
+            #add lables for all sides as indication for the user
+            ax.text((a/2),(c/2),(b+2),"A", fontsize=12, color='red')
+            ax.text((a/2),(c/2),(-2),"A'", fontsize=12, color='red')
+            ax.text((a/2),(-2),(b/2),"B", fontsize=12, color='red')
+            ax.text((a/2),(c+2),(b/2),"B'", fontsize=12, color='red')
+            ax.text((a+2),(c/2),(b/2),"C", fontsize=12, color='red')
+            ax.text((-2),(c/2),(b/2),"C'", fontsize=12, color='red')
 
         plt.ioff()

@@ -9,7 +9,7 @@ class customDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super().__init__(  )
 
-    #self definde closeEvent needed to have the same handling as cancel button
+    #self definde closeEvent needed
     def closeEvent(self,event):
         exit(self)
 
@@ -27,12 +27,9 @@ def add_sfg(dialog, material):
     dialog.ui.tableWidget.setItem(rowCount, 2, QtWidgets.QTableWidgetItem("0"))
     dialog.ui.tableWidget.setItem(rowCount, 3, QtWidgets.QTableWidgetItem("0"))
     dialog.ui.tableWidget.setItem(rowCount, 4, QtWidgets.QTableWidgetItem("0"))
-    dialog.ui.tableWidget.setItem(rowCount, 5, QtWidgets.QTableWidgetItem("0"))
-    dialog.ui.tableWidget.setItem(rowCount, 6, QtWidgets.QTableWidgetItem("0"))
 
     make_item_not_editable(dialog.ui.tableWidget.item(rowCount,0))
     make_item_not_editable(dialog.ui.tableWidget.item(rowCount,1))
-    make_item_not_editable(dialog.ui.tableWidget.item(rowCount,6))
 
     initializing = False
 
@@ -47,7 +44,6 @@ def update(dialog, mainUi):
     dialog.close()
 
 def exit(dialog):
-    set_first_call(True)
     dialog.close()
 
 def delete_rows(ui):
@@ -58,12 +54,12 @@ def delete_rows(ui):
     for row in range(0,ui.tableWidget.rowCount()):
         ui.tableWidget.item(row,0).setText(str(row + 1))
 
-
 def connect_buttons(dialog, mainUi, material):
     dialog.ui.toolButton_add.clicked.connect(lambda: add_sfg(dialog,material))
     dialog.ui.toolButton_delete.clicked.connect(lambda: delete_rows(dialog.ui))
     dialog.ui.toolButton_confirm.clicked.connect(lambda: update(dialog, mainUi))
     dialog.ui.toolButton_cancel.clicked.connect(lambda: exit(dialog))
+
 
 def make_item_not_editable(item):
     item.setFlags(item.flags()  & ~QtCore.Qt.ItemIsEditable
@@ -76,14 +72,10 @@ def handle_item_change(tableWidget):
         return
 
     for row in range(0,tableWidget.rowCount()):
-        for column in range(2,5):
+        for column in range(2,4):
             if not re.match("^\d+$",tableWidget.item(row,column).text()):
                 utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie eine ganze Zahlen ein.","Fehler")
                 return
-
-        newVolume = Decimal(tableWidget.item(row,2).text()) * Decimal(tableWidget.item(row,3).text()) * Decimal(tableWidget.item(row,4).text())
-        if tableWidget.item(row,6).text() != str(newVolume):
-            tableWidget.item(row,6).setText(str(newVolume))
 
 def register_item_changed(tableWidget):
         tableWidget.itemChanged.connect(lambda: handle_item_change(tableWidget))
@@ -105,7 +97,7 @@ def show(material, mainUi):
     header = dialog.ui.tableWidget.horizontalHeader()
     dialog.ui.tableWidget.setColumnHidden(0, True)
     header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-    for i in range(2,5):
+    for i in range(2,4):
         header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
     if first_call == True:
         utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))
@@ -117,13 +109,10 @@ def show(material, mainUi):
     for row in range(0,dialog.ui.tableWidget.rowCount()):
         make_item_not_editable(dialog.ui.tableWidget.item(row,0))
         make_item_not_editable(dialog.ui.tableWidget.item(row,1))
-        make_item_not_editable(dialog.ui.tableWidget.item(row,6))
 
         format_number(dialog.ui.tableWidget.item(row,2))
         format_number(dialog.ui.tableWidget.item(row,3))
         format_number(dialog.ui.tableWidget.item(row,4))
-        format_number(dialog.ui.tableWidget.item(row,5))
-        format_number(dialog.ui.tableWidget.item(row,6))
 
 
     register_item_changed(dialog.ui.tableWidget)

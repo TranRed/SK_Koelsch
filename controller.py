@@ -35,28 +35,34 @@ def find_alternative(a,b,c,sfgA,sfgB,sfgC,volume):
     result = dict()
     result['volume'] = volume
 
-    if a <= sfgA:
-        if c<=sfgB and b<=sfgC:
-            result['found'] = True
-            result['msg'] = build_alt_message("(AxCxB)", sfgA, sfgB, sfgC )
-            return result
-    elif b<=sfgA:
-        if a<=sfgB and c<=sfgC:
+    if a <= sfgB:
+        if b<=sfgA and c<=sfgC:
             result['found'] = True
             result['msg'] = build_alt_message("(BxAxC)", sfgA, sfgB, sfgC )
             return result
-        elif c<=sfgB and a<=sfgC:
-            result['found'] = True
-            result['msg'] = build_alt_message("(BxCxA)", sfgA, sfgB, sfgC )
-            return result
-    elif c<=sfgA:
-        if a<=sfgB and b<=sfgC:
+        elif b<=sfgC and c<=sfgB:
             result['found'] = True
             result['msg'] = build_alt_message("(CxAxB)", sfgA, sfgB, sfgC )
             return result
-        elif b<=sfgB and a<=sfgC:
+
+    if a <= sfgC:
+        if b<=sfgA and c<=sfgB:
+            result['found'] = True
+            result['msg'] = build_alt_message("(BxCxA)", sfgA, sfgB, sfgC )
+            return result
+        elif b<=sfgB and c<=sfgA:
             result['found'] = True
             result['msg'] = build_alt_message("(CxBxA)", sfgA, sfgB, sfgC )
+            return result
+
+    if b <= sfgC:
+        if a<=sfgA and c<=sfgB:
+            result['found'] = True
+            result['msg'] = build_alt_message("(AxCxB)", sfgA, sfgB, sfgC )
+            return result
+        elif a<=sfgB and c<=sfgA:
+            result['found'] = True
+            result['msg'] = build_alt_message("(CxAxB)", sfgA, sfgB, sfgC )
             return result
 
     result['found'] = False
@@ -86,15 +92,15 @@ def calc_semifinished(ui):
             for dataset in resultSet:
                 sizeA = int(dataset['a'])
                 sizeB = int(dataset['b'])
-                sizeC = int(dataset['c'])
-                volume = int(dataset['volumen'])
+                sizeC = int(dataset['stange'])
+                volume = sizeA * sizeB * c
                 sfgIsCurrent = False
 
                 if a <= sizeA and b <= sizeB and c <= sizeC and sfgFound == False:
                     sfgIsCurrent = True
                     sfgFound = True
                     sfgFoundVolume = volume
-                    set_sizes(ui,str(sizeA),str(sizeB),str(sizeC),"")
+                    set_sizes(ui,str(sizeA),str(sizeB),str(c),"")
 
                 if altFound == False:
 
