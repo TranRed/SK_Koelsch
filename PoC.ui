@@ -869,9 +869,9 @@
     <widget class="QCheckBox" name="checkBox_faceMilling_top">
      <property name="geometry">
       <rect>
-       <x>170</x>
+       <x>160</x>
        <y>90</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -893,7 +893,7 @@
       <rect>
        <x>210</x>
        <y>90</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -913,9 +913,9 @@
     <widget class="QCheckBox" name="checkBox_faceMilling_back">
      <property name="geometry">
       <rect>
-       <x>290</x>
+       <x>310</x>
        <y>90</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -932,9 +932,9 @@
     <widget class="QCheckBox" name="checkBox_faceMilling_front">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>260</x>
        <y>90</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -954,9 +954,9 @@
     <widget class="QCheckBox" name="checkBox_faceMilling_right">
      <property name="geometry">
       <rect>
-       <x>330</x>
+       <x>360</x>
        <y>90</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -973,9 +973,9 @@
     <widget class="QCheckBox" name="checkBox_faceMilling_left">
      <property name="geometry">
       <rect>
-       <x>370</x>
+       <x>410</x>
        <y>90</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -992,9 +992,9 @@
     <widget class="QCheckBox" name="checkBox_contourMilling_right">
      <property name="geometry">
       <rect>
-       <x>330</x>
+       <x>360</x>
        <y>110</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -1013,7 +1013,7 @@
       <rect>
        <x>210</x>
        <y>110</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -1030,9 +1030,9 @@
     <widget class="QCheckBox" name="checkBox_contourMilling_left">
      <property name="geometry">
       <rect>
-       <x>370</x>
+       <x>410</x>
        <y>110</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -1049,9 +1049,9 @@
     <widget class="QCheckBox" name="checkBox_contourMilling_top">
      <property name="geometry">
       <rect>
-       <x>170</x>
+       <x>160</x>
        <y>110</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
@@ -1068,7 +1068,7 @@
     <widget class="QCheckBox" name="checkBox_contourMilling_front">
      <property name="geometry">
       <rect>
-       <x>250</x>
+       <x>270</x>
        <y>110</y>
        <width>31</width>
        <height>20</height>
@@ -1087,9 +1087,9 @@
     <widget class="QCheckBox" name="checkBox_contourMilling_back">
      <property name="geometry">
       <rect>
-       <x>290</x>
+       <x>310</x>
        <y>110</y>
-       <width>31</width>
+       <width>41</width>
        <height>20</height>
       </rect>
      </property>
