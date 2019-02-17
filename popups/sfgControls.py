@@ -6,12 +6,35 @@ import re
 
 
 class customDialog(QtWidgets.QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, previousData, parent=None):
         super().__init__(  )
+        self.previousData = previousData
 
     #self definde closeEvent needed
     def closeEvent(self,event):
+        revert_data(self.previousData)
         exit(self)
+
+    def set_previous(self, previousData):
+        self.previousData = previousData
+
+def revert_data(oldState):
+    model.setSfg(oldState)
+
+def create_copy():
+    previousData = model.getSfg()
+    restoredData = []
+
+    for dataset in previousData:
+        first = True
+        line = []
+        restoredData.append(line)
+
+        for item in dataset:
+            copy = QtWidgets.QTableWidgetItem(item)
+            line.append(copy)
+
+    return restoredData
 
 def set_first_call(bool):
     global first_call
@@ -36,11 +59,23 @@ def add_sfg(dialog, material):
 def update(dialog, mainUi):
     data = utils.build_list_from_table(dialog.ui.tableWidget)
     for dataset in data:
+        column = 0
         for item in dataset:
+            column += 1
+            #text in first two items (ID, material) are automatically set and do not need to be checked here
+            if column < 3:
+                continue
+
             if item.text() == '':
                 utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte alle Felder füllen","Fehler")
                 return
+            elif ( item.text() == '0'
+                   or not re.match("^\d+$", item.text())):
+                utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie nur Zahlen (>0) ein","Fehler")
+                return
+
     model.setSfg(data)
+    dialog.set_previous(previousData = create_copy())
     dialog.close()
 
 def exit(dialog):
@@ -90,7 +125,7 @@ def show(material, mainUi):
     global initializing
     initializing = True
 
-    dialog = customDialog()
+    dialog = customDialog(previousData = create_copy())
     dialog.ui = sfg.Ui_Dialog()
     dialog.ui.setupUi(dialog)
     dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
@@ -102,9 +137,12 @@ def show(material, mainUi):
     if first_call == True:
         utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))
         model.setSfg(utils.build_list_from_table(dialog.ui.tableWidget))
+        dialog.set_previous(previousData = create_copy())
         set_first_call(False)
     else:
         utils.fill_table_from_list(dialog.ui.tableWidget, model.getSfg())
+
+
 
     for row in range(0,dialog.ui.tableWidget.rowCount()):
         make_item_not_editable(dialog.ui.tableWidget.item(row,0))
