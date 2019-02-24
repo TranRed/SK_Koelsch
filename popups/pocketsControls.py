@@ -3,14 +3,6 @@ from popups import pockets
 import model, utils
 import re
 
-class customDialog(QtWidgets.QDialog):
-    def __init__(self, previousData, parent=None):
-        super().__init__(  )
-        self.previousData = previousData
-
-    #self definde closeEvent needed to have the same handling as cancel button
-    def closeEvent(self,event):
-        revert_data(self.previousData)
 
 def create_copy():
     previousData = model.getPockets()
@@ -182,7 +174,7 @@ def register_item_changed(dialogUi, mainUi):
 
 def show(mainUi):
     previousData = create_copy()
-    dialog = customDialog(previousData)
+    dialog = utils.customDialog(previousData,"popups.pocketsControls")
     dialog.ui = pockets.Ui_Dialog()
     dialog.ui.setupUi(dialog)
     dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)

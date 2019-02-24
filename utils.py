@@ -1,4 +1,18 @@
 from PyQt5 import QtWidgets
+from importlib import import_module
+
+class customDialog(QtWidgets.QDialog):
+    def __init__(self, previousData, caller, parent=None):
+        super().__init__(  )
+        self.set_previous(previousData)
+        self.controller = import_module(caller)
+
+    #self definde closeEvent needed
+    def closeEvent(self,event):
+        self.controller.revert_data(self.previousData)
+
+    def set_previous(self, previousData):
+        self.previousData = previousData
 
 def show_message_box(icon,text,title):
      msg = QtWidgets.QMessageBox()

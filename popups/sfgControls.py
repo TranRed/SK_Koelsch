@@ -4,20 +4,6 @@ from popups import sfg
 from decimal import *
 import re
 
-
-class customDialog(QtWidgets.QDialog):
-    def __init__(self, previousData, parent=None):
-        super().__init__(  )
-        self.previousData = previousData
-
-    #self definde closeEvent needed
-    def closeEvent(self,event):
-        revert_data(self.previousData)
-        exit(self)
-
-    def set_previous(self, previousData):
-        self.previousData = previousData
-
 def revert_data(oldState):
     model.setSfg(oldState)
 
@@ -125,7 +111,7 @@ def show(material, mainUi):
     global initializing
     initializing = True
 
-    dialog = customDialog(previousData = create_copy())
+    dialog = utils.customDialog(previousData = create_copy(),caller = "popups.sfgControls")
     dialog.ui = sfg.Ui_Dialog()
     dialog.ui.setupUi(dialog)
     dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
