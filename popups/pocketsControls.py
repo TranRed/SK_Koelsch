@@ -3,6 +3,18 @@ from popups import pockets
 import model, utils
 import re
 
+class recursionCounter():
+    def __init__(self):
+        self._count = 0
+
+    def increaseCount(self):
+        self._count += 1
+
+    def decreaseCount(self):
+        self._count -= 1
+
+    def getCount(self):
+        return self._count
 
 def create_copy():
     previousData = model.getPockets()
@@ -30,7 +42,7 @@ def create_copy():
 def selected_side(dialogUi, row):
     return dialogUi.tableWidget.cellWidget(row,0).itemText(dialogUi.tableWidget.cellWidget(row,0).currentIndex())
 
-def add_pocket(dialogUi, mainUi):
+def add_pocket(dialogUi, mainUi, recursionCounter):
     rowCount = dialogUi.tableWidget.rowCount()
     dialogUi.tableWidget.insertRow(rowCount)
 
@@ -39,7 +51,7 @@ def add_pocket(dialogUi, mainUi):
     for entry in sides:
         comboBox.addItem(entry)
 
-    comboBox.currentIndexChanged.connect(lambda: handle_item_change(dialogUi, mainUi))
+    comboBox.currentIndexChanged.connect(lambda: handle_item_change(dialogUi, mainUi,recursionCounter))
 
     dialogUi.tableWidget.setCellWidget(rowCount,0,comboBox)
 
@@ -130,15 +142,14 @@ def find_full_pocket_depth(side, mainUi):
         return mainUi.lineEdit_bodySideA.text()
 
 
-def handle_item_change(dialogUi, mainUi):
+def handle_item_change(dialogUi, mainUi, recursionCounter):
     #changing flags in this method to editable triggers the change Event
     #this lead to "infinite" calls ending in an runtime error
     #only doing stuff on the first call and exiting later calls prevents that
-    global recursionCounter
-    recursionCounter += 1
+    recursionCounter.increaseCount()
 
-    if recursionCounter > 1:
-        recursionCounter -= 1
+    if recursionCounter.getCount() > 1:
+        recursionCounter.decreaseCount()
         return
 
     for row in range(0,dialogUi.tableWidget.rowCount()):
@@ -158,19 +169,17 @@ def handle_item_change(dialogUi, mainUi):
             flags = QtWidgets.QTableWidgetItem().flags()
             dialogUi.tableWidget.item(row,1).setFlags(flags)
 
-    recursionCounter -= 1
+    recursionCounter.decreaseCount()
 
 
-def connect_buttons(dialogUi, mainUi, previousData):
-    dialogUi.toolButton_add.clicked.connect(lambda: add_pocket(dialogUi, mainUi))
+def connect_buttons(dialogUi, mainUi, previousData, recursionCounter):
+    dialogUi.toolButton_add.clicked.connect(lambda: add_pocket(dialogUi, mainUi, recursionCounter))
     dialogUi.toolButton_delete.clicked.connect(lambda: delete_rows(dialogUi))
     dialogUi.buttonBox.accepted.connect(lambda: update(dialogUi, mainUi))
     dialogUi.buttonBox.rejected.connect(lambda: revert_data(previousData))
 
-def register_item_changed(dialogUi, mainUi):
-        global recursionCounter
-        recursionCounter = 0
-        dialogUi.tableWidget.itemChanged.connect(lambda: handle_item_change(dialogUi, mainUi))
+def register_item_changed(dialogUi, mainUi, recursionCounter):
+        dialogUi.tableWidget.itemChanged.connect(lambda: handle_item_change(dialogUi, mainUi, recursionCounter))
 
 def show(mainUi):
     previousData = create_copy()
@@ -187,6 +196,8 @@ def show(mainUi):
 
 
     utils.fill_table_from_pocket_list(dialog.ui.tableWidget, model.getPockets())
-    connect_buttons(dialog.ui, mainUi, previousData)
-    register_item_changed(dialog.ui, mainUi)
+
+    recursions = recursionCounter()
+    connect_buttons(dialog.ui, mainUi, previousData, recursions)
+    register_item_changed(dialog.ui, mainUi, recursions)
     dialog.exec_()

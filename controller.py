@@ -112,7 +112,7 @@ def find_next_fitting_sfg(semiFinishedGoods,ui,cuboid):
                         message = ""
 
     if sfgFound == False:
-        set_no_size(ui)
+        set_no_size(ui, cuboid)
 
     if alternativeFound == True and message != "":
         ui.label_sizeNotFound.setText(message)
