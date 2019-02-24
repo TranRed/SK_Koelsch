@@ -1,7 +1,7 @@
 import sqlite3
 import utils
 
-def read_halbzeug(material):
+def read_sfg(material):
     sql = "SELECT * FROM halbzeug WHERE material = ?" + " ORDER BY id"
     cursor.execute(sql, (material,))
 
@@ -18,7 +18,7 @@ def read_halbzeug(material):
 
     return resultSet
 
-def update_halbzeug(material,halbzeug):
+def update_sfg(material,sfg):
     sql = ''' DELETE
               FROM halbzeug
                  WHERE
@@ -26,7 +26,7 @@ def update_halbzeug(material,halbzeug):
     cursor.execute(sql, material)
 
     sql = "INSERT INTO halbzeug (id, material, a, b, stange) VALUES (?,?,?,?,?)"
-    for item in halbzeug:
+    for item in sfg:
         cursor.execute(sql, item)
 
     connection.commit()

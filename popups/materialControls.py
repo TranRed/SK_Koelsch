@@ -100,7 +100,7 @@ def on_click_material_save(ui_mm,ui):
     if ui_mm.mode == 'E':
         model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),density,price,globalColorField,ui_mm.lineEdit_material.text()))
         if model.getSfg() != []:
-            model.update_halbzeug((ui_mm.lineEdit_material.text(),), utils.create_tuple_from_list(model.getSfg()))
+            model.update_sfg((ui_mm.lineEdit_material.text(),), utils.create_tuple_from_list(model.getSfg()))
     elif ui_mm.mode == 'N':
         if ( ui_mm.lineEdit_material.text() == '' or
              ui_mm.lineEdit_standard.text() == '' or

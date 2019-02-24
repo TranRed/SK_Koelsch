@@ -123,7 +123,7 @@ def calc_semifinished(ui):
         if are_side_inputs_valid(ui) == False:
             set_sizes(ui,"0","0","0","Bitte nur Zahlen eingeben")
         else:
-            find_next_fitting_sfg(model.read_halbzeug(ui.comboBox_material.currentText()[:6]),ui)
+            find_next_fitting_sfg(model.read_sfg(ui.comboBox_material.currentText()[:6]),ui)
 
 
 def connect_size_fields(ui):

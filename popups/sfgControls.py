@@ -135,7 +135,7 @@ def show(material, mainUi):
     for i in range(2,4):
         header.setSectionResizeMode(i, QtWidgets.QHeaderView.Stretch)
     if first_call == True:
-        utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_halbzeug(material))
+        utils.fill_table_from_sfg_list(dialog.ui.tableWidget, model.read_sfg(material))
         model.setSfg(utils.build_list_from_table(dialog.ui.tableWidget))
         dialog.set_previous(previousData = create_copy())
         set_first_call(False)
