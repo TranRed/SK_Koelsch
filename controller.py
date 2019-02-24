@@ -8,11 +8,11 @@ def perform_calculation(ui):
     calculationControls.show(ui)
 
 
-def set_sizes(ui,a,b,c,msg):
+def set_sizes(ui,a,b,c,message):
     ui.lineEdit_semifinishedSideA.setText(a)
     ui.lineEdit_semifinishedSideB.setText(b)
     ui.lineEdit_semifinishedSideC.setText(c)
-    ui.label_sizeNotFound.setText(msg)
+    ui.label_sizeNotFound.setText(message)
 
     global cuboid
     materialData = model.read_material(ui.comboBox_material.currentText()[:6])
@@ -27,97 +27,104 @@ def set_no_size(ui):
     #size not available
     set_sizes(ui,"0","0","0","Kein passendes Halbzeug verfügbar")
 
-def build_alt_message(alt, sfgA, sfgB, sfgC):
-    msg = "Als Halbzeug " + str(sfgA) + "x" + str(sfgB) + "x" + str(sfgC) +" verfügbar. " + alt
-    return msg
+def build_message_for_alternative(alt, sfgA, sfgB, sfgC):
+    message = "Als Halbzeug " + str(sfgA) + "x" + str(sfgB) + "x" + str(sfgC) +" verfügbar. " + alt
+    return message
 
-def find_alternative(a,b,c,sfgA,sfgB,sfgC,volume):
+def create_sfg_checkresult(volume,found,message):
     result = dict()
+
     result['volume'] = volume
+    result['found'] = found
+    result['message'] = message
+
+    return result
+
+def check_if_sfg_is_a_valid_alternative(a,b,c,sfgA,sfgB,sfgC,volume):
 
     if a <= sfgB:
         if b<=sfgA and c<=sfgC:
-            result['found'] = True
-            result['msg'] = build_alt_message("(BxAxC)", sfgA, sfgB, sfgC )
+            result = create_sfg_checkresult(volume, True, build_message_for_alternative("(BxAxC)", sfgA, sfgB, sfgC ))
             return result
         elif b<=sfgC and c<=sfgB:
-            result['found'] = True
-            result['msg'] = build_alt_message("(CxAxB)", sfgA, sfgB, sfgC )
+            result = create_sfg_checkresult(volume, True, build_message_for_alternative("(CxAxB)", sfgA, sfgB, sfgC ))
             return result
 
     if a <= sfgC:
         if b<=sfgA and c<=sfgB:
-            result['found'] = True
-            result['msg'] = build_alt_message("(BxCxA)", sfgA, sfgB, sfgC )
+            result = create_sfg_checkresult(volume, True, build_message_for_alternative("(BxCxA)", sfgA, sfgB, sfgC ))
             return result
         elif b<=sfgB and c<=sfgA:
-            result['found'] = True
-            result['msg'] = build_alt_message("(CxBxA)", sfgA, sfgB, sfgC )
+            result = create_sfg_checkresult(volume, True, build_message_for_alternative("(CxBxA)", sfgA, sfgB, sfgC ))
             return result
 
     if b <= sfgC:
         if a<=sfgA and c<=sfgB:
-            result['found'] = True
-            result['msg'] = build_alt_message("(AxCxB)", sfgA, sfgB, sfgC )
+            result = create_sfg_checkresult(volume, True, build_message_for_alternative("(AxCxB)", sfgA, sfgB, sfgC ))
             return result
         elif a<=sfgB and c<=sfgA:
-            result['found'] = True
-            result['msg'] = build_alt_message("(CxAxB)", sfgA, sfgB, sfgC )
+            result = create_sfg_checkresult(volume, True, build_message_for_alternative("(CxAxB)", sfgA, sfgB, sfgC ))
             return result
 
-    result['found'] = False
-    result['msg'] = ""
+    result = create_sfg_checkresult(volume, False, "")
     return result
+
+def are_side_inputs_valid(ui):
+    if ((not ui.lineEdit_bodySideA.text().isdigit()) or
+        (not ui.lineEdit_bodySideB.text().isdigit()) or
+        (not ui.lineEdit_bodySideC.text().isdigit()) or
+        (not ui.lineEdit_allowanceSideA.text().isdigit()) or
+        (not ui.lineEdit_allowanceSideB.text().isdigit()) or
+        (not ui.lineEdit_allowanceSideC.text().isdigit())):
+        return False
+    else:
+        return True
+
+def find_next_fitting_sfg(semiFinishedGoods,ui):
+    sfgFound = False
+    alternativeFound = False
+    message = ""
+
+    a = int(ui.lineEdit_bodySideA.text()) + int(ui.lineEdit_allowanceSideA.text())
+    b = int(ui.lineEdit_bodySideB.text()) + int(ui.lineEdit_allowanceSideB.text())
+    c = int(ui.lineEdit_bodySideC.text()) + int(ui.lineEdit_allowanceSideC.text())
+
+    for sfg in semiFinishedGoods:
+        sizeA = int(sfg['a'])
+        sizeB = int(sfg['b'])
+        sizeC = int(sfg['stange'])
+        volume = sizeA * sizeB * c
+        sfgIsCurrent = False
+
+        if a <= sizeA and b <= sizeB and c <= sizeC and sfgFound == False:
+            sfgIsCurrent = True
+            sfgFound = True
+            sfgFoundVolume = volume
+            set_sizes(ui,str(sizeA),str(sizeB),str(c),"")
+
+        if alternativeFound == False:
+            checkResult = check_if_sfg_is_a_valid_alternative(a,b,c,sizeA,sizeB,sizeC,volume)
+            alternativeFound = checkResult['found']
+            if alternativeFound == True and sfgIsCurrent == False:
+                message = checkResult['message']
+                if sfgFound == True:
+                    if checkResult['volume'] >= sfgFoundVolume:
+                        #only show message if alternative is smaller
+                        message = ""
+
+    if sfgFound == False:
+        set_no_size(ui)
+
+    if alternativeFound == True and message != "":
+        ui.label_sizeNotFound.setText(message)
 
 def calc_semifinished(ui):
     if ui.comboBox_material.currentText() != '':
-        if (
-            (not ui.lineEdit_bodySideA.text().isdigit()) or
-            (not ui.lineEdit_bodySideB.text().isdigit()) or
-            (not ui.lineEdit_bodySideC.text().isdigit()) or
-            (not ui.lineEdit_allowanceSideA.text().isdigit()) or
-            (not ui.lineEdit_allowanceSideB.text().isdigit()) or
-            (not ui.lineEdit_allowanceSideC.text().isdigit())):
+        if are_side_inputs_valid(ui) == False:
             set_sizes(ui,"0","0","0","Bitte nur Zahlen eingeben")
         else:
-            a = int(ui.lineEdit_bodySideA.text()) + int(ui.lineEdit_allowanceSideA.text())
-            b = int(ui.lineEdit_bodySideB.text()) + int(ui.lineEdit_allowanceSideB.text())
-            c = int(ui.lineEdit_bodySideC.text()) + int(ui.lineEdit_allowanceSideC.text())
+            find_next_fitting_sfg(model.read_halbzeug(ui.comboBox_material.currentText()[:6]),ui)
 
-            resultSet = model.read_halbzeug(ui.comboBox_material.currentText()[:6])
-            sfgFound = False
-            altFound = False
-            msg = ""
-
-            for dataset in resultSet:
-                sizeA = int(dataset['a'])
-                sizeB = int(dataset['b'])
-                sizeC = int(dataset['stange'])
-                volume = sizeA * sizeB * c
-                sfgIsCurrent = False
-
-                if a <= sizeA and b <= sizeB and c <= sizeC and sfgFound == False:
-                    sfgIsCurrent = True
-                    sfgFound = True
-                    sfgFoundVolume = volume
-                    set_sizes(ui,str(sizeA),str(sizeB),str(c),"")
-
-                if altFound == False:
-
-                    alternative = find_alternative(a,b,c,sizeA,sizeB,sizeC,volume)
-                    altFound = alternative['found']
-                    if altFound == True and sfgIsCurrent == False:
-                        msg = alternative['msg']
-                        if sfgFound == True:
-                            if alternative['volume'] >= sfgFoundVolume:
-                                #only show message if alternative is smaller
-                                msg = ""
-
-            if sfgFound == False:
-                set_no_size(ui)
-
-            if altFound == True and msg != "":
-                ui.label_sizeNotFound.setText(msg)
 
 def connect_size_fields(ui):
     ui.lineEdit_bodySideA.textChanged.connect(lambda: calc_semifinished(ui))
