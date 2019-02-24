@@ -1,55 +1,13 @@
 from PyQt5 import QtCore, QtWidgets
 import model
-from popups import calculation
+from popups import calculation, calculationSharedValues
 from decimal import *
 import locale
-
-class sharedValues():
-    def __init__(self):
-        self._cent = Decimal("0.01")
-        self._cogm = Decimal("0.00")
-        self._cogs = Decimal("0.00")
-        self._profit = Decimal("0.00")
-        self._skonto= Decimal("0.00")
-        self._rebates = Decimal("0.00")
-
-    def getCent(self):
-        return self._cent
-
-    def getCogm(self):
-        return self._cogm
-
-    def getCogs(self):
-        return self._cogs
-
-    def getProfit(self):
-        return self._profit
-
-    def getSkonto(self):
-        return self._skonto
-
-    def getRebates(self):
-        return self._rebates
-
-    def setCogm(self,cogm):
-        self._cogm = cogm
-
-    def setCogs(self,cogs):
-        self._cogs = cogs
-
-    def setProfit(self,profit):
-        self._profit = profit
-
-    def setSkonto(self,skonto):
-        self._skonto = skonto
-
-    def setRebates(self,rebates):
-        self._rebates = rebates
 
 def changeLineEdit(lineEdit, decimal):
     lineEdit.setText(str('{0:n}'.format(decimal)))
 
-def fill_fgk_details(ui, machine, fgk, sharedValues):
+def fill_fgk_details(ui, machine, sharedValues):
     ui.label_machine_text.setText(machine['bez'])
 
     time = Decimal(str(machine['ruest']))
@@ -59,9 +17,9 @@ def fill_fgk_details(ui, machine, fgk, sharedValues):
     hourlyRate = hourlyRate.quantize(sharedValues.getCent(), ROUND_HALF_UP)
     changeLineEdit(ui.lineEdit_mss, hourlyRate)
 
-    changeLineEdit(ui.lineEdit_fgk_detail, fgk)
+    changeLineEdit(ui.lineEdit_fgk_detail, sharedValues.getManufacturingOverheads())
 
-def fill_mek_details(mainUi, ui, material, volume, mek,sharedValues):
+def fill_mek_details(mainUi, ui, material, volume, sharedValues):
     ui.label_material_text.setText(mainUi.comboBox_material.currentText())
     ui.lineEdit_sfgA.setText(mainUi.lineEdit_semifinishedSideA.text())
     ui.lineEdit_sfgB.setText(mainUi.lineEdit_semifinishedSideB.text())
@@ -72,8 +30,7 @@ def fill_mek_details(mainUi, ui, material, volume, mek,sharedValues):
 
     weight = volume * density
     changeLineEdit(ui.lineEdit_weight, weight)
-    changeLineEdit(ui.lineEdit_mek_detail, mek)
-
+    changeLineEdit(ui.lineEdit_mek_detail, sharedValues.getMaterialCosts())
 
     matPrice = Decimal(str(material['preis']))
     matPrice = matPrice.quantize(sharedValues.getCent(), ROUND_HALF_UP)
@@ -83,30 +40,29 @@ def calc_material_costs(mainUi,ui,material,volume,sharedValues):
     materialCosts = volume * Decimal(str(material['dichte'])) * Decimal(str(material['preis']))
 
     materialCosts = materialCosts.quantize(sharedValues.getCent(), ROUND_HALF_UP)
+    sharedValues.setMaterialCosts(materialCosts)
     changeLineEdit(ui.lineEdit_mek, materialCosts)
-
-    return materialCosts
 
 def calc_material_overheads(ui,sharedValues):
     materialOverheads = Decimal("0.00")
     materialOverheads = materialOverheads.quantize(sharedValues.getCent(), ROUND_HALF_UP)
+    sharedValues.setMaterialOverheads(materialOverheads)
     changeLineEdit(ui.lineEdit_mgk, materialOverheads)
-    return materialOverheads
 
 def calc_manufacturingCosts(ui,sharedValues):
     manufacturingCosts = Decimal("0.00")
     manufacturingCosts = manufacturingCosts.quantize(sharedValues.getCent(), ROUND_HALF_UP)
+    sharedValues.setManufacturingCosts(manufacturingCosts)
     changeLineEdit(ui.lineEdit_fek, manufacturingCosts)
-    return manufacturingCosts
 
 def calc_manufacturingOverheads(mainUi, ui, machine,sharedValues):
     manufacturingOverheads = Decimal(str(machine['mss'])) * Decimal(str(machine['ruest']))
     manufacturingOverheads = manufacturingOverheads.quantize(sharedValues.getCent(), ROUND_HALF_UP)
+    sharedValues.setManufacturingOverheads(manufacturingOverheads)
     changeLineEdit(ui.lineEdit_fgk, manufacturingOverheads)
-    return manufacturingOverheads
 
-def calculate_cogm(ui,materialCosts,materialOverheads,manufacturingCosts,manufacturingOverheads,sharedValues):
-    cogm = materialCosts + materialOverheads + manufacturingCosts + manufacturingOverheads
+def calculate_cogm(ui,sharedValues):
+    cogm = sharedValues.getMaterialCosts() + sharedValues.getMaterialOverheads() + sharedValues.getManufacturingCosts() + sharedValues.getManufacturingOverheads()
     cogm = cogm.quantize(sharedValues.getCent(), ROUND_HALF_UP)
     sharedValues.setCogm(cogm)
     changeLineEdit(ui.lineEdit_cogm, cogm)
@@ -114,11 +70,11 @@ def calculate_cogm(ui,materialCosts,materialOverheads,manufacturingCosts,manufac
 def calculate_salesOverheads(ui,sharedValues):
     salesOverheads = sharedValues.getCogm() * Decimal(str(ui.spinBox_vgk.value())) / Decimal("100")
     salesOverheads = salesOverheads.quantize(sharedValues.getCent(), ROUND_HALF_UP)
+    sharedValues.setSalesOverheads(salesOverheads)
     changeLineEdit(ui.lineEdit_vgk, salesOverheads)
-    return salesOverheads
 
-def calculate_cogs(ui, salesOverheads,sharedValues):
-    cogs = sharedValues.getCogm() + salesOverheads
+def calculate_cogs(ui,sharedValues):
+    cogs = sharedValues.getCogm() + sharedValues.getSalesOverheads()
     cogs = cogs.quantize(sharedValues.getCent(), ROUND_HALF_UP)
     sharedValues.setCogs(cogs)
     changeLineEdit(ui.lineEdit_cogs, cogs)
@@ -162,33 +118,33 @@ def fill_screen(mainUi, ui, sharedValues):
 
     material = model.read_material(mainUi.comboBox_material.currentText()[:6])
 
-    materialCosts = calc_material_costs(mainUi, ui, material, volume,sharedValues)
-    fill_mek_details(mainUi, ui, material, volume, materialCosts,sharedValues)
+    calc_material_costs(mainUi, ui, material, volume,sharedValues)
+    fill_mek_details(mainUi, ui, material, volume, sharedValues)
 
-    materialOverheads = calc_material_overheads(ui,sharedValues)
+    calc_material_overheads(ui,sharedValues)
 
-    manufacturingCosts = calc_manufacturingCosts(ui,sharedValues)
+    calc_manufacturingCosts(ui,sharedValues)
 
     machine = model.read_machine(mainUi.comboBox_machine.currentText()[:1])
-    manufacturingOverheads = calc_manufacturingOverheads(mainUi, ui, machine,sharedValues)
-    fill_fgk_details(ui, machine, manufacturingOverheads,sharedValues)
+    calc_manufacturingOverheads(mainUi, ui, machine, sharedValues)
+    fill_fgk_details(ui, machine, sharedValues)
 
-    calculate_cogm(ui,materialCosts,materialOverheads,manufacturingCosts,manufacturingOverheads,sharedValues)
-    calculate_changables(mainUi, ui,sharedValues)
+    calculate_cogm(ui,sharedValues)
+    calculate_changables(mainUi,ui,sharedValues)
 
-def calculate_changables(mainUi, ui,sharedValues):
+def calculate_changables(mainUi,ui,sharedValues):
     salesOverheads = calculate_salesOverheads(ui,sharedValues)
-    calculate_cogs(ui, salesOverheads,sharedValues)
+    calculate_cogs(ui,sharedValues)
     calculate_profit(ui,sharedValues)
     calculate_skonto(ui,sharedValues)
     calculate_rebates(ui,sharedValues)
     calculate_price(ui,sharedValues)
 
-def connect_spinboxes(mainUi, ui):
-    ui.spinBox_vgk.valueChanged.connect(lambda: calculate_changables(mainUi, ui))
-    ui.spinBox_rebates.valueChanged.connect(lambda: calculate_changables(mainUi, ui))
-    ui.spinBox_skonto.valueChanged.connect(lambda: calculate_changables(mainUi, ui))
-    ui.spinBox_profit.valueChanged.connect(lambda: calculate_changables(mainUi, ui))
+def connect_spinboxes(mainUi, ui, sharedValues):
+    ui.spinBox_vgk.valueChanged.connect(lambda: calculate_changables(mainUi, ui, sharedValues))
+    ui.spinBox_rebates.valueChanged.connect(lambda: calculate_changables(mainUi, ui, sharedValues))
+    ui.spinBox_skonto.valueChanged.connect(lambda: calculate_changables(mainUi, ui, sharedValues))
+    ui.spinBox_profit.valueChanged.connect(lambda: calculate_changables(mainUi, ui, sharedValues))
 
 def close(dialog):
     dialog.done(0)
@@ -202,7 +158,8 @@ def show(mainUi):
     dialog.ui.setupUi(dialog)
     dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
     locale.setlocale(locale.LC_ALL, '')
-    fill_screen(mainUi, dialog.ui, sharedValues())
+    globalValues = calculationSharedValues.sharedValues()
+    fill_screen(mainUi, dialog.ui, globalValues)
     connect_buttons(dialog)
-    connect_spinboxes(mainUi, dialog.ui)
+    connect_spinboxes(mainUi, dialog.ui, globalValues)
     dialog.exec_()
