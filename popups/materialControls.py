@@ -26,23 +26,23 @@ def get_color_from_image(ui_mm):
     path = fileDialog.getOpenFileName(None, "Bild wählen ...", "", "Images (*.png *.bmp *.jpg *.jpeg *.tif *.gif)")
 
     if path[0] != '':
-        img = io.imread(path[0])[:, :, :, ]
-        if img.shape[2] == 2:
+        image = io.imread(path[0])[:, :, :, ]
+        if image.shape[2] == 2:
             utils.show_message_box(QtWidgets.QMessageBox.Warning,"Das ausgewählte bild ist graustufig. Bitte wählen Sie ein farbiges Bild.","Fehler")
             return
-        elif img.shape[2] == 3:
+        elif image.shape[2] == 3:
             pass #image already usable
-        elif img.shape[2] == 4:
-            img = io.imread(path[0])[:, :, :-1 ]
+        elif image.shape[2] == 4:
+            image = io.imread(path[0])[:, :, :-1 ]
         else:
              utils.show_message_box(QtWidgets.QMessageBox.Warning,"Fehler beim auslesen der Bilddatei. Bitte wählen sie ein anderes Bild.","Fehler")
              return
 
-        avg_color_per_row = np.average(img, axis=0)
-        avg_color = np.average(avg_color_per_row, axis=0)
+        average_color_per_row = np.average(image, axis=0)
+        average_color = np.average(average_color_per_row, axis=0)
 
         global globalColorField
-        globalColorField = utils.convert_rgb_to_hex(int(avg_color[0]),int(avg_color[1]),int(avg_color[2]))
+        globalColorField = utils.convert_rgb_to_hex(int(average_color[0]),int(average_color[1]),int(average_color[2]))
         change_button_color(ui_mm, globalColorField)
 
 def color_picker(ui_mm, recordColor):
