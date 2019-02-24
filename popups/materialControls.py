@@ -8,6 +8,17 @@ import re
 import locale
 from decimal import *
 
+class colorField():
+    def __init__(self):
+        self._colorValue = '#ffffff'
+
+    def getColorValue(self):
+        return self._colorValue
+
+    def setColorValue(self, color):
+        self._colorValue = color
+
+
 class MaterialDialog(QtWidgets.QDialog, material.Ui_Material):
     def __init__(self, mode, parent=None):
         self.mode = mode
@@ -17,11 +28,11 @@ class MaterialDialog(QtWidgets.QDialog, material.Ui_Material):
             self.pushButton_sfg.setHidden(True)
             self.pushButton_delete.setHidden(True)
 
-def change_button_color(ui_mm, color):
-    style = "background-color:" + color + ";"
+def change_button_color(ui_mm, globalColor):
+    style = "background-color:" + globalColor.getColorValue() + ";"
     ui_mm.pushButton_colorPicker.setStyleSheet(style);
 
-def get_color_from_image(ui_mm):
+def get_color_from_image(ui_mm, globalColor):
     fileDialog = QtWidgets.QFileDialog()
     path = fileDialog.getOpenFileName(None, "Bild wählen ...", "", "Images (*.png *.bmp *.jpg *.jpeg *.tif *.gif)")
 
@@ -41,36 +52,32 @@ def get_color_from_image(ui_mm):
         average_color_per_row = np.average(image, axis=0)
         average_color = np.average(average_color_per_row, axis=0)
 
-        global globalColorField
-        globalColorField = utils.convert_rgb_to_hex(int(average_color[0]),int(average_color[1]),int(average_color[2]))
-        change_button_color(ui_mm, globalColorField)
+        globalColor.setColorValue(utils.convert_rgb_to_hex(int(average_color[0]),int(average_color[1]),int(average_color[2])))
+        change_button_color(ui_mm, globalColor)
 
-def color_picker(ui_mm, recordColor):
-    recordRGB = utils.convert_hex_to_rgb(recordColor)
+def color_picker(ui_mm, globalColor):
+    recordRGB = utils.convert_hex_to_rgb(globalColor.getColorValue())
     color = QtWidgets.QColorDialog.getColor(QtGui.QColor(recordRGB['red'],recordRGB['green'],recordRGB['blue']))
     if color.isValid():
-        global  globalColorField
-        globalColorField = utils.convert_rgb_to_hex(color.red(),color.green(),color.blue())
-        change_button_color(ui_mm, globalColorField)
+        globalColor.setColorValue(utils.convert_rgb_to_hex(color.red(),color.green(),color.blue()))
+        change_button_color(ui_mm, globalColor)
 
-def connect_common_buttons(ui_mm, ui):
-    global globalColorField
-    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui))
-    ui_mm.pushButton_colorPicker.clicked.connect(lambda: color_picker(ui_mm, globalColorField))
-    ui_mm.pushButton_colorFromImage.clicked.connect(lambda: get_color_from_image(ui_mm))
+def connect_common_buttons(ui_mm, ui, globalColor):
+    ui_mm.pushButton_save.clicked.connect(lambda: on_click_material_save(ui_mm,ui, globalColor))
+    ui_mm.pushButton_colorPicker.clicked.connect(lambda: color_picker(ui_mm, globalColor))
+    ui_mm.pushButton_colorFromImage.clicked.connect(lambda: get_color_from_image(ui_mm, globalColor))
 
 
 def on_click_new_material(ui):
     locale.setlocale(locale.LC_ALL, '')
     ui_mm = MaterialDialog('N')
-    global globalColorField
-    globalColorField = '#ffffff'
-    connect_common_buttons(ui_mm, ui)
-    change_button_color(ui_mm, globalColorField)
+    globalColor = colorField()
+    connect_common_buttons(ui_mm, ui, globalColor)
+    change_button_color(ui_mm, globalColor)
 
     ui_mm.exec()
 
-def on_click_material_save(ui_mm,ui):
+def on_click_material_save(ui_mm,ui,globalColor):
     if not re.match("[0-9]{1}[.]{1}[0-9]{4}",ui_mm.lineEdit_material.text()):
          utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte geben Sie die Werkstoffnummer im Format 0.0000 ein","Fehler")
          return
@@ -96,9 +103,9 @@ def on_click_material_save(ui_mm,ui):
     density = locale.atof(densityStr)
     price = locale.atof(priceStr)
 
-    global globalColorField
+
     if ui_mm.mode == 'E':
-        model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),density,price,globalColorField,ui_mm.lineEdit_material.text()))
+        model.update_material((ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),density,price,globalColor.getColorValue(),ui_mm.lineEdit_material.text()))
         if model.getSfg() != []:
             model.update_sfg((ui_mm.lineEdit_material.text(),), utils.create_tuple_from_list(model.getSfg()))
     elif ui_mm.mode == 'N':
@@ -110,7 +117,7 @@ def on_click_material_save(ui_mm,ui):
              utils.show_message_box(QtWidgets.QMessageBox.Warning,"Bitte alle Felder füllen","Fehler")
              return
         else:
-            model.insert_material((ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),density,price,globalColorField))
+            model.insert_material((ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text(),density,price,globalColor.getColorValue()))
     controller.refresh_comboBox_material(ui, ui_mm.lineEdit_material.text(),ui_mm.lineEdit_standard.text(),ui_mm.lineEdit_chemical.text())
     ui_mm.accept()
 
@@ -150,11 +157,11 @@ def on_click_edit_material(ui):
     ui_mm.lineEdit_density.setText(str('{0:n}'.format(density)))
     price = Decimal(record['preis']).quantize(Decimal("0.00"), ROUND_HALF_UP)
     ui_mm.lineEdit_price.setText(str('{0:n}'.format(price)))
-    global globalColorField
-    globalColorField = str(record['farbe'])
-    change_button_color(ui_mm, globalColorField)
+    globalColor = colorField()
+    globalColor.setColorValue(str(record['farbe']))
+    change_button_color(ui_mm, globalColor)
     sfgControls.set_first_call(True)
     ui_mm.pushButton_sfg.clicked.connect(lambda: on_click_edit_sfg(ui_mm.lineEdit_material.text(),ui))
     ui_mm.pushButton_delete.clicked.connect(lambda: on_click_material_delete(ui_mm,ui))
-    connect_common_buttons(ui_mm, ui)
+    connect_common_buttons(ui_mm, ui, globalColor)
     ui_mm.exec()
