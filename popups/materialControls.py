@@ -140,8 +140,8 @@ def confirmation(button,ui_mm,ui):
         controller.fill_comboBox_material(ui)
         ui_mm.accept()
 
-def on_click_edit_sfg(material,mainUi):
-    sfgControls.show(material,mainUi)
+def on_click_edit_sfg(material,mainUi,sfgBools):
+    sfgControls.show(material,mainUi, sfgBools)
 
 def on_click_edit_material(ui):
     locale.setlocale(locale.LC_ALL, '')
@@ -160,8 +160,8 @@ def on_click_edit_material(ui):
     globalColor = colorField()
     globalColor.setColorValue(str(record['farbe']))
     change_button_color(ui_mm, globalColor)
-    sfgControls.set_first_call(True)
-    ui_mm.pushButton_sfg.clicked.connect(lambda: on_click_edit_sfg(ui_mm.lineEdit_material.text(),ui))
+    sfgBools = sfgControls.commonBools(True, True)
+    ui_mm.pushButton_sfg.clicked.connect(lambda: on_click_edit_sfg(ui_mm.lineEdit_material.text(),ui,sfgBools))
     ui_mm.pushButton_delete.clicked.connect(lambda: on_click_material_delete(ui_mm,ui))
     connect_common_buttons(ui_mm, ui, globalColor)
     ui_mm.exec()
