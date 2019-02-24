@@ -8,13 +8,12 @@ def perform_calculation(ui):
     calculationControls.show(ui)
 
 
-def set_sizes(ui,a,b,c,message):
+def set_sizes(ui,a,b,c,message,cuboid):
     ui.lineEdit_semifinishedSideA.setText(a)
     ui.lineEdit_semifinishedSideB.setText(b)
     ui.lineEdit_semifinishedSideC.setText(c)
     ui.label_sizeNotFound.setText(message)
 
-    global cuboid
     materialData = model.read_material(ui.comboBox_material.currentText()[:6])
 
     if ( int(a) == 0 or int(b) == 0 or int(c) == 0 ):
@@ -23,9 +22,9 @@ def set_sizes(ui,a,b,c,message):
     else:
         cuboid.change_plot(int(a), int(b), int(c), materialData)
 
-def set_no_size(ui):
+def set_no_size(ui,cuboid):
     #size not available
-    set_sizes(ui,"0","0","0","Kein passendes Halbzeug verfügbar")
+    set_sizes(ui,"0","0","0","Kein passendes Halbzeug verfügbar",cuboid)
 
 def build_message_for_alternative(alt, sfgA, sfgB, sfgC):
     message = "Als Halbzeug " + str(sfgA) + "x" + str(sfgB) + "x" + str(sfgC) +" verfügbar. " + alt
@@ -80,7 +79,7 @@ def are_side_inputs_valid(ui):
     else:
         return True
 
-def find_next_fitting_sfg(semiFinishedGoods,ui):
+def find_next_fitting_sfg(semiFinishedGoods,ui,cuboid):
     sfgFound = False
     alternativeFound = False
     message = ""
@@ -100,7 +99,7 @@ def find_next_fitting_sfg(semiFinishedGoods,ui):
             sfgIsCurrent = True
             sfgFound = True
             sfgFoundVolume = volume
-            set_sizes(ui,str(sizeA),str(sizeB),str(c),"")
+            set_sizes(ui,str(sizeA),str(sizeB),str(c),"",cuboid)
 
         if alternativeFound == False:
             checkResult = check_if_sfg_is_a_valid_alternative(a,b,c,sizeA,sizeB,sizeC,volume)
@@ -118,21 +117,21 @@ def find_next_fitting_sfg(semiFinishedGoods,ui):
     if alternativeFound == True and message != "":
         ui.label_sizeNotFound.setText(message)
 
-def calc_semifinished(ui):
+def calc_semifinished(ui,cuboid):
     if ui.comboBox_material.currentText() != '':
         if are_side_inputs_valid(ui) == False:
-            set_sizes(ui,"0","0","0","Bitte nur Zahlen eingeben")
+            set_sizes(ui,"0","0","0","Bitte nur Zahlen eingeben",cuboid)
         else:
-            find_next_fitting_sfg(model.read_sfg(ui.comboBox_material.currentText()[:6]),ui)
+            find_next_fitting_sfg(model.read_sfg(ui.comboBox_material.currentText()[:6]),ui,cuboid)
 
 
-def connect_size_fields(ui):
-    ui.lineEdit_bodySideA.textChanged.connect(lambda: calc_semifinished(ui))
-    ui.lineEdit_bodySideB.textChanged.connect(lambda: calc_semifinished(ui))
-    ui.lineEdit_bodySideC.textChanged.connect(lambda: calc_semifinished(ui))
-    ui.lineEdit_allowanceSideA.textChanged.connect(lambda: calc_semifinished(ui))
-    ui.lineEdit_allowanceSideB.textChanged.connect(lambda: calc_semifinished(ui))
-    ui.lineEdit_allowanceSideC.textChanged.connect(lambda: calc_semifinished(ui))
+def connect_size_fields(ui,cuboid):
+    ui.lineEdit_bodySideA.textChanged.connect(lambda: calc_semifinished(ui,cuboid))
+    ui.lineEdit_bodySideB.textChanged.connect(lambda: calc_semifinished(ui,cuboid))
+    ui.lineEdit_bodySideC.textChanged.connect(lambda: calc_semifinished(ui,cuboid))
+    ui.lineEdit_allowanceSideA.textChanged.connect(lambda: calc_semifinished(ui,cuboid))
+    ui.lineEdit_allowanceSideB.textChanged.connect(lambda: calc_semifinished(ui,cuboid))
+    ui.lineEdit_allowanceSideC.textChanged.connect(lambda: calc_semifinished(ui,cuboid))
 
 def refresh_comboBox_material(ui, material, normbez, chembez):
     fill_comboBox_material(ui)
@@ -186,8 +185,8 @@ def fill_comboBox_machine(ui):
     for dataset in resultSet:
         ui.comboBox_machine.addItem(str(dataset['id']) + " - " + str(dataset['bez']))
 
-def connect_comboBoxes(ui):
-    ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui))
+def connect_comboBoxes(ui,cuboid):
+    ui.comboBox_material.currentIndexChanged.connect(lambda: calc_semifinished(ui,cuboid))
 
 def connect_pushButtons(ui):
     ui.pushButton_pockets.clicked.connect(lambda: define_pockets(ui))
@@ -204,11 +203,13 @@ def defaults(ui):
     add_filter_to_comboBox(ui.comboBox_aging)
     fill_comboBox_material(ui)
     fill_comboBox_machine(ui)
-    connect_actions(ui)
-    connect_size_fields(ui)
-    connect_comboBoxes(ui)
-    connect_pushButtons(ui)
     model.initRuntimeVariables()
-    global cuboid
+
     cuboid = figure.Window(ui.figure)
-    calc_semifinished(ui)
+
+    connect_actions(ui)
+    connect_size_fields(ui,cuboid)
+    connect_comboBoxes(ui,cuboid)
+    connect_pushButtons(ui)
+
+    calc_semifinished(ui,cuboid)
